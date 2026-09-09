@@ -1,0 +1,755 @@
+<title>提示詞排版台</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#E7E8EC;
+  --card:#FFFFFF;
+  --card-2:#F3F4F7;
+  --ink:#191C22;
+  --ink-2:#464C58;
+  --ink-3:#767D8B;
+  --rule:#CDD0D8;
+  --rule-2:#DFE1E7;
+  --slot-empty:#DADCE3;
+  --indigo:#34549C;
+  --vermilion:#B93E29;
+  --c-subject:#2B303B;
+  --c-action:#8A5320;
+  --c-setting:#2A6152;
+  --c-style:#34549C;
+  --c-light:#9A6A12;
+  --c-camera:#256B60;
+  --c-mood:#7A3E6C;
+  --c-quality:#4E5866;
+  --c-motion:#1F5F86;
+  --c-role:#34549C;
+  --c-task:#2B303B;
+  --c-audience:#2A6152;
+  --c-tone:#7A3E6C;
+  --c-format:#8A5320;
+  --c-limit:#4E5866;
+  --shadow:0 1px 0 rgba(25,28,34,.06), 0 6px 18px -12px rgba(25,28,34,.4);
+  --f-display:"Archivo","Noto Sans TC",system-ui,sans-serif;
+  --f-body:"Noto Sans TC","Archivo",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono","Noto Sans TC",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#131519;
+    --card:#1C1F26;
+    --card-2:#23272F;
+    --ink:#E9EAEE;
+    --ink-2:#B2B8C4;
+    --ink-3:#828A99;
+    --rule:#333944;
+    --rule-2:#2A2F38;
+    --slot-empty:#2E343E;
+    --indigo:#8FAAE8;
+    --vermilion:#E97B63;
+    --c-subject:#C3CAD8;
+    --c-action:#D7A466;
+    --c-setting:#6EC0A8;
+    --c-style:#8FAAE8;
+    --c-light:#E0B95F;
+    --c-camera:#63C0B0;
+    --c-mood:#D28CC2;
+    --c-quality:#A3AEBE;
+    --c-motion:#6FB6E2;
+    --c-role:#8FAAE8;
+    --c-task:#C3CAD8;
+    --c-audience:#6EC0A8;
+    --c-tone:#D28CC2;
+    --c-format:#D7A466;
+    --c-limit:#A3AEBE;
+    --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131519;
+  --card:#1C1F26;
+  --card-2:#23272F;
+  --ink:#E9EAEE;
+  --ink-2:#B2B8C4;
+  --ink-3:#828A99;
+  --rule:#333944;
+  --rule-2:#2A2F38;
+  --slot-empty:#2E343E;
+  --indigo:#8FAAE8;
+  --vermilion:#E97B63;
+  --c-subject:#C3CAD8;
+  --c-action:#D7A466;
+  --c-setting:#6EC0A8;
+  --c-style:#8FAAE8;
+  --c-light:#E0B95F;
+  --c-camera:#63C0B0;
+  --c-mood:#D28CC2;
+  --c-quality:#A3AEBE;
+  --c-motion:#6FB6E2;
+  --c-role:#8FAAE8;
+  --c-task:#C3CAD8;
+  --c-audience:#6EC0A8;
+  --c-tone:#D28CC2;
+  --c-format:#D7A466;
+  --c-limit:#A3AEBE;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+
+/* ---- header ---- */
+.masthead{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 28px;
+  padding:26px 0 16px;border-bottom:2px solid var(--ink);
+}
+.brand{display:flex;align-items:baseline;gap:12px}
+.brand h1{
+  font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:.01em;
+  margin:0;line-height:1.1;
+}
+.brand .sub{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);
+}
+.masthead p{margin:0;color:var(--ink-2);font-size:14px;max-width:52ch}
+
+/* ---- mode switch ---- */
+.modes{display:flex;gap:0;margin-left:auto;border:1px solid var(--rule);border-radius:2px;overflow:hidden;background:var(--card)}
+.modes button{
+  font-family:var(--f-body);font-size:13.5px;font-weight:500;
+  padding:9px 15px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;
+  border-right:1px solid var(--rule);
+}
+.modes button:last-child{border-right:0}
+.modes button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.modes button:hover:not([aria-pressed="true"]){background:var(--card-2)}
+
+/* ---- formula strip ---- */
+.formula{
+  display:flex;flex-wrap:wrap;align-items:center;gap:7px;
+  padding:16px 0 18px;border-bottom:1px solid var(--rule);
+}
+.formula .eyebrow{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-right:6px;
+}
+.fchip{
+  font-family:var(--f-mono);font-size:12px;font-weight:500;
+  padding:3px 9px;border-radius:2px;color:#fff;white-space:nowrap;
+}
+.plus{color:var(--ink-3);font-family:var(--f-mono);font-size:13px}
+
+/* ---- layout ---- */
+.cols{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:26px;padding-top:26px;align-items:start}
+@media (max-width:940px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:3px;box-shadow:var(--shadow)}
+.panel-hd{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 16px;border-bottom:1px solid var(--rule-2);
+}
+.panel-hd h2{
+  font-family:var(--f-display);font-size:14px;font-weight:600;margin:0;letter-spacing:.02em;
+}
+.panel-hd .hint{font-size:12px;color:var(--ink-3)}
+
+/* ---- template picker ---- */
+.tpl{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--rule-2)}
+.tpl button{
+  font-family:var(--f-body);font-size:12.5px;padding:5px 11px;cursor:pointer;
+  background:var(--card-2);border:1px solid var(--rule-2);border-radius:2px;color:var(--ink-2);
+}
+.tpl button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.tpl button:hover:not([aria-pressed="true"]){border-color:var(--ink-3);color:var(--ink)}
+
+/* ---- sentence board ---- */
+.board{padding:22px 18px 20px;font-size:19px;line-height:2.35}
+.board .lead{color:var(--ink-2)}
+.slot{
+  display:inline-flex;align-items:center;gap:7px;vertical-align:baseline;
+  font-family:var(--f-body);font-size:16px;line-height:1.4;
+  min-width:118px;padding:6px 12px;margin:0 3px;
+  border:1px dashed var(--slot-empty);border-bottom:2px solid var(--slot-empty);
+  border-radius:2px;background:transparent;color:var(--ink-3);cursor:pointer;text-align:left;
+}
+.slot .cat{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.slot:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.slot:focus-visible,.chip:focus-visible,button:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+.slot.active{border-color:var(--indigo);border-style:solid;box-shadow:inset 0 0 0 1px var(--indigo)}
+.slot.drop{border-style:solid;background:var(--card-2)}
+.slot.dim{opacity:.35}
+.slot.filled{
+  border-style:solid;border-color:currentColor;background:color-mix(in srgb, currentColor 10%, transparent);
+  cursor:pointer;
+}
+.slot.filled .zh{color:var(--ink);font-weight:500}
+.slot.filled .en{font-family:var(--f-mono);font-size:12.5px;color:currentColor}
+.slot .x{font-family:var(--f-mono);font-size:12px;opacity:.55}
+.optional{font-size:11px;color:var(--ink-3);font-family:var(--f-mono)}
+
+/* ---- output ---- */
+.out{border-top:1px solid var(--rule-2);padding:16px}
+.out-lbl{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;
+}
+.out-lbl span{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.out pre{
+  margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.75;color:var(--ink);
+  background:var(--card-2);border:1px solid var(--rule-2);border-radius:2px;
+  padding:12px 14px;white-space:pre-wrap;word-break:break-word;min-height:64px;
+}
+.out pre .ph{color:var(--ink-3)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{
+  font-family:var(--f-body);font-size:13px;font-weight:500;padding:8px 14px;cursor:pointer;
+  border-radius:2px;border:1px solid var(--rule);background:var(--card-2);color:var(--ink);
+}
+.btn:hover{border-color:var(--ink-3)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn.primary:hover{opacity:.88}
+.btn.ghost{background:transparent}
+
+/* ---- lexicon ---- */
+.cats{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--rule-2)}
+.cats button{
+  font-family:var(--f-body);font-size:12.5px;padding:5px 10px;cursor:pointer;border-radius:2px;
+  background:transparent;border:1px solid var(--rule-2);color:var(--ink-2);
+  display:inline-flex;align-items:center;gap:6px;
+}
+.cats button .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.cats button[aria-pressed="true"]{background:var(--card-2);border-color:currentColor;font-weight:500}
+.cats button:hover{border-color:var(--ink-3)}
+.tray{display:flex;flex-wrap:wrap;gap:8px;padding:16px;max-height:430px;overflow-y:auto}
+.chip{
+  display:flex;flex-direction:column;align-items:flex-start;gap:1px;
+  padding:7px 11px;cursor:grab;text-align:left;
+  background:var(--card-2);border:1px solid var(--rule-2);
+  border-left:3px solid currentColor;border-radius:2px;
+}
+.chip:hover{background:var(--card);border-color:var(--rule);transform:translateY(-1px)}
+.chip:active{cursor:grabbing}
+.chip.used{opacity:.4}
+.chip .zh{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.3}
+.chip .en{font-family:var(--f-mono);font-size:11px;color:currentColor;letter-spacing:.01em}
+.tip{
+  padding:11px 16px;border-top:1px solid var(--rule-2);font-size:12.5px;color:var(--ink-2);
+  background:var(--card-2);min-height:44px;
+}
+.tip b{color:var(--ink);font-weight:500}
+
+/* ---- lessons ---- */
+.lessons{margin-top:34px;border-top:2px solid var(--ink);padding-top:22px}
+.lessons h2{font-family:var(--f-display);font-size:16px;margin:0 0 4px;font-weight:600}
+.lessons .note{color:var(--ink-3);font-size:13px;margin:0 0 18px}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px 30px}
+.lesson h3{font-size:14px;margin:0 0 5px;font-weight:700;display:flex;align-items:baseline;gap:8px}
+.lesson h3 em{font-family:var(--f-mono);font-style:normal;font-size:11px;color:var(--ink-3);letter-spacing:.1em}
+.lesson p{margin:0;font-size:13.5px;color:var(--ink-2)}
+.lesson code{font-family:var(--f-mono);font-size:12px;background:var(--card);border:1px solid var(--rule-2);padding:1px 5px;border-radius:2px}
+.foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.chip,.btn,.slot{transition:background .12s ease,border-color .12s ease,transform .12s ease}
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+  background:var(--ink);color:var(--paper);font-size:13px;padding:9px 16px;border-radius:2px;
+  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .18s ease;
+}
+.toast.show{opacity:1}
+</style>
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <h1>提示詞排版台</h1>
+      <span class="sub">Prompt Blocks</span>
+    </div>
+    <p>把關鍵字拖進句子的凹槽，一句能用的指令就排好了。不用背公式，看著填就會。</p>
+    <div class="modes" id="modes" role="group" aria-label="用途"></div>
+  </header>
+
+  <div class="formula" id="formula"></div>
+
+  <div class="cols">
+    <section class="panel">
+      <div class="panel-hd">
+        <h2>排版盤</h2>
+        <span class="hint">點凹槽選它，再點右邊的字塊；或直接拖進來</span>
+      </div>
+      <div class="tpl" id="tpl" role="group" aria-label="句型"></div>
+      <div class="board" id="board"></div>
+      <div class="out">
+        <div class="out-lbl">
+          <span>貼給 AI 的完整指令</span>
+          <span class="optional" id="count"></span>
+        </div>
+        <pre id="output"></pre>
+        <div class="acts">
+          <button class="btn primary" id="copy">複製指令</button>
+          <button class="btn" id="dice">隨機排一組</button>
+          <button class="btn ghost" id="clear">全部清空</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-hd">
+        <h2>字盤</h2>
+        <span class="hint" id="trayHint">選一類，挑一個字塊</span>
+      </div>
+      <div class="cats" id="cats" role="group" aria-label="關鍵字分類"></div>
+      <div class="tray" id="tray"></div>
+      <div class="tip" id="tip"></div>
+    </section>
+  </div>
+
+  <section class="lessons">
+    <h2>三件事學會了，你就不需要這個網站了</h2>
+    <p class="note">下面每一條，都是上面那個句子正在示範的東西。</p>
+    <div class="lgrid">
+      <div class="lesson">
+        <h3><em>01</em>先講「是什麼」，再講「長什麼樣」</h3>
+        <p>主體永遠放最前面。AI 讀到越前面的字，權重越高。把「一隻橘貓」放最後，你會得到一張以風格為主、貓只是配角的圖。</p>
+      </div>
+      <div class="lesson">
+        <h3><em>02</em>用逗號分段，不要寫成作文</h3>
+        <p>圖像類的 AI 吃的是<code>關鍵字, 關鍵字, 關鍵字</code>，不是完整句子。一個逗號一個概念，多寫連接詞反而會稀釋掉重點。</p>
+      </div>
+      <div class="lesson">
+        <h3><em>03</em>形容詞要可以拍得出來</h3>
+        <p>「好看」「有質感」AI 看不懂。<code>黃金時刻的光</code>、<code>淺景深</code>、<code>85mm 人像鏡</code>看得懂，因為那是攝影師真的會下的指令。</p>
+      </div>
+      <div class="lesson">
+        <h3><em>04</em>文字類的 AI 要反過來</h3>
+        <p>寫信、改稿、整理重點時，用完整句子，並先指定角色：<code>你是一位資深編輯</code>。角色一定下來，用字和判斷標準就跟著定了。</p>
+      </div>
+    </div>
+    <p class="foot">關鍵字皆為中英對照，複製出來的是英文版本，Midjourney、Stable Diffusion、DALL·E、Sora 都吃得下。文字模式的指令適用於 Claude、ChatGPT、Gemini。</p>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const CAT = {
+  subject:{zh:"主體",tip:"畫面的主角。人、動物、物件都算，越具體越好。"},
+  action:{zh:"動作",tip:"主體正在做什麼。有動作的圖比呆站著的圖生動。"},
+  setting:{zh:"場景",tip:"故事發生在哪裡。地點會連帶決定背景細節。"},
+  style:{zh:"風格",tip:"整張圖的美術方向。這一格換掉，整張圖就換了個世界。"},
+  light:{zh:"光線",tip:"光決定情緒。同一個場景，晨光和霓虹是兩張圖。"},
+  camera:{zh:"鏡頭",tip:"距離和角度。攝影師的術語 AI 都聽得懂。"},
+  mood:{zh:"色調",tip:"顏色的整體傾向，用來收尾統一整張圖的感覺。"},
+  quality:{zh:"畫質",tip:"補在最後的加分詞，讓成品更精緻。可有可無。"},
+  motion:{zh:"運鏡",tip:"影片才有的一格：鏡頭自己怎麼動。"},
+  role:{zh:"角色",tip:"先讓 AI 變成某個人，它的用字和判斷標準就跟著變。"},
+  task:{zh:"任務",tip:"你要它做的事。動詞開頭，一次只交辦一件。"},
+  audience:{zh:"對象",tip:"寫給誰看。這一格會決定深淺和例子。"},
+  tone:{zh:"語氣",tip:"同樣的內容，語氣不同就是完全不同的稿。"},
+  format:{zh:"格式",tip:"要條列還是段落、多長。不講，它就自由發揮。"},
+  limit:{zh:"限制",tip:"明講你不要什麼，比重講你要什麼更有效。"}
+};
+
+const LEX = {
+subject:[
+ ["a young woman","一位年輕女性","人物不用寫名字，寫年齡、性別、外型特徵就夠。"],
+ ["an elderly craftsman","一位年長工匠","加上職業，AI 會自動補上工具、圍裙、手上的繭。"],
+ ["a teenage boy with round glasses","一位戴圓框眼鏡的少年","一個小配件就能讓臉變得有記憶點。"],
+ ["an orange tabby cat","一隻橘貓","動物寫品種或毛色，比只寫「貓」準得多。"],
+ ["a shiba inu","一隻柴犬","品種名是最短的精準描述。"],
+ ["a vintage film camera","一台復古底片相機","物件加上年代形容詞，質感立刻不同。"],
+ ["a cup of pour-over coffee","一杯手沖咖啡","食物飲品要寫做法，不然會很像罐頭圖。"],
+ ["a bouquet of dried flowers","一束乾燥花","乾燥、新鮮、枯萎，狀態就是主體的一部分。"],
+ ["an old apartment building","一棟老公寓","建築寫年代和類型，避免變成樣品屋。"],
+ ["a spaceship","一艘太空船","科幻主體可以很短，交給風格那一格去定調。"]
+],
+action:[
+ ["looking straight at the camera","正看著鏡頭","要有眼神接觸就一定要寫，不然常常會側臉。"],
+ ["smiling softly","淺淺地微笑","表情寫程度副詞，避免笑得太用力。"],
+ ["walking through the crowd","走在人群中","動作帶場景，一句抵兩格。"],
+ ["reading a book","正在讀書","靜態動作適合安靜的畫面。"],
+ ["playing an acoustic guitar","彈著木吉他","樂器要寫種類，不然常常畫錯。"],
+ ["running through the rain","在雨中奔跑","天氣＋動作＝現成的戲劇感。"],
+ ["sitting quietly by the window","安靜坐在窗邊","窗邊幾乎一定會配上好看的光。"],
+ ["looking back over the shoulder","回頭望","回眸是很吃香的構圖，AI 也很會畫。"],
+ ["holding a paper lantern","提著一盞紙燈籠","手上有東西，畫面就有了故事。"]
+],
+setting:[
+ ["in a cozy cafe","在溫暖的咖啡廳","室內空間寫氛圍形容詞，會影響家具和顏色。"],
+ ["on a Taipei street at night","在夜晚的台北街頭","地名很好用，AI 認得招牌、機車和騎樓。"],
+ ["in a misty forest","在起霧的森林裡","霧會自動幫你做出層次和景深。"],
+ ["by the ocean at dusk","黃昏的海邊","地點寫上時間，光線那格就更好接。"],
+ ["in a quiet library","在安靜的圖書館","書架是很強的背景，構圖自然有線條。"],
+ ["at a neon night market","在霓虹夜市","台灣題材首選，色彩最豐富。"],
+ ["in a minimalist studio","在極簡攝影棚","背景乾淨，適合產品和人像。"],
+ ["on a mountain summit","在山頂上","高處視野會帶出遠景和雲海。"],
+ ["in a tatami room","在榻榻米房間","和室的木格窗會投出很漂亮的影子。"]
+],
+style:[
+ ["photorealistic photography","寫實攝影","想要「像真的照片」，就一定要寫這一組。"],
+ ["Japanese film photography","日系底片","顆粒感、低對比、偏青的色偏，氣氛派首選。"],
+ ["watercolor illustration","水彩插畫","邊緣會有暈染，適合柔軟的題材。"],
+ ["Ghibli-style anime","吉卜力動畫風","手繪感的動畫背景與柔和人物線條。"],
+ ["Pixar-style 3D render","皮克斯 3D 風","大眼睛、圓潤造型、乾淨的打光。"],
+ ["cyberpunk","賽博龐克","霓虹、雨夜、高科技低生活。"],
+ ["minimal line art","極簡線稿","只有線條，適合圖示和刺青草稿。"],
+ ["oil painting","油畫","看得見筆觸和厚度，適合肖像。"],
+ ["pixel art","像素藝術","復古遊戲畫面，記得配低解析度感。"],
+ ["steampunk","蒸氣龐克","黃銅、齒輪、維多利亞時代。"],
+ ["vintage travel poster","復古旅遊海報","色塊分明、有印刷感，很適合做主視覺。"],
+ ["claymation","黏土定格動畫","看得到指紋和材質，可愛又有手感。"],
+ ["ukiyo-e woodblock print","浮世繪","平面化的線條與傳統配色。"],
+ ["low poly 3D","低多邊形 3D","幾何切面，乾淨現代。"]
+],
+light:[
+ ["golden hour light","黃金時刻的光","日出後、日落前那一小時，最討喜的光。"],
+ ["soft natural light","柔和自然光","陰影淡，適合人像和食物。"],
+ ["backlit with lens flare","逆光帶光暈","主體會有一圈輪廓光，很出片。"],
+ ["neon lighting","霓虹燈光","會在臉上打出藍紫紅的色塊。"],
+ ["candlelight","燭光","暖、暗、範圍小，親密感最強。"],
+ ["overcast diffused light","陰天散射光","沒有硬陰影，顏色最準，適合產品。"],
+ ["dramatic side lighting","強烈側光","一半亮一半暗，戲劇感最強。"],
+ ["morning window light","窗邊晨光","有形狀的光影，安靜的日常感。"],
+ ["moonlight","月光","冷、藍、暗，夜景的基礎。"],
+ ["studio softbox lighting","攝影棚柔光箱","均勻專業，商業攝影的預設值。"]
+],
+camera:[
+ ["close-up shot","特寫","只拍臉或局部，情緒最直接。"],
+ ["medium shot","半身","最通用的距離，人和背景都看得到。"],
+ ["full body shot","全身","要拍到服裝和姿勢就選這個。"],
+ ["wide angle shot","廣角","容納大場景，邊緣會有點變形。"],
+ ["top-down view","俯視","擺拍平面圖的標準視角。"],
+ ["low angle shot","低角度仰拍","讓主體看起來高大有氣勢。"],
+ ["shallow depth of field","淺景深","背景糊掉，主體跳出來。"],
+ ["macro shot","微距","貼很近拍細節，質感全出來。"],
+ ["85mm portrait lens","85mm 人像鏡","人像的經典焦段，臉部比例最自然。"],
+ ["fisheye lens","魚眼","極度變形，玩效果用。"]
+],
+mood:[
+ ["warm nostalgic tones","溫暖懷舊色調","偏黃偏橘，像舊照片。"],
+ ["cool blue tones","冷藍色調","理性、疏離、有距離感。"],
+ ["high contrast","高對比","黑更黑白更白，力道強。"],
+ ["soft pastel palette","柔和粉彩","低飽和的粉色系，甜而不膩。"],
+ ["moody and melancholic","陰鬱憂傷","壓低亮度，適合敘事型畫面。"],
+ ["bright and airy","明亮通透","高亮度、低對比，清爽乾淨。"],
+ ["faded retro colors","復古褪色","像放久了的底片。"],
+ ["mysterious atmosphere","神秘氛圍","暗部多、資訊少，留想像空間。"]
+],
+quality:[
+ ["highly detailed","高細節","通用加分詞，讓紋理更豐富。"],
+ ["8k resolution","8K 解析度","要求更高的解析度與清晰度。"],
+ ["sharp focus","銳利對焦","避免整張圖糊掉。"],
+ ["cinematic","電影感","會自動偏向寬螢幕構圖和電影調色。"],
+ ["award-winning photography","得獎攝影作品","一句話把整體水準往上拉。"],
+ ["fine texture detail","細膩質感","布料、皮膚、木紋會更明顯。"]
+],
+motion:[
+ ["slow push in","緩慢推近","鏡頭慢慢靠近主體，情緒逐漸集中。"],
+ ["orbiting camera","環繞鏡頭","繞著主體轉，最適合展示產品。"],
+ ["handheld shaky cam","手持晃動","紀錄片感，真實但不穩。"],
+ ["drone descending shot","空拍下降","從高空落到主體，開場最好用。"],
+ ["slow pan to the right","緩慢向右橫搖","平順地帶出場景全貌。"],
+ ["tracking shot following the subject","跟拍","鏡頭跟著主體走，帶著觀眾一起前進。"],
+ ["static locked-off shot","定鏡不動","讓畫面裡的東西自己動。"],
+ ["time-lapse","縮時","壓縮時間，看雲、人潮、光線流動。"]
+],
+role:[
+ ["a senior marketing strategist","一位資深行銷企劃","會用市場語言，講賣點和受眾。"],
+ ["a professional editor","一位專業編輯","會抓語病、砍贅字、注意節奏。"],
+ ["an elementary school teacher","一位國小老師","會用生活比喻，避免抽象名詞。"],
+ ["a financial journalist","一位財經記者","重數字、重來源、句子短。"],
+ ["a customer support lead","一位客服主管","懂得先同理再解決。"],
+ ["a patient programming mentor","一位有耐心的程式導師","會拆步驟，不會跳過基礎。"]
+],
+task:[
+ ["Write an apology email about a delayed shipment.","寫一封出貨延遲的道歉信","任務用動詞開頭，一次只交辦一件事。"],
+ ["Rewrite the following text to sound more conversational.","把下面這段改寫得更口語","改寫類要記得附上原文。"],
+ ["Summarize the key points below.","把下面的內容整理成重點","整理類最好同時指定格式。"],
+ ["Generate 10 headline options.","產生 10 個標題選項","明講數量，才不會只給三個。"],
+ ["Proofread for typos and awkward phrasing.","檢查錯字與不通順的句子","校對類建議加上「只改必要的地方」。"],
+ ["Explain this concept to a complete beginner.","把這個概念解釋給完全的新手聽","解釋類一定要搭配「對象」那一格。"]
+],
+audience:[
+ ["for a non-technical manager","給不懂技術的主管看","會自動避開術語，改用結果導向的說法。"],
+ ["for junior high school students","給國中生看","句子變短，例子變日常。"],
+ ["for prospective customers","給潛在客戶看","語氣會偏向說服與好處。"],
+ ["for teammates who already know the background","給已經知道來龍去脈的同事看","可以省略背景，直接談重點。"]
+],
+tone:[
+ ["professional yet friendly","專業但親切","商務溝通最安全的預設值。"],
+ ["warm and empathetic","溫暖有同理心","處理客訴、壞消息時用。"],
+ ["concise and direct","簡潔直接","不繞路，適合對內溝通。"],
+ ["formal","正式","公文、對外聲明用。"],
+ ["light-hearted and humorous","輕鬆幽默","社群貼文用，但要看場合。"]
+],
+format:[
+ ["as a bulleted list","用條列式","最好讀，也最好改。"],
+ ["as a comparison table","用比較表格","有兩個以上選項時最清楚。"],
+ ["in three short paragraphs","分成三段短文","有起承轉合，適合完整說明。"],
+ ["under 300 words","300 字以內","字數限制是最有效的一種指令。"],
+ ["with a heading for each section","每段加上小標","長內容一定要有小標。"]
+],
+limit:[
+ ["Avoid jargon.","不要用專業術語","避免它躲在術語後面講廢話。"],
+ ["Reply in Traditional Chinese.","請用繁體中文回答","不寫的話，它可能回你簡體或英文。"],
+ ["Skip the pleasantries and get to the point.","不要客套開場，直接講重點","省掉「當然可以！」那一段。"],
+ ["Keep each point under 20 words.","每一點不超過 20 字","逼它把話講清楚。"],
+ ["If information is missing, ask me instead of guessing.","資訊不足時反問我，不要自己猜","最能減少幻覺的一句話。"]
+]
+};
+
+const T = (zh) => ({t:"t",zh});
+const S = (cat,opt) => ({t:"s",cat,opt:!!opt});
+
+const MODES = [
+ {id:"image",zh:"生成圖片",join:"csv",tpls:[
+   {id:"portrait",zh:"人物寫真",parts:[T("一張"),S("subject"),T("的照片，"),S("action"),T("，"),S("setting"),T("，以"),S("style"),T("呈現，"),S("light"),T("，"),S("camera"),T("，"),S("quality",1)],
+    seed:{0:1,1:0,2:8,3:1,4:0,5:8}},
+   {id:"scene",zh:"風景場景",parts:[T("一幅"),S("setting"),T("的景色，畫面中有"),S("subject"),T("，"),S("style"),T("，"),S("light"),T("，"),S("camera"),T("，"),S("mood"),T("，"),S("quality",1)]},
+   {id:"product",zh:"產品照",parts:[T("一張"),S("subject"),T("的產品照，"),S("setting"),T("，"),S("light"),T("，"),S("camera"),T("，"),S("style"),T("，"),S("quality",1)]},
+   {id:"character",zh:"角色設計",parts:[T("角色設計："),S("subject"),T("，"),S("action"),T("，"),S("style"),T("，"),S("mood"),T("，"),S("light"),T("，"),S("quality",1)]}
+ ]},
+ {id:"video",zh:"生成影片",join:"csv",tpls:[
+   {id:"shot",zh:"一顆鏡頭",parts:[T("一段影片："),S("subject"),T("，"),S("action"),T("，"),S("setting"),T("，鏡頭"),S("motion"),T("，"),S("style"),T("，"),S("light"),T("，"),S("mood",1)],
+    seed:{0:0,1:8,2:5,3:5,4:1,5:3}},
+   {id:"showcase",zh:"產品短片",parts:[T("一段產品影片："),S("subject"),T("，"),S("setting"),T("，鏡頭"),S("motion"),T("，"),S("light"),T("，"),S("style"),T("，"),S("quality",1)]}
+ ]},
+ {id:"text",zh:"寫文字",join:"sentence",tpls:[
+   {id:"brief",zh:"交辦任務",parts:[T("你是"),S("role"),T("。請"),S("task"),T("，寫"),S("audience"),T("。語氣"),S("tone"),T("，"),S("format"),T("，"),S("limit",1)],
+    seed:{0:4,1:0,2:2,3:1,4:2,5:1}},
+   {id:"revise",zh:"修改稿件",parts:[T("你是"),S("role"),T("。請"),S("task"),T("，"),S("format"),T("，"),S("limit"),T("，"),S("tone",1)]}
+ ]}
+];
+</script>
+<script>
+(function(){
+const $ = (id)=>document.getElementById(id);
+const EN_WRAP = {
+  role:(s)=>"You are "+s+".",
+  task:(s)=>s,
+  audience:(s)=>"Write it "+s+".",
+  tone:(s)=>"Tone: "+s+".",
+  format:(s)=>"Format: "+s+".",
+  limit:(s)=>s
+};
+const state = {mode:MODES[0], tpl:MODES[0].tpls[0], fills:{}, active:null, cat:null};
+
+function slots(tpl){
+  const out=[];
+  tpl.parts.forEach((p,i)=>{ if(p.t==="s") out.push({i,cat:p.cat,opt:p.opt}); });
+  return out;
+}
+function catsOf(tpl){ const seen=[]; slots(tpl).forEach(s=>{ if(!seen.includes(s.cat)) seen.push(s.cat); }); return seen; }
+function color(cat){ return "var(--c-"+cat+")"; }
+function seedFills(tpl){
+  const f={}; const sl=slots(tpl);
+  if(tpl.seed){ Object.keys(tpl.seed).forEach(k=>{ const s=sl[+k]; if(s) f[s.i]=tpl.seed[k]; }); }
+  return f;
+}
+
+/* ---------- render ---------- */
+function renderModes(){
+  $("modes").innerHTML = MODES.map(m=>
+    '<button type="button" data-m="'+m.id+'" aria-pressed="'+(m===state.mode)+'">'+m.zh+'</button>').join("");
+}
+function renderFormula(){
+  const cs = catsOf(state.tpl);
+  $("formula").innerHTML = '<span class="eyebrow">句子的骨架</span>' + cs.map((c,i)=>
+    (i?'<span class="plus">+</span>':'') +
+    '<span class="fchip" style="background:'+color(c)+'">'+CAT[c].zh+'</span>').join("");
+}
+function renderTpl(){
+  $("tpl").innerHTML = state.mode.tpls.map(t=>
+    '<button type="button" data-t="'+t.id+'" aria-pressed="'+(t===state.tpl)+'">'+t.zh+'</button>').join("");
+}
+function renderBoard(){
+  const html = state.tpl.parts.map((p,i)=>{
+    if(p.t==="t") return '<span class="lead">'+p.zh+'</span>';
+    const item = state.fills[i]!=null ? LEX[p.cat][state.fills[i]] : null;
+    const cls = ["slot", item?"filled":"", state.active===i?"active":""].join(" ");
+    const inner = item
+      ? '<span class="zh">'+item[1]+'</span><span class="en">'+item[0]+'</span><span class="x">×</span>'
+      : '<span class="cat">'+CAT[p.cat].zh+'</span>'+(p.opt?'<span class="optional">可省略</span>':'');
+    return '<button type="button" class="'+cls+'" data-slot="'+i+'" data-cat="'+p.cat+'" style="color:'+color(p.cat)+'"'+
+      ' aria-label="'+CAT[p.cat].zh+(item?'：'+item[1]+'，點一下清除':'，點一下選擇')+'">'+inner+'</button>';
+  }).join("");
+  $("board").innerHTML = html;
+}
+function renderCats(){
+  const cs = catsOf(state.tpl);
+  if(!cs.includes(state.cat)) state.cat = cs[0];
+  $("cats").innerHTML = cs.map(c=>
+    '<button type="button" data-c="'+c+'" aria-pressed="'+(c===state.cat)+'" style="color:'+color(c)+'">'+
+    '<span class="dot"></span>'+CAT[c].zh+'</button>').join("");
+}
+function renderTray(){
+  const c = state.cat;
+  const used = Object.keys(state.fills).filter(k=>state.tpl.parts[k].cat===c).map(k=>state.fills[k]);
+  $("tray").innerHTML = LEX[c].map((it,idx)=>
+    '<button type="button" class="chip'+(used.includes(idx)?' used':'')+'" draggable="true" data-i="'+idx+'"'+
+    ' style="color:'+color(c)+'"><span class="zh">'+it[1]+'</span><span class="en">'+it[0]+'</span></button>').join("");
+  $("trayHint").textContent = LEX[c].length + " 個「" + CAT[c].zh + "」";
+  showTip(null);
+}
+function showTip(html){
+  $("tip").innerHTML = html || ('<b>'+CAT[state.cat].zh+'</b>　'+CAT[state.cat].tip);
+}
+function renderOutput(){
+  const sl = slots(state.tpl);
+  const filled = sl.filter(s=>state.fills[s.i]!=null);
+  let html="";
+  if(state.mode.join==="sentence"){
+    html = sl.map(s=>{
+      const v = state.fills[s.i];
+      if(v==null) return s.opt?"":'<span class="ph">['+CAT[s.cat].zh+']</span>';
+      return EN_WRAP[s.cat](LEX[s.cat][v][0]);
+    }).filter(Boolean).join(" ");
+  }else{
+    html = sl.map(s=>{
+      const v = state.fills[s.i];
+      if(v==null) return s.opt?"":'<span class="ph">['+CAT[s.cat].zh+']</span>';
+      return LEX[s.cat][v][0];
+    }).filter(Boolean).join(", ");
+  }
+  $("output").innerHTML = html || '<span class="ph">從右邊挑一個字塊開始</span>';
+  $("count").textContent = "已填 " + filled.length + " / " + sl.length;
+}
+function renderAll(){ renderFormula(); renderTpl(); renderBoard(); renderCats(); renderTray(); renderOutput(); }
+
+/* ---------- actions ---------- */
+function fill(cat, idx){
+  const sl = slots(state.tpl).filter(s=>s.cat===cat);
+  if(!sl.length){ toast("這個句型沒有「"+CAT[cat].zh+"」這一格"); return; }
+  let target = (state.active!=null && state.tpl.parts[state.active].cat===cat) ? state.active : null;
+  if(target==null){ const empty = sl.find(s=>state.fills[s.i]==null); target = empty ? empty.i : sl[0].i; }
+  state.fills[target]=idx;
+  state.active=null;
+  renderBoard(); renderTray(); renderOutput();
+}
+function toast(msg){
+  const t=$("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1900);
+}
+function switchTpl(tpl){
+  const carry={};
+  Object.keys(state.fills).forEach(k=>{ const c=state.tpl.parts[k].cat; if(carry[c]==null) carry[c]=state.fills[k]; });
+  state.tpl = tpl; state.active=null;
+  const f={};
+  slots(tpl).forEach(s=>{ if(f[s.i]==null && carry[s.cat]!=null){ f[s.i]=carry[s.cat]; carry[s.cat]=null; } });
+  state.fills = Object.keys(f).length ? f : seedFills(tpl);
+  renderAll();
+}
+
+/* ---------- events ---------- */
+$("modes").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-m]"); if(!b) return;
+  state.mode = MODES.find(m=>m.id===b.dataset.m);
+  state.tpl = state.mode.tpls[0]; state.fills = seedFills(state.tpl); state.active=null; state.cat=null;
+  renderModes(); renderAll();
+});
+$("tpl").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-t]"); if(!b) return;
+  switchTpl(state.mode.tpls.find(t=>t.id===b.dataset.t));
+});
+$("cats").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-c]"); if(!b) return;
+  state.cat=b.dataset.c; renderCats(); renderTray();
+});
+$("board").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-slot]"); if(!b) return;
+  const i=+b.dataset.slot;
+  if(state.fills[i]!=null){ delete state.fills[i]; state.active=i; }
+  else { state.active = state.active===i ? null : i; }
+  state.cat = state.tpl.parts[i].cat;
+  renderBoard(); renderCats(); renderTray(); renderOutput();
+});
+$("tray").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-i]"); if(!b) return;
+  fill(state.cat, +b.dataset.i);
+});
+$("tray").addEventListener("pointerover",e=>{
+  const b=e.target.closest("button[data-i]"); if(!b) return;
+  const it=LEX[state.cat][+b.dataset.i];
+  showTip('<b>'+it[1]+'</b>　'+it[2]);
+});
+$("tray").addEventListener("focusin",e=>{
+  const b=e.target.closest("button[data-i]"); if(!b) return;
+  const it=LEX[state.cat][+b.dataset.i];
+  showTip('<b>'+it[1]+'</b>　'+it[2]);
+});
+$("tray").addEventListener("pointerleave",()=>showTip(null));
+
+/* drag and drop */
+$("tray").addEventListener("dragstart",e=>{
+  const b=e.target.closest("button[data-i]"); if(!b) return;
+  e.dataTransfer.setData("text/plain", state.cat+"|"+b.dataset.i);
+  e.dataTransfer.effectAllowed="copy";
+  document.querySelectorAll(".slot").forEach(s=>{ if(s.dataset.cat!==state.cat) s.classList.add("dim"); });
+});
+$("tray").addEventListener("dragend",()=>{
+  document.querySelectorAll(".slot").forEach(s=>s.classList.remove("dim","drop"));
+});
+$("board").addEventListener("dragover",e=>{
+  const s=e.target.closest(".slot"); if(!s) return;
+  if(s.dataset.cat!==state.cat) return;
+  e.preventDefault(); e.dataTransfer.dropEffect="copy"; s.classList.add("drop");
+});
+$("board").addEventListener("dragleave",e=>{
+  const s=e.target.closest(".slot"); if(s) s.classList.remove("drop");
+});
+$("board").addEventListener("drop",e=>{
+  const s=e.target.closest(".slot"); if(!s) return;
+  e.preventDefault();
+  const [cat,idx]=(e.dataTransfer.getData("text/plain")||"").split("|");
+  if(!cat || s.dataset.cat!==cat) return;
+  state.fills[+s.dataset.slot]=+idx; state.active=null;
+  renderBoard(); renderTray(); renderOutput();
+});
+
+$("dice").addEventListener("click",()=>{
+  const f={};
+  slots(state.tpl).forEach(s=>{ f[s.i]=Math.floor(Math.random()*LEX[s.cat].length); });
+  state.fills=f; state.active=null; renderBoard(); renderTray(); renderOutput();
+  toast("排好了，改掉你不喜歡的那幾格");
+});
+$("clear").addEventListener("click",()=>{
+  state.fills={}; state.active=null; renderBoard(); renderTray(); renderOutput();
+});
+$("copy").addEventListener("click",()=>{
+  const txt = $("output").textContent.trim();
+  if(!txt || txt.indexOf("從右邊")===0){ toast("還沒有東西可以複製"); return; }
+  const done=()=>toast("已複製，貼到你的 AI 工具就能用");
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done,()=>fallback(txt,done));
+  } else fallback(txt,done);
+});
+function fallback(txt,done){
+  const ta=document.createElement("textarea");
+  ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); done(); }catch(err){ toast("複製失敗，請手動選取"); }
+  document.body.removeChild(ta);
+}
+
+state.fills = seedFills(state.tpl);
+renderModes(); renderAll();
+})();
+</script>
+<style>
+.panel-hd h2{white-space:nowrap}
+@media (max-width:620px){
+  .wrap{padding:0 14px 56px}
+  .masthead{padding-top:20px}
+  .brand h1{font-size:22px}
+  .modes{margin-left:0;width:100%}
+  .modes button{flex:1}
+  .board{font-size:16px;line-height:2.1;padding:18px 14px}
+  .slot{flex-direction:column;align-items:flex-start;gap:0;min-width:96px;padding:5px 10px;font-size:15px}
+  .slot .en{font-size:11px;line-height:1.35}
+  .slot .x{display:none}
+  .panel-hd .hint{display:none}
+  .tray{max-height:320px}
+}
+</style>
