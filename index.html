@@ -245,13 +245,11 @@ button,input,textarea{font:inherit;color:inherit}
 .themes{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;padding:16px 0 0}
 .themes .eyebrow{align-self:center;margin-right:4px}
 .theme{
-  display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:200px;
-  padding:8px 16px 9px;border:1px solid var(--rule);border-radius:2px;background:var(--card);cursor:pointer;text-align:left;
+  display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:160px;
+  padding:8px 16px;border:1px solid var(--rule);border-radius:2px;background:var(--card);cursor:pointer;text-align:left;
 }
-.theme .grade{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--ink-3)}
 .theme .nm{font-size:15px;font-weight:700;color:var(--ink);line-height:1.35}
 .theme[aria-pressed="true"]{background:var(--ink);border-color:var(--ink)}
-.theme[aria-pressed="true"] .grade{color:var(--rule)}
 .theme[aria-pressed="true"] .nm{color:var(--paper)}
 .theme:hover:not([aria-pressed="true"]){border-color:var(--ink-3)}
 @media (max-width:620px){
@@ -353,8 +351,8 @@ const MODES = [
 ];
 
 const THEMES = [
-/* ================= 七年級：自創大頭貼 ================= */
-{id:"avatar", grade:"七年級", zh:"自創大頭貼",
+/* ================= 自創大頭貼 ================= */
+{id:"avatar", zh:"自創大頭貼",
  lede:"用 AI 設計你自己的大頭貼。把字塊拖進句子的凹槽，會同時排出中文和英文兩種指令，哪裡不滿意都能自己改。",
  lessonsTitle:"記住這四件事，你自己就會寫大頭貼指令",
  lessons:[
@@ -580,8 +578,8 @@ const THEMES = [
  }
 },
 
-/* ================= 八年級：空氣過濾創意家電 ================= */
-{id:"purifier", grade:"八年級", zh:"空氣過濾創意家電",
+/* ================= 空氣過濾創意家電（只用在圖片） ================= */
+{id:"purifier", zh:"空氣過濾創意家電",
  lede:"把空氣過濾藏進家電或家具裡，用 AI 畫出你的空想產品概念圖。把字塊拖進句子的凹槽，會同時排出中文和英文兩種指令。",
  lessonsTitle:"記住這四件事，你自己就會寫產品概念圖指令",
  lessons:[
@@ -602,12 +600,6 @@ const THEMES = [
   light:{zh:"光線",tip:"光會決定產品看起來是高級、科技，還是溫暖。"},
   palette:{zh:"配色",tip:"整個產品的顏色搭配。家電通常不會超過三個顏色。"},
   user:{zh:"使用者",multi:true,tip:"這個產品是做給誰用的。想清楚使用者，設計才有理由。"},
-  motion:{zh:"動態",multi:true,tip:"影片裡什麼在動。展示濾網和氣流的動畫最能說明功能。"},
-  role:{zh:"角色",tip:"先讓 AI 變成某種專家，它給的建議就會比較專業。"},
-  task:{zh:"任務",tip:"你要它幫你做什麼。一次只交代一件事，效果最好。"},
-  tone:{zh:"語氣",tip:"要它用什麼口氣跟你說話。"},
-  format:{zh:"格式",tip:"回答要長什麼樣子。不講清楚，它可能會寫一大篇。"},
-  limit:{zh:"限制",multi:true,tip:"把你的要求講清楚，AI 比較不會亂來。可以選好幾個。"}
  },
  lex:{
   product:[
@@ -671,9 +663,7 @@ const THEMES = [
    ["isometric illustration","等角插畫","斜斜的立體插畫，簡潔又好懂。"],
    ["futuristic concept art","未來科技概念圖","天馬行空的空想產品最適合。"],
    ["Scandinavian minimalist design","北歐極簡風格","簡單、淺色、有木頭感。"],
-   ["cute character-like design with a friendly face","可愛的擬人化設計","給產品一張臉，小朋友和長輩會更喜歡。"],
-   ["3D product animation","3D 產品動畫","影片用的畫法，像產品廣告。"],
-   ["stop-motion animation","定格動畫","一格一格拍的手作感動畫。"]
+   ["cute character-like design with a friendly face","可愛的擬人化設計","給產品一張臉，小朋友和長輩會更喜歡。"]
   ],
   scene:[
    ["on a classroom desk","教室的書桌上","學生最常待的地方，很有說服力。"],
@@ -715,52 +705,6 @@ const THEMES = [
    ["people living in very small rooms","房間很小的人","產品要小、要能收納，或一物多用。"],
    ["grandparents","爺爺奶奶","按鈕要大、操作要簡單。"]
   ],
-  motion:[
-   ["camera orbiting around the product","鏡頭環繞產品一圈","繞一圈讓人看到每一面。"],
-   ["the cover opening to reveal the filter inside","外殼打開露出濾網","直接展示最重要的內部功能。"],
-   ["parts separating and reassembling","零件分解再組合","像動態的爆炸分解圖，很酷。"],
-   ["dusty air drawn in and clean air flowing out","空氣被吸進去再吹出乾淨的風","把過濾的過程演出來，最好懂。"],
-   ["the air quality light changing from red to green","燈號從紅色變成綠色","用顏色變化證明空氣變乾淨了。"],
-   ["slow push in on the details","鏡頭慢慢推近細節","強調材質和設計的小地方。"],
-   ["seamless loop","無縫循環播放","要放在簡報裡重複播放時很好用。"],
-   ["10-second short video","10 秒的短影片","講清楚長度，AI 比較好控制。"]
-  ],
-  role:[
-   ["an industrial designer","一位工業設計師","會從外型、使用方式和製造去想。"],
-   ["an environmental engineer who knows air filtration","一位懂空氣過濾的環境工程師","會告訴你過濾方式合不合理。"],
-   ["a product manager at a home appliance company","一位家電公司的產品經理","會從使用者需求和賣點去想。"],
-   ["a science teacher","一位自然科學老師","會用你學過的原理來解釋。"],
-   ["a marketing planner who is great with product names","一位很會幫產品取名字的行銷企劃","要取名字和標語時找他。"]
-  ],
-  task:[
-   ["Give me 5 ideas for home appliances or furniture with built-in air filtration.","幫我想 5 個結合空氣過濾的家電或家具點子","講清楚數量和主題，點子才會集中。"],
-   ["Explain in simple terms how air filters clean the air.","用簡單的方式解釋濾網怎麼過濾空氣","先懂原理，設計才不會變成空想中的空想。"],
-   ["Analyze the strengths and possible problems of my design below.","分析我下面這個設計的優點和可能的問題","記得把你的設計描述貼在這段話的下面。"],
-   ["Suggest 3 product names and a slogan for my product.","幫我的產品取 3 個名字和一句標語","搭配你的產品描述一起用。"],
-   ["Turn my idea into an AI image prompt.","把我的點子改寫成 AI 繪圖指令","在後面寫上你的點子，它會幫你排成繪圖指令。"],
-   ["Help me figure out how users would replace and clean the filter.","幫我想濾網要怎麼更換和清潔","很多空想產品忘了想這一步。"]
-  ],
-  tone:[
-   ["casual, like talking to a friend","像朋友聊天","回答會比較輕鬆好讀。"],
-   ["simple and easy to understand","簡單好懂","用字會比較簡單。"],
-   ["careful and detailed","認真仔細","解釋會比較完整，但也比較長。"],
-   ["kind and encouraging","溫柔鼓勵","請它評論你的設計時，比較不會被念。"],
-   ["like a professional designer giving feedback","像專業設計師給建議","意見會比較直接、比較專業。"]
-  ],
-  format:[
-   ["as a bulleted list","用條列式","一點一點列出來，最好讀。"],
-   ["as a table","整理成表格","比較好幾個點子或優缺點時最清楚。"],
-   ["with one sentence explaining each idea","每個點子附一句話說明","逼它講重點。"],
-   ["with an English image prompt I can copy for each idea","附上可以直接複製的英文繪圖指令","拿到點子就能直接貼去畫概念圖。"],
-   ["under 300 words","300 字以內","限制字數是讓 AI 不囉嗦最有效的方法。"]
-  ],
-  limit:[
-   ["Reply in Traditional Chinese.","用繁體中文回答","不寫的話，它可能會回簡體中文或英文。"],
-   ["Avoid difficult technical terms.","不要用太難的專有名詞","看不懂的詞就請它換掉。"],
-   ["Keep the ideas simple enough for middle school students to build a model.","點子要是國中生做得出模型的","讓點子可以真的做成作品。"],
-   ["Explain why each idea can actually filter the air.","要說明為什麼可以過濾空氣","避免 AI 給你只是好看、其實不會淨化空氣的點子。"],
-   ["If you need more information, ask me first.","資訊不夠就先問我","可以減少 AI 自己亂猜。"]
-  ]
  },
  modes:{
   image:[
@@ -773,22 +717,6 @@ const THEMES = [
    {id:"purifier-sketch", zh:"設計草圖", head:"industrial design sketch sheet",
     parts:[S("product",{pre:"畫一張會過濾空氣的",post:"的設計草圖"}),S("shape",{pre:"，造型是"}),S("filter",{pre:"，標出",post:"的位置"}),S("feature",{pre:"，還有"}),S("material",{pre:"，材質是"}),S("style",{pre:"，畫成"}),S("framing",{pre:"，"})],
     seed:[[4],[5],[1,0],[7],[2],[2],[5]]}
-  ],
-  video:[
-   {id:"purifier-showcase", zh:"產品展示", head:"product showcase video",
-    parts:[S("product",{pre:"做一段會過濾空氣的",post:"的產品展示影片"}),S("feature",{pre:"，展示"}),S("motion",{pre:"，"}),S("material",{pre:"，材質是"}),S("scene",{pre:"，放在"}),S("style",{pre:"，畫面是"}),S("light",{pre:"，",opt:true})],
-    seed:[[6],[1],[1,3],[1],[4],[9],[1]]},
-   {id:"purifier-compare", zh:"使用前後對比", head:"before and after comparison video",
-    parts:[S("scene",{pre:"做一段前後對比影片，地點在"}),S("user",{pre:"，主角是"}),S("product",{pre:"，打開會過濾空氣的",post:"之後"}),S("motion",{pre:"，"}),S("style",{pre:"，畫面是"}),S("palette",{pre:"，",post:"的配色",opt:true})],
-    seed:[[5],[2],[7],[4,3],[10],[4]]}
-  ],
-  text:[
-   {id:"purifier-ideas", zh:"幫我想點子",
-    parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("user",{pre:"使用的人是",post:"。"}),S("tone",{pre:"語氣",post:"，"}),S("format",{post:"。"}),S("limit",{post:"。",opt:true})],
-    seed:[[0],[0],[0,1],[1],[2],[0,3]]},
-   {id:"purifier-review", zh:"幫我檢查設計",
-    parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("format",{post:"。"}),S("limit",{post:"。"}),S("tone",{pre:"語氣要",post:"。",opt:true})],
-    seed:[[1],[2],[1],[1,4],[3]]}
   ]
  }
 }
@@ -815,7 +743,7 @@ const EN_WRAP = {
   limit:(s)=>s
 };
 
-const state = {theme:THEMES[0], mode:MODES[0], tpl:THEMES[0].modes.image[0], fills:{}, active:null, cat:null, manual:{zh:null,en:null}, mem:{}};
+const state = {theme:THEMES[0], imageTheme:THEMES[0], mode:MODES[0], tpl:THEMES[0].modes.image[0], fills:{}, active:null, cat:null, manual:{zh:null,en:null}, mem:{}};
 const CAT = (c)=>state.theme.cats[c];
 const LEX = (c)=>state.theme.lex[c];
 
@@ -854,17 +782,18 @@ function setActive(i){
 function save(){
   try{
     const mem=Object.assign({}, state.mem); mem[state.tpl.id]=state.fills;
-    localStorage.setItem(KEY, JSON.stringify({theme:state.theme.id, mode:state.mode.id, tpl:state.tpl.id, mem}));
+    localStorage.setItem(KEY, JSON.stringify({theme:state.imageTheme.id, mode:state.mode.id, tpl:state.tpl.id, mem}));
   }catch(e){}
 }
 function load(){
   try{
     const d=JSON.parse(localStorage.getItem(KEY)||"null");
     if(!d) return false;
-    const th=THEMES.find((x)=>x.id===d.theme), m=MODES.find((x)=>x.id===d.mode);
-    const t=th && m && th.modes[m.id].find((x)=>x.id===d.tpl);
+    const it=THEMES.find((x)=>x.id===d.theme)||THEMES[0], m=MODES.find((x)=>x.id===d.mode);
+    const th=m && (m.id==="image" ? it : THEMES[0]);
+    const t=th && (th.modes[m.id]||[]).find((x)=>x.id===d.tpl);
     if(!t) return false;
-    state.theme=th; state.mode=m; state.tpl=t;
+    state.imageTheme=it; state.theme=th; state.mode=m; state.tpl=t;
     state.mem=(d.mem && typeof d.mem==="object") ? d.mem : {};
     state.fills = state.mem[t.id]!==undefined ? sanitize(state.mem[t.id],t) : seedFills(t);
     return true;
@@ -899,12 +828,13 @@ function gen(){
 /* ---------- render ---------- */
 function renderHeader(){
   const th=state.theme;
-  $("sub").textContent=th.grade+" · "+th.zh;
+  $("sub").textContent=th.zh;
   $("lede").textContent=th.lede;
   $("modes").innerHTML = MODES.map((m)=>
     '<button type="button" data-m="'+m.id+'" aria-pressed="'+(m===state.mode)+'">'+m.zh+'</button>').join("");
   $("themes").innerHTML = '<span class="eyebrow">主題</span>' + THEMES.map((x)=>
-    '<button type="button" class="theme" data-th="'+x.id+'" aria-pressed="'+(x===th)+'"><span class="grade">'+x.grade+'</span><span class="nm">'+x.zh+'</span></button>').join("");
+    '<button type="button" class="theme" data-th="'+x.id+'" aria-pressed="'+(x===th)+'"><span class="nm">'+x.zh+'</span></button>').join("");
+  $("themes").hidden = state.mode.id!=="image";
   $("lessons-title").textContent=th.lessonsTitle;
   $("lessons").innerHTML = th.lessons.map((l)=>
     '<div class="lesson"><span class="eyebrow">'+l[0]+'</span><h3>'+l[1]+'</h3><p>'+l[2]+'</p></div>').join("");
@@ -1052,12 +982,12 @@ function copyText(txt,name){
 $("modes").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-m]"); if(!b) return;
   const m=MODES.find((x)=>x.id===b.dataset.m); if(m===state.mode) return;
-  stash(); state.mode=m; loadTpl(tplsNow()[0]);
+  stash(); state.mode=m; state.theme = m.id==="image" ? state.imageTheme : THEMES[0]; state.cat=null; loadTpl(tplsNow()[0]);
 });
 $("themes").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-th]"); if(!b) return;
   const th=THEMES.find((x)=>x.id===b.dataset.th); if(th===state.theme) return;
-  stash(); state.theme=th; state.cat=null; loadTpl(tplsNow()[0]);
+  stash(); state.theme=th; state.imageTheme=th; state.cat=null; loadTpl(tplsNow()[0]);
 });
 $("tpl").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-t]"); if(!b) return;
