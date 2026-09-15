@@ -31,7 +31,13 @@
   --c-light:#946510;
   --c-palette:#7A3E6C;
   --c-quality:#4E5866;
-  --c-avoid:#B03A26;
+  --c-product:#2B303B;
+  --c-filter:#1F5F86;
+  --c-feature:#A23B55;
+  --c-shape:#5A6A1C;
+  --c-material:#8A5320;
+  --c-scene:#2A6152;
+  --c-user:#B03A26;
   --c-motion:#1F5F86;
   --c-role:#34549C;
   --c-task:#2B303B;
@@ -53,7 +59,7 @@
     --focus:#8FAAE8;--alert:#E97B63;
     --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
     --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-avoid:#E97B63;--c-motion:#6FB6E2;
+    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-motion:#6FB6E2;
     --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
     --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
   }
@@ -66,7 +72,7 @@
   --focus:#8FAAE8;--alert:#E97B63;
   --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
   --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-avoid:#E97B63;--c-motion:#6FB6E2;
+  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-motion:#6FB6E2;
   --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
 }
@@ -235,17 +241,38 @@ button,input,textarea{font:inherit;color:inherit}
   .tray{max-height:340px}
 }
 </style>
+<style>
+.themes{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;padding:16px 0 0}
+.themes .eyebrow{align-self:center;margin-right:4px}
+.theme{
+  display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:200px;
+  padding:8px 16px 9px;border:1px solid var(--rule);border-radius:2px;background:var(--card);cursor:pointer;text-align:left;
+}
+.theme .grade{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--ink-3)}
+.theme .nm{font-size:15px;font-weight:700;color:var(--ink);line-height:1.35}
+.theme[aria-pressed="true"]{background:var(--ink);border-color:var(--ink)}
+.theme[aria-pressed="true"] .grade{color:var(--rule)}
+.theme[aria-pressed="true"] .nm{color:var(--paper)}
+.theme:hover:not([aria-pressed="true"]){border-color:var(--ink-3)}
+@media (max-width:620px){
+  .themes .eyebrow{width:100%}
+  .theme{flex:1;min-width:0;padding:7px 12px}
+  .theme .nm{font-size:14px}
+}
+</style>
 </head>
 <body>
 <div class="wrap">
   <header class="masthead">
     <div class="brand">
       <h1>提示詞排版台</h1>
-      <span class="sub">AI 大頭貼 · 國中生版</span>
+      <span class="sub" id="sub"></span>
     </div>
-    <p>用 AI 設計你自己的大頭貼。把字塊拖進句子的凹槽，會同時排出中文和英文兩種指令，哪裡不滿意都能自己改。</p>
-    <div class="modes" id="modes" role="group" aria-label="要做什麼"></div>
+    <p id="lede"></p>
+    <div class="modes" id="modes" role="group" aria-label="要產生什麼"></div>
   </header>
+
+  <div class="themes" id="themes" role="group" aria-label="主題"></div>
 
   <div class="formula" id="formula"></div>
 
@@ -303,36 +330,40 @@ button,input,textarea{font:inherit;color:inherit}
   </div>
 
   <section class="lessons">
-    <h2>記住這四件事，你自己就會寫指令</h2>
+    <h2 id="lessons-title"></h2>
     <p class="note">上面排出來的每一句，都用到了這四件事。</p>
-    <div class="lgrid">
-      <div class="lesson">
-        <span class="eyebrow">順序</span>
-        <h3>先講「是誰」，再講「長什麼樣」</h3>
-        <p>主角放最前面，AI 越前面的字越看重。把「一隻橘貓」丟到最後，可能會得到一張滿滿耳機和星空、貓卻小小一隻的圖。</p>
-      </div>
-      <div class="lesson">
-        <span class="eyebrow">尺寸</span>
-        <h3>大頭貼最後會縮成一個小圓圈</h3>
-        <p>在聊天室裡，大頭貼通常只有指甲大小。選<code>頭像特寫</code>和<code>乾淨的純色</code>背景，縮小之後還認得出是你。</p>
-      </div>
-      <div class="lesson">
-        <span class="eyebrow">用字</span>
-        <h3>形容詞要畫得出來</h3>
-        <p>「很帥」「很可愛」AI 不知道是哪一種。<code>圓框眼鏡</code>、<code>雀斑</code>、<code>帽T</code>畫得出來，也更像你。</p>
-      </div>
-      <div class="lesson">
-        <span class="eyebrow">安全</span>
-        <h3>不用上傳真的照片</h3>
-        <p>大頭貼不需要長得跟你一模一樣。用你喜歡的東西代表自己就很有記憶點，也不要寫上全名或學校。很多 AI 工具有年齡規定，第一次用先跟家長或老師確認。</p>
-      </div>
-    </div>
-    <p class="foot">中文欄是完整的句子，適合貼給看得懂中文的 AI。英文欄是逗號分開的關鍵字，幾乎所有 AI 繪圖工具都看得懂。兩欄都可以直接改字再複製。你排的內容會自動存在這台電腦的瀏覽器裡。</p>
+    <div class="lgrid" id="lessons"></div>
+    <p class="foot">中文欄是完整的句子，適合貼給看得懂中文的 AI。英文欄在圖片和影片模式是逗號分開的關鍵字，大部分 AI 繪圖工具都看得懂。兩欄都可以直接改字再複製。你排的內容會自動存在這台電腦的瀏覽器裡。</p>
   </section>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
-const CAT = {
+const S = (cat, o) => Object.assign({cat, pre:"", post:"", opt:false}, o || {});
+
+const MODES = [
+ {id:"image", zh:"圖片", join:"csv",
+  forZh:"完整的句子，貼給看得懂中文的 AI，例如 Gemini、ChatGPT",
+  forEn:"逗號分開的關鍵字，大部分 AI 繪圖工具都看得懂"},
+ {id:"video", zh:"影片", join:"csv",
+  forZh:"完整的句子，貼給看得懂中文的 AI 影片工具",
+  forEn:"逗號分開的關鍵字，大部分 AI 影片工具都看得懂"},
+ {id:"text", zh:"文字", join:"sentence",
+  forZh:"直接貼給 Gemini、ChatGPT、Claude 這類聊天型 AI",
+  forEn:"英文版本，AI 回得不理想時可以換這欄試試"}
+];
+
+const THEMES = [
+/* ================= 七年級：自創大頭貼 ================= */
+{id:"avatar", grade:"七年級", zh:"自創大頭貼",
+ lede:"用 AI 設計你自己的大頭貼。把字塊拖進句子的凹槽，會同時排出中文和英文兩種指令，哪裡不滿意都能自己改。",
+ lessonsTitle:"記住這四件事，你自己就會寫大頭貼指令",
+ lessons:[
+  ["順序","先講「是誰」，再講「長什麼樣」","主角放最前面，AI 越前面的字越看重。把「一隻橘貓」丟到最後，可能會得到一張滿滿耳機和星空、貓卻小小一隻的圖。"],
+  ["尺寸","大頭貼最後會縮成一個小圓圈","在聊天室裡，大頭貼通常只有指甲大小。選<code>頭像特寫</code>和<code>乾淨的純色</code>背景，縮小之後還認得出是你。"],
+  ["用字","形容詞要畫得出來","「很帥」「很可愛」AI 不知道是哪一種。<code>圓框眼鏡</code>、<code>雀斑</code>、<code>帽T</code>畫得出來，也更像你。"],
+  ["安全","不用上傳真的照片","大頭貼不需要長得跟你一模一樣。用你喜歡的東西代表自己就很有記憶點，也不要寫上全名或學校。很多 AI 工具有年齡規定，第一次用先跟家長或老師確認。"]
+ ],
+ cats:{
   subject:{zh:"主角",tip:"大頭貼上的主角是誰。可以是你自己，也可以是代表你的動物或角色。"},
   look:{zh:"特徵",multi:true,tip:"髮型和配件。這是讓大頭貼「一看就知道是你」的關鍵，可以選好幾個。"},
   outfit:{zh:"穿著",tip:"大頭貼通常只拍到肩膀，選領口和帽子附近看得到的衣服最有感。"},
@@ -343,231 +374,424 @@ const CAT = {
   light:{zh:"光線",tip:"光決定氣氛。同一個角色，夕陽光和霓虹燈是兩種完全不同的感覺。"},
   palette:{zh:"色調",tip:"整張圖的顏色感覺。挑一個你喜歡的就好。"},
   quality:{zh:"畫質",multi:true,tip:"放在最後的加分詞，可有可無，可以選好幾個。"},
-  avoid:{zh:"不要",multi:true,tip:"告訴 AI 什麼不要出現。AI 很愛自己在圖上亂加文字，先講清楚。"},
   motion:{zh:"動態",multi:true,tip:"會動的大頭貼才有這一格：畫面裡什麼在動。記得加上「無縫循環播放」。"},
   role:{zh:"角色",tip:"先讓 AI 變成某種專家，它給的建議就會比較專業。"},
   task:{zh:"任務",tip:"你要它幫你做什麼。一次只交代一件事，效果最好。"},
   about:{zh:"關於我",multi:true,tip:"讓 AI 認識你，點子才會像你。選你真的喜歡的東西，可以選好幾個。"},
   tone:{zh:"語氣",tip:"要它用什麼口氣跟你說話。"},
   format:{zh:"格式",tip:"回答要長什麼樣子。不講清楚，它可能會寫一大篇。"},
-  limit:{zh:"限制",multi:true,tip:"明講你不要什麼，AI 比較不會亂來。可以選好幾個。"}
-};
-
-const LEX = {
-subject:[
- ["a middle school boy","一個國中男生","寫年紀就好，AI 會自己畫出差不多年紀的臉。"],
- ["a middle school girl","一個國中女生","寫年紀就好，長相交給「特徵」那一格來決定。"],
- ["a teenager with a gender-neutral look","一個中性打扮的少年","不想被分成男生女生，就用這個。"],
- ["a shiba inu","一隻柴犬","用動物當大頭貼，不用露臉也很有個性。"],
- ["an orange tabby cat","一隻橘貓","寫出毛色，比只寫「貓」準很多。"],
- ["a little fox","一隻小狐狸","「小」這個字會讓 AI 畫得比較可愛。"],
- ["a panda","一隻熊貓","黑白分明，縮成小圓圈也認得出來。"],
- ["a baby dinosaur","一隻小恐龍","加上 baby，恐龍就從嚇人變成可愛。"],
- ["a penguin","一隻企鵝","圓滾滾的身形，很適合做 Q 版。"],
- ["a small cute robot","一個可愛的小機器人","喜歡科技的人很適合，可以加耳機或天線。"],
- ["a young wizard apprentice","一位魔法學徒","奇幻角色，配斗篷和發光的效果很好看。"],
- ["a little astronaut","一個小太空人","頭盔玻璃會反射星空，細節很豐富。"]
-],
-look:[
- ["fluffy curly hair","蓬鬆捲髮","頭髮是大頭貼裡面積最大的東西，影響很大。"],
- ["neat short hair","俐落短髮","看起來清爽有精神。"],
- ["twin tails","雙馬尾","動漫風格裡很經典的髮型。"],
- ["a streak of blue in the hair","一撮藍色挑染","一小撮顏色，就能變成你的記號。"],
- ["round glasses","圓框眼鏡","戴眼鏡的人記得加，才會像你。"],
- ["big over-ear headphones","大耳罩耳機","喜歡音樂的人必選，輪廓超明顯。"],
- ["a baseball cap","棒球帽","運動感，帽簷會讓臉有陰影。"],
- ["a knitted beanie","毛線帽","溫暖又可愛，冬天感。"],
- ["a small bandage on the cheek","臉頰上的 OK 繃","有點調皮、有點帥的小細節。"],
- ["freckles","雀斑","讓臉更有個性，不會像量產的角色。"],
- ["a cute little fang","可愛的小虎牙","笑起來才看得到，很適合配大笑。"],
- ["a cat ear headband","貓耳髮箍","想可愛一點就加這個。"]
-],
-outfit:[
- ["a hoodie","帽T","最百搭，帽子的形狀讓輪廓更好看。"],
- ["a school tracksuit","學校運動服","很有學生感的日常穿著。"],
- ["a school uniform shirt with a tie","制服襯衫加領帶","整齊正式，動漫風格常見。"],
- ["a basketball jersey","籃球背心","愛運動的人首選，可以指定顏色。"],
- ["denim overalls","吊帶褲","可愛又有點復古。"],
- ["a cozy knitted scarf","暖暖的圍巾","圍巾會把臉框起來，大頭貼很好用。"],
- ["a spacesuit","太空衣","配小太空人或星空背景。"],
- ["a wizard cloak","魔法師斗篷","奇幻風格，帽兜可以蓋住一半的頭。"],
- ["a band T-shirt","樂團 T 恤","有個性，適合搭配耳機。"]
-],
-expression:[
- ["a big bright smile","露出大大的笑容","最有親和力的表情。"],
- ["raising one eyebrow confidently","自信地挑眉","看起來很有自己的想法。"],
- ["making a peace sign","比 YA","手會入鏡，有時候要加「不要多餘的手指」。"],
- ["winking","眨一隻眼","俏皮又有活力。"],
- ["blushing shyly","害羞地臉紅","臉頰會有紅紅的一團，很可愛。"],
- ["a cool, calm expression","酷酷的表情","不笑也可以很有型。"],
- ["sticking out tongue playfully","調皮地吐舌頭","搞笑系大頭貼首選。"],
- ["resting chin on hand","托著下巴","看起來在思考，有點文青。"],
- ["surprised with mouth open","驚訝地張大嘴","很適合做成貼圖或梗圖。"],
- ["eyes closed, enjoying the music","閉著眼睛享受音樂","跟耳機是絕配。"]
-],
-style:[
- ["Japanese anime style","日系動漫","大眼睛、線條乾淨，最多人選的風格。"],
- ["chibi style with a big head","Q版大頭","頭大身體小，縮成小圖也超可愛。"],
- ["3D animated movie style","3D 動畫電影","像動畫電影裡的角色，立體又圓潤。"],
- ["pixel art game style","像素遊戲","一格一格的方塊，復古遊戲感。"],
- ["die-cut sticker style with a white outline","貼紙","角色外面會有一圈白邊，像真的貼紙。"],
- ["soft watercolor illustration","水彩插畫","顏色會暈開，溫柔安靜的感覺。"],
- ["American comic book style","美式漫畫","粗黑線條加網點，很有力量。"],
- ["clay figure style","黏土公仔","看得到黏土的質感，像手捏的。"],
- ["flat vector illustration","扁平向量插畫","沒有陰影、色塊分明，簡單又現代。"],
- ["cyberpunk style","賽博龐克","霓虹燈和未來科技感。"],
- ["simple doodle style","簡筆塗鴉","像在筆記本上隨手畫的。"]
-],
-background:[
- ["a plain solid color background","乾淨的純色","大頭貼最推薦，縮小以後主角最清楚。"],
- ["a soft gradient background","柔和的漸層","比純色多一點變化，一樣不會搶戲。"],
- ["a classroom chalkboard background","教室的黑板","很有學生感，可以請 AI 在黑板上畫小塗鴉。"],
- ["a basketball court background","籃球場","配運動風格的穿著。"],
- ["a street at sunset after school","放學後的夕陽街道","有故事感，但縮小後可能看不清楚。"],
- ["a starry night sky","滿天的星空","配太空人、魔法學徒都很適合。"],
- ["falling cherry blossoms","飄落的櫻花","粉紅色的花瓣會飄在主角前面。"],
- ["library bookshelves","圖書館的書架","愛看書的人很適合。"],
- ["a gaming room with neon lights","電競房的霓虹燈","喜歡打電動的人首選。"],
- ["floating bubbles","漂浮的泡泡","夢幻、輕盈的感覺。"],
- ["blue sky with fluffy clouds","藍天和白雲","清新明亮，跟什麼風格都搭。"]
-],
-framing:[
- ["head and shoulders portrait","頭像特寫","大頭貼的標準構圖，一定要有。"],
- ["face centered in the frame","臉在正中間","被裁成圓形時，臉才不會被切掉。"],
- ["circular profile picture frame","圓形頭像框","直接做成圓形的樣子，方便預覽。"],
- ["looking straight at the viewer","正面看著鏡頭","眼神對到，別人會覺得你在看他。"],
- ["three-quarter view","微微側身","比正面更有立體感。"],
- ["slightly low angle","稍微仰角","從下面往上拍，看起來比較有氣勢。"],
- ["square 1:1 composition","正方形 1:1","大部分的大頭貼都是正方形。"],
- ["plenty of space around the head","頭的周圍留白","裁切的時候比較不會切到頭髮。"]
-],
-light:[
- ["soft lighting","柔和的光","最安全的選擇，臉上不會有奇怪的陰影。"],
- ["natural window light","窗邊的自然光","像在房間裡拍的，很生活感。"],
- ["rim light from behind","背後的輪廓光","主角周圍會亮一圈，從背景跳出來。"],
- ["warm sunset glow","夕陽的暖光","整張圖會偏橘黃，很溫暖。"],
- ["neon glow","霓虹燈光","臉上會有藍色和粉紅色的光。"],
- ["clean studio lighting","乾淨的攝影棚打光","均勻明亮，像證件照但更好看。"]
-],
-palette:[
- ["pastel macaron colors","馬卡龍粉彩","淡淡的粉色系，甜甜的。"],
- ["bright vivid colors","活力鮮豔","顏色飽和，很有精神。"],
- ["blue and purple night tones","藍紫夜晚","神秘、有點酷。"],
- ["black and white with one bright accent color","黑白加一個亮色","只留一個顏色，超有記憶點。"],
- ["warm milk tea tones","奶茶暖咖啡","溫柔的咖啡色系。"],
- ["fresh mint green palette","清新薄荷綠","清爽乾淨的感覺。"],
- ["faded retro colors","復古褪色","像放了很久的舊照片。"]
-],
-quality:[
- ["highly detailed","高細節","讓頭髮、衣服的細節更豐富。"],
- ["clean line art","線條乾淨","動漫和插畫風格加這個，線條比較不會亂。"],
- ["sharp focus","清楚銳利","避免整張圖糊糊的。"],
- ["high resolution","高解析度","要拿來印出來的話可以加。"]
-],
-avoid:[
- ["no text","文字","AI 很愛在圖上加亂碼文字，幾乎每次都該加。"],
- ["no watermark","浮水印","避免角落出現奇怪的標記。"],
- ["no extra fingers","多餘的手指","有手入鏡時很好用，AI 常畫錯手指。"],
- ["not blurry","模糊","確保主角清楚。"],
- ["no cluttered background","雜亂的背景","背景太多東西，縮小後會看不清楚。"],
- ["nothing scary","恐怖的感覺","避免畫出讓人不舒服的東西。"]
-],
-motion:[
- ["gentle blinking","輕輕眨眼","最簡單也最自然的動態。"],
- ["hair gently swaying in the breeze","頭髮隨風飄動","畫面會很有空氣感。"],
- ["nodding and waving hello","點頭揮手打招呼","很適合當作自我介紹的動畫。"],
- ["stars twinkling in the background","背景星星一閃一閃","只有背景在動，主角保持清楚。"],
- ["bobbing head to the music","跟著音樂搖頭晃腦","配耳機跟音樂超適合。"],
- ["slow camera push in","鏡頭慢慢推近","鏡頭慢慢靠近主角，有電影感。"],
- ["seamless loop","無縫循環播放","動態大頭貼一定要加，不然播完會跳一下。"],
- ["3-second short animation","3 秒的短動畫","大頭貼動畫很短，講清楚長度比較好。"]
-],
-role:[
- ["a character designer who is great at avatars","一位擅長角色設計的插畫家","想要大頭貼點子時，請這種專家最適合。"],
- ["a teacher who knows AI image tools well","一位懂 AI 繪圖的老師","會用你聽得懂的方式教你。"],
- ["a video game artist","一位電玩美術設計師","想要遊戲角色風格時很適合。"],
- ["a copywriter who is great with names","一位很會取名字的文案高手","想取暱稱或帳號名稱時用。"],
- ["a color palette expert","一位配色專家","不知道選什麼顏色時找他。"]
-],
-task:[
- ["Give me 5 different avatar ideas.","幫我想 5 種大頭貼的點子","講清楚數量，才不會只給你一兩個。"],
- ["Turn my description into an AI image prompt.","把我的描述改寫成 AI 繪圖指令","記得在這段話後面寫上你想要的樣子。"],
- ["Suggest 3 color palettes that suit me.","推薦三組適合我的配色","搭配「關於我」一起用，配色會比較像你。"],
- ["Come up with a gamer nickname for me.","幫我取一個遊戲暱稱","搭配「關於我」一起用，名字才會有意義。"],
- ["Review my prompt below and tell me how to make it better.","看看我下面的指令哪裡可以更好","記得把你的指令貼在這段話的下面。"],
- ["Explain how these art styles are different.","解釋這幾種畫風有什麼不同","在後面寫上你想比較的風格名稱。"]
-],
-about:[
- ["I love playing basketball.","喜歡打籃球","興趣會變成大頭貼上的小道具。"],
- ["I love drawing and reading comics.","喜歡畫畫和看漫畫","AI 可能會建議漫畫風格。"],
- ["I have a pet cat.","養了一隻貓","寵物很適合一起放進大頭貼。"],
- ["I'm really into music.","很愛聽音樂","耳機、音符都是好用的元素。"],
- ["I'm into space and science.","對太空和科學很有興趣","星空和太空人的點子就會出現。"],
- ["I'm a little shy but funny.","有點害羞但很幽默","個性會影響表情的建議。"],
- ["I love playing video games.","喜歡玩電動","遊戲角色風格的點子會變多。"]
-],
-tone:[
- ["casual, like talking to a friend","像朋友聊天","回答會比較輕鬆好讀。"],
- ["fun and energetic","活潑有趣","點子會比較大膽。"],
- ["simple and easy to understand","簡單好懂","用字會比較簡單。"],
- ["careful and detailed","認真仔細","解釋會比較完整，但也比較長。"],
- ["kind and encouraging","溫柔鼓勵","請它幫你改東西時，比較不會被念。"]
-],
-format:[
- ["as a bulleted list","用條列式","一點一點列出來，最好讀。"],
- ["one sentence per idea","每個點子一句話說完","逼它講重點。"],
- ["as a table","整理成表格","要比較好幾個選項時最清楚。"],
- ["with an English prompt I can copy for each idea","附上可以直接複製的英文指令","拿到點子就能直接貼去畫，超省時間。"],
- ["under 200 words","200 字以內","限制字數是讓 AI 不囉嗦最有效的方法。"]
-],
-limit:[
- ["Reply in Traditional Chinese.","用繁體中文回答","不寫的話，它可能會回簡體中文或英文。"],
- ["Avoid difficult words.","不要用太難的字","看不懂的字就請它換掉。"],
- ["Keep everything appropriate for middle school students.","內容要適合國中生","讓 AI 知道你的年紀，內容會比較合適。"],
- ["Don't base it on real celebrities.","不要用真實明星的長相","用真人的臉可能有肖像權的問題。"],
- ["If you need more information, ask me first.","資訊不夠就先問我","可以減少 AI 自己亂猜。"]
-]
-};
-
-const S = (cat, o) => Object.assign({cat, pre:"", post:"", opt:false}, o || {});
-
-const MODES = [
- {id:"image", zh:"靜態大頭貼", join:"csv",
-  forZh:"完整的句子，貼給看得懂中文的 AI，例如 ChatGPT、Gemini",
-  forEn:"逗號分開的關鍵字，幾乎所有 AI 繪圖工具都看得懂",
-  tpls:[
-   {id:"anime", zh:"動漫頭像", head:"profile picture avatar",
-    parts:[S("subject",{pre:"幫我畫一張",post:"的大頭貼"}),S("look",{pre:"，特徵是"}),S("outfit",{pre:"，穿著"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"}),S("framing",{pre:"，"}),S("palette",{pre:"，",post:"的色調",opt:true}),S("avoid",{pre:"，不要",opt:true})],
-    seed:[[0],[0,5],[0],[0],[0],[0],[0],[1],[0]]},
-   {id:"animal", zh:"動物化身", head:"cute animal profile picture avatar",
-    parts:[S("subject",{pre:"把我畫成",post:"當大頭貼"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("light",{pre:"，"}),S("background",{pre:"，背景是"}),S("framing",{pre:"，"}),S("quality",{pre:"，",opt:true}),S("avoid",{pre:"，不要",opt:true})],
-    seed:[[5],[7],[4],[5],[0],[10],[0],[0],[4]]},
-   {id:"game", zh:"遊戲角色", head:"game character profile picture avatar",
-    parts:[S("subject",{pre:"畫一張遊戲角色大頭貼，主角是"}),S("outfit",{pre:"，穿著"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("light",{pre:"，"}),S("palette",{pre:"，",post:"的色調"}),S("framing",{pre:"，"}),S("avoid",{pre:"，不要",opt:true})],
-    seed:[[10],[7],[3],[1],[3],[4],[2],[0],[0]]}
-  ]},
- {id:"video", zh:"動態大頭貼", join:"csv",
-  forZh:"完整的句子，貼給看得懂中文的 AI 影片工具",
-  forEn:"逗號分開的關鍵字，大部分 AI 影片工具都看得懂",
-  tpls:[
-   {id:"loop", zh:"會動的頭像", head:"animated profile picture avatar",
+  limit:{zh:"限制",multi:true,tip:"把你的要求講清楚，AI 比較不會亂來。可以選好幾個。"}
+ },
+ lex:{
+  subject:[
+   ["a middle school boy","一個國中男生","寫年紀就好，AI 會自己畫出差不多年紀的臉。"],
+   ["a middle school girl","一個國中女生","寫年紀就好，長相交給「特徵」那一格來決定。"],
+   ["a teenager with a gender-neutral look","一個中性打扮的少年","不想被分成男生女生，就用這個。"],
+   ["a shiba inu","一隻柴犬","用動物當大頭貼，不用露臉也很有個性。"],
+   ["an orange tabby cat","一隻橘貓","寫出毛色，比只寫「貓」準很多。"],
+   ["a little fox","一隻小狐狸","「小」這個字會讓 AI 畫得比較可愛。"],
+   ["a panda","一隻熊貓","黑白分明，縮成小圓圈也認得出來。"],
+   ["a baby dinosaur","一隻小恐龍","加上 baby，恐龍就從嚇人變成可愛。"],
+   ["a penguin","一隻企鵝","圓滾滾的身形，很適合做 Q 版。"],
+   ["a small cute robot","一個可愛的小機器人","喜歡科技的人很適合，可以加耳機或天線。"],
+   ["a young wizard apprentice","一位魔法學徒","奇幻角色，配斗篷和發光的效果很好看。"],
+   ["a little astronaut","一個小太空人","頭盔玻璃會反射星空，細節很豐富。"]
+  ],
+  look:[
+   ["fluffy curly hair","蓬鬆捲髮","頭髮是大頭貼裡面積最大的東西，影響很大。"],
+   ["neat short hair","俐落短髮","看起來清爽有精神。"],
+   ["twin tails","雙馬尾","動漫風格裡很經典的髮型。"],
+   ["a streak of blue in the hair","一撮藍色挑染","一小撮顏色，就能變成你的記號。"],
+   ["round glasses","圓框眼鏡","戴眼鏡的人記得加，才會像你。"],
+   ["big over-ear headphones","大耳罩耳機","喜歡音樂的人必選，輪廓超明顯。"],
+   ["a baseball cap","棒球帽","運動感，帽簷會讓臉有陰影。"],
+   ["a knitted beanie","毛線帽","溫暖又可愛，冬天感。"],
+   ["a small bandage on the cheek","臉頰上的 OK 繃","有點調皮、有點帥的小細節。"],
+   ["freckles","雀斑","讓臉更有個性，不會像量產的角色。"],
+   ["a cute little fang","可愛的小虎牙","笑起來才看得到，很適合配大笑。"],
+   ["a cat ear headband","貓耳髮箍","想可愛一點就加這個。"]
+  ],
+  outfit:[
+   ["a hoodie","帽T","最百搭，帽子的形狀讓輪廓更好看。"],
+   ["a school tracksuit","學校運動服","很有學生感的日常穿著。"],
+   ["a school uniform shirt with a tie","制服襯衫加領帶","整齊正式，動漫風格常見。"],
+   ["a basketball jersey","籃球背心","愛運動的人首選，可以指定顏色。"],
+   ["denim overalls","吊帶褲","可愛又有點復古。"],
+   ["a cozy knitted scarf","暖暖的圍巾","圍巾會把臉框起來，大頭貼很好用。"],
+   ["a spacesuit","太空衣","配小太空人或星空背景。"],
+   ["a wizard cloak","魔法師斗篷","奇幻風格，帽兜可以蓋住一半的頭。"],
+   ["a band T-shirt","樂團 T 恤","有個性，適合搭配耳機。"]
+  ],
+  expression:[
+   ["a big bright smile","露出大大的笑容","最有親和力的表情。"],
+   ["raising one eyebrow confidently","自信地挑眉","看起來很有自己的想法。"],
+   ["making a peace sign","比 YA","手會入鏡。AI 偶爾會把手指畫錯，不滿意就請它重畫手的部分。"],
+   ["winking","眨一隻眼","俏皮又有活力。"],
+   ["blushing shyly","害羞地臉紅","臉頰會有紅紅的一團，很可愛。"],
+   ["a cool, calm expression","酷酷的表情","不笑也可以很有型。"],
+   ["sticking out tongue playfully","調皮地吐舌頭","搞笑系大頭貼首選。"],
+   ["resting chin on hand","托著下巴","看起來在思考，有點文青。"],
+   ["surprised with mouth open","驚訝地張大嘴","很適合做成貼圖或梗圖。"],
+   ["eyes closed, enjoying the music","閉著眼睛享受音樂","跟耳機是絕配。"]
+  ],
+  style:[
+   ["Japanese anime style","日系動漫","大眼睛、線條乾淨，最多人選的風格。"],
+   ["chibi style with a big head","Q版大頭","頭大身體小，縮成小圖也超可愛。"],
+   ["3D animated movie style","3D 動畫電影","像動畫電影裡的角色，立體又圓潤。"],
+   ["pixel art game style","像素遊戲","一格一格的方塊，復古遊戲感。"],
+   ["die-cut sticker style with a white outline","貼紙","角色外面會有一圈白邊，像真的貼紙。"],
+   ["soft watercolor illustration","水彩插畫","顏色會暈開，溫柔安靜的感覺。"],
+   ["American comic book style","美式漫畫","粗黑線條加網點，很有力量。"],
+   ["clay figure style","黏土公仔","看得到黏土的質感，像手捏的。"],
+   ["flat vector illustration","扁平向量插畫","沒有陰影、色塊分明，簡單又現代。"],
+   ["cyberpunk style","賽博龐克","霓虹燈和未來科技感。"],
+   ["simple doodle style","簡筆塗鴉","像在筆記本上隨手畫的。"]
+  ],
+  background:[
+   ["a plain solid color background","乾淨的純色","大頭貼最推薦，縮小以後主角最清楚。"],
+   ["a soft gradient background","柔和的漸層","比純色多一點變化，一樣不會搶戲。"],
+   ["a classroom chalkboard background","教室的黑板","很有學生感，可以請 AI 在黑板上畫小塗鴉。"],
+   ["a basketball court background","籃球場","配運動風格的穿著。"],
+   ["a street at sunset after school","放學後的夕陽街道","有故事感，但縮小後可能看不清楚。"],
+   ["a starry night sky","滿天的星空","配太空人、魔法學徒都很適合。"],
+   ["falling cherry blossoms","飄落的櫻花","粉紅色的花瓣會飄在主角前面。"],
+   ["library bookshelves","圖書館的書架","愛看書的人很適合。"],
+   ["a gaming room with neon lights","電競房的霓虹燈","喜歡打電動的人首選。"],
+   ["floating bubbles","漂浮的泡泡","夢幻、輕盈的感覺。"],
+   ["blue sky with fluffy clouds","藍天和白雲","清新明亮，跟什麼風格都搭。"]
+  ],
+  framing:[
+   ["head and shoulders portrait","頭像特寫","大頭貼的標準構圖，一定要有。"],
+   ["face centered in the frame","臉在正中間","被裁成圓形時，臉才不會被切掉。"],
+   ["circular profile picture frame","圓形頭像框","圖片還是方形的，只是在裡面畫一個圓框，方便預覽。"],
+   ["looking straight at the viewer","正面看著鏡頭","眼神對到，別人會覺得你在看他。"],
+   ["three-quarter view","微微側身","比正面更有立體感。"],
+   ["slightly low angle","稍微仰角","從下面往上拍，看起來比較有氣勢。"],
+   ["square 1:1 composition","正方形 1:1","大部分的大頭貼都是正方形。"],
+   ["plenty of space around the head","頭的周圍留白","裁切的時候比較不會切到頭髮。"]
+  ],
+  light:[
+   ["soft lighting","柔和的光","最安全的選擇，臉上不會有奇怪的陰影。"],
+   ["natural window light","窗邊的自然光","像在房間裡拍的，很生活感。"],
+   ["rim light from behind","背後的輪廓光","主角周圍會亮一圈，從背景跳出來。"],
+   ["warm sunset glow","夕陽的暖光","整張圖會偏橘黃，很溫暖。"],
+   ["neon glow","霓虹燈光","臉上會有藍色和粉紅色的光。"],
+   ["clean studio lighting","乾淨的攝影棚打光","均勻明亮，像證件照但更好看。"]
+  ],
+  palette:[
+   ["pastel macaron colors","馬卡龍粉彩","淡淡的粉色系，甜甜的。"],
+   ["bright vivid colors","活力鮮豔","顏色飽和，很有精神。"],
+   ["blue and purple night tones","藍紫夜晚","神秘、有點酷。"],
+   ["black and white with one bright accent color","黑白加一個亮色","只留一個顏色，超有記憶點。"],
+   ["warm milk tea tones","奶茶暖咖啡","溫柔的咖啡色系。"],
+   ["fresh mint green palette","清新薄荷綠","清爽乾淨的感覺。"],
+   ["faded retro colors","復古褪色","像放了很久的舊照片。"]
+  ],
+  quality:[
+   ["highly detailed","高細節","讓頭髮、衣服的細節更豐富。"],
+   ["clean line art","線條乾淨","動漫和插畫風格加這個，線條比較不會亂。"],
+   ["sharp focus","清楚銳利","讓整張圖不會糊糊的。"],
+   ["high resolution","高解析度","要拿來印出來的話可以加。"]
+  ],
+  motion:[
+   ["gentle blinking","輕輕眨眼","最簡單也最自然的動態。"],
+   ["hair gently swaying in the breeze","頭髮隨風飄動","畫面會很有空氣感。"],
+   ["nodding and waving hello","點頭揮手打招呼","很適合當作自我介紹的動畫。"],
+   ["stars twinkling in the background","背景星星一閃一閃","只有背景在動，主角保持清楚。"],
+   ["bobbing head to the music","跟著音樂搖頭晃腦","配耳機跟音樂超適合。"],
+   ["slow camera push in","鏡頭慢慢推近","鏡頭慢慢靠近主角，有電影感。"],
+   ["seamless loop","無縫循環播放","動態大頭貼一定要加，不然播完會跳一下。"],
+   ["3-second short animation","3 秒的短動畫","大頭貼動畫很短，講清楚長度比較好。"]
+  ],
+  role:[
+   ["a character designer who is great at avatars","一位擅長角色設計的插畫家","想要大頭貼點子時，請這種專家最適合。"],
+   ["a teacher who knows AI image tools well","一位懂 AI 繪圖的老師","會用你聽得懂的方式教你。"],
+   ["a video game artist","一位電玩美術設計師","想要遊戲角色風格時很適合。"],
+   ["a copywriter who is great with names","一位很會取名字的文案高手","想取暱稱或帳號名稱時用。"],
+   ["a color palette expert","一位配色專家","不知道選什麼顏色時找他。"]
+  ],
+  task:[
+   ["Give me 5 different avatar ideas.","幫我想 5 種大頭貼的點子","講清楚數量，才不會只給你一兩個。"],
+   ["Turn my description into an AI image prompt.","把我的描述改寫成 AI 繪圖指令","記得在這段話後面寫上你想要的樣子。"],
+   ["Suggest 3 color palettes that suit me.","推薦三組適合我的配色","搭配「關於我」一起用，配色會比較像你。"],
+   ["Come up with a gamer nickname for me.","幫我取一個遊戲暱稱","搭配「關於我」一起用，名字才會有意義。"],
+   ["Review my prompt below and tell me how to make it better.","看看我下面的指令哪裡可以更好","記得把你的指令貼在這段話的下面。"],
+   ["Explain how these art styles are different.","解釋這幾種畫風有什麼不同","在後面寫上你想比較的風格名稱。"]
+  ],
+  about:[
+   ["I love playing basketball.","喜歡打籃球","興趣會變成大頭貼上的小道具。"],
+   ["I love drawing and reading comics.","喜歡畫畫和看漫畫","AI 可能會建議漫畫風格。"],
+   ["I have a pet cat.","養了一隻貓","寵物很適合一起放進大頭貼。"],
+   ["I'm really into music.","很愛聽音樂","耳機、音符都是好用的元素。"],
+   ["I'm into space and science.","對太空和科學很有興趣","星空和太空人的點子就會出現。"],
+   ["I'm a little shy but funny.","有點害羞但很幽默","個性會影響表情的建議。"],
+   ["I love playing video games.","喜歡玩電動","遊戲角色風格的點子會變多。"]
+  ],
+  tone:[
+   ["casual, like talking to a friend","像朋友聊天","回答會比較輕鬆好讀。"],
+   ["fun and energetic","活潑有趣","點子會比較大膽。"],
+   ["simple and easy to understand","簡單好懂","用字會比較簡單。"],
+   ["careful and detailed","認真仔細","解釋會比較完整，但也比較長。"],
+   ["kind and encouraging","溫柔鼓勵","請它幫你改東西時，比較不會被念。"]
+  ],
+  format:[
+   ["as a bulleted list","用條列式","一點一點列出來，最好讀。"],
+   ["one sentence per idea","每個點子一句話說完","逼它講重點。"],
+   ["as a table","整理成表格","要比較好幾個選項時最清楚。"],
+   ["with an English prompt I can copy for each idea","附上可以直接複製的英文指令","拿到點子就能直接貼去畫，超省時間。"],
+   ["under 200 words","200 字以內","限制字數是讓 AI 不囉嗦最有效的方法。"]
+  ],
+  limit:[
+   ["Reply in Traditional Chinese.","用繁體中文回答","不寫的話，它可能會回簡體中文或英文。"],
+   ["Avoid difficult words.","不要用太難的字","看不懂的字就請它換掉。"],
+   ["Keep everything appropriate for middle school students.","內容要適合國中生","讓 AI 知道你的年紀，內容會比較合適。"],
+   ["Don't base it on real celebrities.","不要用真實明星的長相","用真人的臉可能有肖像權的問題。"],
+   ["If you need more information, ask me first.","資訊不夠就先問我","可以減少 AI 自己亂猜。"]
+  ]
+ },
+ modes:{
+  image:[
+   {id:"avatar-anime", zh:"動漫頭像", head:"profile picture avatar",
+    parts:[S("subject",{pre:"幫我畫一張",post:"的大頭貼"}),S("look",{pre:"，特徵是"}),S("outfit",{pre:"，穿著"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"}),S("framing",{pre:"，"}),S("palette",{pre:"，",post:"的色調",opt:true})],
+    seed:[[0],[0,5],[0],[0],[0],[0],[0],[1]]},
+   {id:"avatar-animal", zh:"動物化身", head:"cute animal profile picture avatar",
+    parts:[S("subject",{pre:"把我畫成",post:"當大頭貼"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("light",{pre:"，"}),S("background",{pre:"，背景是"}),S("framing",{pre:"，"}),S("quality",{pre:"，",opt:true})],
+    seed:[[5],[7],[4],[5],[0],[10],[0],[0]]},
+   {id:"avatar-game", zh:"遊戲角色", head:"game character profile picture avatar",
+    parts:[S("subject",{pre:"畫一張遊戲角色大頭貼，主角是"}),S("outfit",{pre:"，穿著"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("light",{pre:"，"}),S("palette",{pre:"，",post:"的色調"}),S("framing",{pre:"，"})],
+    seed:[[10],[7],[3],[1],[3],[4],[2],[0]]}
+  ],
+  video:[
+   {id:"avatar-loop", zh:"會動的頭像", head:"animated profile picture avatar",
     parts:[S("subject",{pre:"做一個會動的大頭貼，主角是"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("motion",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"}),S("palette",{pre:"，",post:"的色調",opt:true})],
     seed:[[4],[5],[9],[4,6],[1],[8],[2]]},
-   {id:"hello", zh:"打招呼動畫", head:"short animated avatar greeting",
-    parts:[S("subject",{pre:"做一段大頭貼打招呼動畫，主角是"}),S("outfit",{pre:"，穿著"}),S("expression",{pre:"，"}),S("motion",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"}),S("avoid",{pre:"，不要",opt:true})],
-    seed:[[1],[3],[2],[2,7],[2],[3],[0]]}
-  ]},
- {id:"text", zh:"請 AI 出點子", join:"sentence",
-  forZh:"直接貼給 ChatGPT、Gemini、Claude 這類聊天型 AI",
-  forEn:"英文版本，AI 回得不理想時可以換這欄試試",
-  tpls:[
-   {id:"ideas", zh:"幫我想點子",
+   {id:"avatar-hello", zh:"打招呼動畫", head:"short animated avatar greeting",
+    parts:[S("subject",{pre:"做一段大頭貼打招呼動畫，主角是"}),S("outfit",{pre:"，穿著"}),S("expression",{pre:"，"}),S("motion",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"})],
+    seed:[[1],[3],[2],[2,7],[2],[3]]}
+  ],
+  text:[
+   {id:"avatar-ideas", zh:"幫我想點子",
     parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("about",{pre:"關於我：",post:"。"}),S("tone",{pre:"語氣",post:"，"}),S("format",{post:"。"}),S("limit",{post:"。",opt:true})],
     seed:[[0],[0],[0,2],[0],[3],[0,2]]},
-   {id:"review", zh:"幫我改指令",
+   {id:"avatar-review", zh:"幫我改指令",
     parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("format",{post:"。"}),S("limit",{post:"。"}),S("tone",{pre:"語氣要",post:"。",opt:true})],
     seed:[[1],[4],[0],[1,4],[4]]}
-  ]}
+  ]
+ }
+},
+
+/* ================= 八年級：空氣過濾創意家電 ================= */
+{id:"purifier", grade:"八年級", zh:"空氣過濾創意家電",
+ lede:"把空氣過濾藏進家電或家具裡，用 AI 畫出你的空想產品概念圖。把字塊拖進句子的凹槽，會同時排出中文和英文兩種指令。",
+ lessonsTitle:"記住這四件事，你自己就會寫產品概念圖指令",
+ lessons:[
+  ["順序","先講「是什麼產品」，再講「怎麼淨化空氣」","產品放最前面，AI 才知道要畫檯燈還是書架。過濾方式緊接在後面，它才不會被畫成一件普通的家具。"],
+  ["看得見","把看不見的功能畫出來","空氣過濾本身是看不到的。加上<code>氣流線</code>、<code>空氣品質燈號</code>，或用<code>剖面圖</code>露出濾網，別人才看得出這是會淨化空氣的產品。"],
+  ["用字","材質要寫得出來","「很高級」「很環保」AI 不知道長怎樣。<code>淺色木紋</code>、<code>金屬網孔</code>、<code>回收再生塑膠</code>畫得出來。"],
+  ["限制","AI 畫的是靈感，不是設計圖","AI 常把按鈕、零件和三視圖畫得不合理。概念圖拿來找靈感，真正的結構、尺寸和濾網怎麼換，要自己畫、自己想清楚。"]
+ ],
+ cats:{
+  product:{zh:"產品",tip:"要把空氣過濾藏進哪一種家電或家具。選你每天真的會用到的東西。"},
+  filter:{zh:"過濾方式",multi:true,tip:"空氣怎麼被變乾淨。可以選好幾種，組合起來效果更好。"},
+  feature:{zh:"特色功能",multi:true,tip:"除了過濾空氣還多了什麼。概念圖裡看得到的功能最有說服力。"},
+  shape:{zh:"造型",tip:"產品的外型輪廓。形狀決定它放在房間裡像不像家具。"},
+  material:{zh:"材質",multi:true,tip:"外殼用什麼做的。材質會讓產品的質感完全不同，可以選好幾個。"},
+  style:{zh:"畫法",tip:"概念圖要畫成什麼樣子。渲染圖看成品，草圖看想法，剖面圖看內部。"},
+  scene:{zh:"擺放位置",tip:"產品放在哪裡。放進真實的場景，才看得出尺寸和用途。"},
+  framing:{zh:"視角",tip:"從哪個角度看產品。45 度角最看得出立體感。"},
+  light:{zh:"光線",tip:"光會決定產品看起來是高級、科技，還是溫暖。"},
+  palette:{zh:"配色",tip:"整個產品的顏色搭配。家電通常不會超過三個顏色。"},
+  user:{zh:"使用者",multi:true,tip:"這個產品是做給誰用的。想清楚使用者，設計才有理由。"},
+  motion:{zh:"動態",multi:true,tip:"影片裡什麼在動。展示濾網和氣流的動畫最能說明功能。"},
+  role:{zh:"角色",tip:"先讓 AI 變成某種專家，它給的建議就會比較專業。"},
+  task:{zh:"任務",tip:"你要它幫你做什麼。一次只交代一件事，效果最好。"},
+  tone:{zh:"語氣",tip:"要它用什麼口氣跟你說話。"},
+  format:{zh:"格式",tip:"回答要長什麼樣子。不講清楚，它可能會寫一大篇。"},
+  limit:{zh:"限制",multi:true,tip:"把你的要求講清楚，AI 比較不會亂來。可以選好幾個。"}
+ },
+ lex:{
+  product:[
+   ["an air-purifying desk lamp","檯燈","放在書桌上，讀書的時候剛好在你面前過濾空氣。"],
+   ["an air-purifying study desk","書桌","把濾網藏在桌子底下，完全不佔空間。"],
+   ["an air-purifying bedside table","床頭櫃","睡覺時離你最近，很適合過敏的人。"],
+   ["an air-purifying bookshelf","書架","書架很大，可以藏進比較大的濾網。"],
+   ["an air-purifying standing fan","電風扇","本來就會吹風，加上濾網很合理。"],
+   ["an air-purifying alarm clock speaker","鬧鐘喇叭","小小一台，放床頭或書桌都行。"],
+   ["an air-purifying indoor plant stand","盆栽架","植物加上機器，看起來很自然。"],
+   ["an air-purifying pet bed","寵物窩","專門處理寵物的毛和味道。"],
+   ["an air-purifying shoe cabinet","鞋櫃","鞋子的臭味直接在櫃子裡解決。"],
+   ["an air-purifying window frame","窗框","外面的空氣進來之前先過濾一次。"],
+   ["an air-purifying sofa","沙發","客廳最大的家具，可以藏進很多功能。"],
+   ["an air-purifying humidifier","加濕器","加濕和過濾一起做，要想清楚水放在哪裡。"]
+  ],
+  filter:[
+   ["a hidden HEPA filter","藏在裡面的 HEPA 濾網","最常見的濾網，可以擋住很細的灰塵、花粉和 PM2.5。"],
+   ["an activated carbon filter layer","活性碳除臭層","專門吸附臭味，養寵物或放鞋櫃很適合。"],
+   ["a living moss wall","會呼吸的苔蘚植物牆","看起來很療癒。不過植物淨化空氣的效果其實有限，最好搭配濾網。"],
+   ["a washable pre-filter","可以水洗的前置濾網","先擋住大顆的毛髮和灰塵，洗一洗就能重複使用。"],
+   ["a UV-C sterilizing light","紫外線殺菌燈","可以殺菌，但紫外線傷眼睛，設計時要藏在裡面照不到人。"],
+   ["an electrostatic dust collector","靜電集塵板","用靜電吸住灰塵，不用常換濾網，但要定期清洗。"]
+  ],
+  feature:[
+   ["an air quality indicator light ring","空氣品質燈號","用顏色告訴你空氣好不好，概念圖裡一眼就看得到。"],
+   ["visible airflow lines showing clean air coming out","吹出乾淨空氣的氣流線","讓看不見的過濾功能變得看得見，強烈推薦。"],
+   ["a small display showing PM2.5 levels","PM2.5 感測小螢幕","數字讓產品看起來更聰明。AI 常把數字畫錯，不用太在意。"],
+   ["a wireless charging pad on top","無線充電板","放在書桌或床頭的產品很適合加。"],
+   ["a built-in speaker","內建喇叭","讓產品一機兩用。"],
+   ["a small solar panel","太陽能板","放在窗邊或陽台的產品可以考慮。"],
+   ["a foldable design that can be stored away","可以折疊收起來的設計","房間小的時候很實用。"],
+   ["a 360-degree air outlet","360 度出風口","不管放在哪個方向，空氣都吹得到。"],
+   ["a pull-out drawer for changing the filter","換濾網用的抽屜","想清楚濾網怎麼換，設計才完整。"]
+  ],
+  shape:[
+   ["a cylindrical shape","圓柱形","空氣清淨機最常見的形狀，四面都能進風。"],
+   ["a rounded cube shape","圓角方塊","穩重好擺放，靠牆放很適合。"],
+   ["an egg-shaped form","蛋形","圓潤可愛，看起來不像機器。"],
+   ["a leaf-inspired shape","葉子的形狀","直接讓人聯想到新鮮空氣。"],
+   ["a slim minimal rectangular shape","簡潔的長方體","最容易融入家具，也最好做模型。"],
+   ["stackable modular blocks","可以堆疊的模組","需要多少過濾力就疊幾層，很有創意。"],
+   ["a jellyfish-inspired organic form","水母的仿生造型","模仿生物的形狀，看起來很特別。"],
+   ["a honeycomb hexagon pattern","蜂巢六角形","六角形可以拼接，也很有科技感。"]
+  ],
+  material:[
+   ["matte white plastic","霧面白色塑膠","家電最常見的材質，乾淨俐落。"],
+   ["light oak wood","淺色木紋","讓家電看起來像家具，比較溫暖。"],
+   ["perforated metal mesh","金屬網孔","很適合當進風口，看得出空氣可以通過。"],
+   ["clear acrylic","透明壓克力","可以直接看到裡面的濾網，很適合展示功能。"],
+   ["a soft fabric cover","布面織物","像音響一樣的布面，柔和不冰冷。"],
+   ["glazed ceramic","陶瓷","有手作感，適合放在客廳。"],
+   ["recycled plastic with a speckled texture","回收再生塑膠","環保又有特色，表面會有小斑點。"]
+  ],
+  style:[
+   ["photorealistic 3D product render","產品渲染圖","像廣告照片一樣的成品圖，最有真實感。"],
+   ["hand-drawn industrial design sketch","手繪設計草圖","像設計師筆記本上的草圖，重點是想法。"],
+   ["marker rendering sketch","麥克筆上色草圖","工業設計常用的畫法，有線條也有顏色。"],
+   ["exploded view diagram showing all the parts","爆炸分解圖","把零件拆開排好，看得出內部結構。AI 畫的零件不一定合理。"],
+   ["cutaway view showing the filter inside","剖面圖","切開一半，露出裡面的濾網和氣流。"],
+   ["isometric illustration","等角插畫","斜斜的立體插畫，簡潔又好懂。"],
+   ["futuristic concept art","未來科技概念圖","天馬行空的空想產品最適合。"],
+   ["Scandinavian minimalist design","北歐極簡風格","簡單、淺色、有木頭感。"],
+   ["cute character-like design with a friendly face","可愛的擬人化設計","給產品一張臉，小朋友和長輩會更喜歡。"],
+   ["3D product animation","3D 產品動畫","影片用的畫法，像產品廣告。"],
+   ["stop-motion animation","定格動畫","一格一格拍的手作感動畫。"]
+  ],
+  scene:[
+   ["on a classroom desk","教室的書桌上","學生最常待的地方，很有說服力。"],
+   ["next to a bed in a bedroom","臥室的床邊","睡覺的八小時都在呼吸這裡的空氣。"],
+   ["beside a sofa in a living room","客廳的沙發旁","全家人一起用的空間。"],
+   ["on a plain white studio background","純白的攝影棚背景前","只想看產品本身時最乾淨。"],
+   ["on a small balcony","陽台","適合跟植物或太陽能結合的設計。"],
+   ["in a cozy pet corner","寵物的角落","寵物毛和味道最多的地方。"],
+   ["on a kitchen counter","廚房流理台上","煮飯的油煙和味道很需要處理。"],
+   ["by a window facing a busy street","面對大馬路的窗邊","車子的廢氣和灰塵最容易從這裡進來。"]
+  ],
+  framing:[
+   ["three-quarter view at a 45-degree angle","45 度角的產品視角","同時看得到正面和側面，最有立體感。"],
+   ["straight-on front view","正面視角","最清楚、最正式的角度。"],
+   ["top-down view","由上往下的俯視","適合看桌面上的產品和按鈕位置。"],
+   ["close-up detail shot","細節特寫","拍濾網、材質、燈號這些小地方。"],
+   ["a student using it nearby for scale","有學生在旁邊使用","有人在旁邊，才看得出產品有多大。"],
+   ["front, side, and top views on one sheet","前、側、上三視圖","AI 的三視圖常常對不起來，參考就好。"]
+  ],
+  light:[
+   ["soft studio lighting","柔和的攝影棚光","產品照最常用的光，乾淨專業。"],
+   ["soft morning daylight","早晨的自然光","清新明亮，很適合空氣主題。"],
+   ["a soft glow from the product's lights","產品本身發出的柔光","讓燈號和出風口看起來在運作。"],
+   ["warm lamp light at night","晚上房間的暖光","適合臥室和睡前的使用情境。"],
+   ["bright classroom lighting","明亮的教室日光","教室情境用這個最自然。"]
+  ],
+  palette:[
+   ["white and natural wood tones","白色加木頭色","最百搭，放在哪個房間都不突兀。"],
+   ["muted Morandi colors","莫蘭迪低彩度","灰灰柔柔的顏色，很有質感。"],
+   ["fresh mint green and white","清新薄荷綠","一看就聯想到乾淨的空氣。"],
+   ["black and graphite gray","黑灰科技感","看起來很專業、很有科技感。"],
+   ["cheerful bright colors","活潑亮色","適合擬人化或給小朋友用的設計。"]
+  ],
+  user:[
+   ["students studying in a classroom","在教室讀書的學生","跟你自己的生活最接近，最好想像。"],
+   ["family members with allergies","有過敏的家人","過敏的人最需要乾淨的空氣。"],
+   ["families with cats or dogs","養貓狗的家庭","要處理毛髮和味道。"],
+   ["families living next to a busy road","住在大馬路邊的家庭","要處理廢氣和灰塵。"],
+   ["people living in very small rooms","房間很小的人","產品要小、要能收納，或一物多用。"],
+   ["grandparents","爺爺奶奶","按鈕要大、操作要簡單。"]
+  ],
+  motion:[
+   ["camera orbiting around the product","鏡頭環繞產品一圈","繞一圈讓人看到每一面。"],
+   ["the cover opening to reveal the filter inside","外殼打開露出濾網","直接展示最重要的內部功能。"],
+   ["parts separating and reassembling","零件分解再組合","像動態的爆炸分解圖，很酷。"],
+   ["dusty air drawn in and clean air flowing out","空氣被吸進去再吹出乾淨的風","把過濾的過程演出來，最好懂。"],
+   ["the air quality light changing from red to green","燈號從紅色變成綠色","用顏色變化證明空氣變乾淨了。"],
+   ["slow push in on the details","鏡頭慢慢推近細節","強調材質和設計的小地方。"],
+   ["seamless loop","無縫循環播放","要放在簡報裡重複播放時很好用。"],
+   ["10-second short video","10 秒的短影片","講清楚長度，AI 比較好控制。"]
+  ],
+  role:[
+   ["an industrial designer","一位工業設計師","會從外型、使用方式和製造去想。"],
+   ["an environmental engineer who knows air filtration","一位懂空氣過濾的環境工程師","會告訴你過濾方式合不合理。"],
+   ["a product manager at a home appliance company","一位家電公司的產品經理","會從使用者需求和賣點去想。"],
+   ["a science teacher","一位自然科學老師","會用你學過的原理來解釋。"],
+   ["a marketing planner who is great with product names","一位很會幫產品取名字的行銷企劃","要取名字和標語時找他。"]
+  ],
+  task:[
+   ["Give me 5 ideas for home appliances or furniture with built-in air filtration.","幫我想 5 個結合空氣過濾的家電或家具點子","講清楚數量和主題，點子才會集中。"],
+   ["Explain in simple terms how air filters clean the air.","用簡單的方式解釋濾網怎麼過濾空氣","先懂原理，設計才不會變成空想中的空想。"],
+   ["Analyze the strengths and possible problems of my design below.","分析我下面這個設計的優點和可能的問題","記得把你的設計描述貼在這段話的下面。"],
+   ["Suggest 3 product names and a slogan for my product.","幫我的產品取 3 個名字和一句標語","搭配你的產品描述一起用。"],
+   ["Turn my idea into an AI image prompt.","把我的點子改寫成 AI 繪圖指令","在後面寫上你的點子，它會幫你排成繪圖指令。"],
+   ["Help me figure out how users would replace and clean the filter.","幫我想濾網要怎麼更換和清潔","很多空想產品忘了想這一步。"]
+  ],
+  tone:[
+   ["casual, like talking to a friend","像朋友聊天","回答會比較輕鬆好讀。"],
+   ["simple and easy to understand","簡單好懂","用字會比較簡單。"],
+   ["careful and detailed","認真仔細","解釋會比較完整，但也比較長。"],
+   ["kind and encouraging","溫柔鼓勵","請它評論你的設計時，比較不會被念。"],
+   ["like a professional designer giving feedback","像專業設計師給建議","意見會比較直接、比較專業。"]
+  ],
+  format:[
+   ["as a bulleted list","用條列式","一點一點列出來，最好讀。"],
+   ["as a table","整理成表格","比較好幾個點子或優缺點時最清楚。"],
+   ["with one sentence explaining each idea","每個點子附一句話說明","逼它講重點。"],
+   ["with an English image prompt I can copy for each idea","附上可以直接複製的英文繪圖指令","拿到點子就能直接貼去畫概念圖。"],
+   ["under 300 words","300 字以內","限制字數是讓 AI 不囉嗦最有效的方法。"]
+  ],
+  limit:[
+   ["Reply in Traditional Chinese.","用繁體中文回答","不寫的話，它可能會回簡體中文或英文。"],
+   ["Avoid difficult technical terms.","不要用太難的專有名詞","看不懂的詞就請它換掉。"],
+   ["Keep the ideas simple enough for middle school students to build a model.","點子要是國中生做得出模型的","讓點子可以真的做成作品。"],
+   ["Explain why each idea can actually filter the air.","要說明為什麼可以過濾空氣","避免 AI 給你只是好看、其實不會淨化空氣的點子。"],
+   ["If you need more information, ask me first.","資訊不夠就先問我","可以減少 AI 自己亂猜。"]
+  ]
+ },
+ modes:{
+  image:[
+   {id:"purifier-concept", zh:"產品概念圖", head:"product concept design",
+    parts:[S("product",{pre:"設計一個會過濾空氣的"}),S("filter",{pre:"，用",post:"淨化空氣"}),S("feature",{pre:"，還有"}),S("shape",{pre:"，造型是"}),S("material",{pre:"，材質是"}),S("style",{pre:"，畫成"}),S("scene",{pre:"，放在"}),S("framing",{pre:"，"}),S("palette",{pre:"，",post:"的配色",opt:true})],
+    seed:[[0],[0],[0,3],[0],[0,1],[0],[0],[0],[0]]},
+   {id:"purifier-scene", zh:"使用情境圖", head:"lifestyle scene concept image",
+    parts:[S("product",{pre:"畫一張會過濾空氣的",post:"的使用情境圖"}),S("user",{pre:"，使用的人是"}),S("scene",{pre:"，地點在"}),S("feature",{pre:"，畫面中看得到"}),S("style",{pre:"，畫成"}),S("light",{pre:"，"}),S("palette",{pre:"，",post:"的配色",opt:true})],
+    seed:[[2],[1],[1],[1,0],[7],[3],[1]]},
+   {id:"purifier-sketch", zh:"設計草圖", head:"industrial design sketch sheet",
+    parts:[S("product",{pre:"畫一張會過濾空氣的",post:"的設計草圖"}),S("shape",{pre:"，造型是"}),S("filter",{pre:"，標出",post:"的位置"}),S("feature",{pre:"，還有"}),S("material",{pre:"，材質是"}),S("style",{pre:"，畫成"}),S("framing",{pre:"，"})],
+    seed:[[4],[5],[1,0],[7],[2],[2],[5]]}
+  ],
+  video:[
+   {id:"purifier-showcase", zh:"產品展示", head:"product showcase video",
+    parts:[S("product",{pre:"做一段會過濾空氣的",post:"的產品展示影片"}),S("feature",{pre:"，展示"}),S("motion",{pre:"，"}),S("material",{pre:"，材質是"}),S("scene",{pre:"，放在"}),S("style",{pre:"，畫面是"}),S("light",{pre:"，",opt:true})],
+    seed:[[6],[1],[1,3],[1],[4],[9],[1]]},
+   {id:"purifier-compare", zh:"使用前後對比", head:"before and after comparison video",
+    parts:[S("scene",{pre:"做一段前後對比影片，地點在"}),S("user",{pre:"，主角是"}),S("product",{pre:"，打開會過濾空氣的",post:"之後"}),S("motion",{pre:"，"}),S("style",{pre:"，畫面是"}),S("palette",{pre:"，",post:"的配色",opt:true})],
+    seed:[[5],[2],[7],[4,3],[10],[4]]}
+  ],
+  text:[
+   {id:"purifier-ideas", zh:"幫我想點子",
+    parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("user",{pre:"使用的人是",post:"。"}),S("tone",{pre:"語氣",post:"，"}),S("format",{post:"。"}),S("limit",{post:"。",opt:true})],
+    seed:[[0],[0],[0,1],[1],[2],[0,3]]},
+   {id:"purifier-review", zh:"幫我檢查設計",
+    parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("format",{post:"。"}),S("limit",{post:"。"}),S("tone",{pre:"語氣要",post:"。",opt:true})],
+    seed:[[1],[2],[1],[1,4],[3]]}
+  ]
+ }
+}
 ];
 </script>
 <script>
@@ -575,8 +799,8 @@ const MODES = [
 const $ = (id)=>document.getElementById(id);
 const esc = (s)=>String(s).replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const trim = (s)=>String(s||"").trim();
-const MAX = 4, KEY = "prompt-blocks-avatar-v1";
-Object.keys(LEX).forEach((c)=>{ LEX[c] = LEX[c].map((a)=>({en:a[0],zh:a[1],tip:a[2]})); });
+const MAX = 4, KEY = "prompt-blocks-v2";
+THEMES.forEach((th)=>{ Object.keys(th.lex).forEach((c)=>{ th.lex[c]=th.lex[c].map((a)=>({en:a[0],zh:a[1],tip:a[2]})); }); });
 
 const noDot = (s)=>s.replace(/[.。\s]+$/,"");
 const dot = (s)=>/[.!?。！？]$/.test(s) ? s : s+".";
@@ -585,22 +809,26 @@ const EN_WRAP = {
   role:(s)=>"You are "+noDot(s)+".",
   task:(s)=>s,
   about:(s)=>"About me: "+s,
+  user:(s)=>"It is designed for "+noDot(s)+".",
   tone:(s)=>"Tone: "+noDot(s)+".",
   format:(s)=>"Format: "+noDot(s)+".",
   limit:(s)=>s
 };
 
-const state = {mode:MODES[0], tpl:MODES[0].tpls[0], fills:{}, active:null, cat:null, manual:{zh:null,en:null}, mem:{}};
+const state = {theme:THEMES[0], mode:MODES[0], tpl:THEMES[0].modes.image[0], fills:{}, active:null, cat:null, manual:{zh:null,en:null}, mem:{}};
+const CAT = (c)=>state.theme.cats[c];
+const LEX = (c)=>state.theme.lex[c];
 
 /* ---------- helpers ---------- */
 function items(i){ return (state.fills[i]||[]).filter((it)=>trim(it.zh)||trim(it.en)); }
 function color(cat){ return "var(--c-"+cat+")"; }
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function catsOf(tpl){ const out=[]; tpl.parts.forEach((p)=>{ if(!out.includes(p.cat)) out.push(p.cat); }); return out; }
+function tplsNow(){ return state.theme.modes[state.mode.id]; }
 function seedFills(tpl){
   const f={};
   (tpl.seed||[]).forEach((arr,i)=>{
-    if(arr && arr.length) f[i]=arr.map((k)=>{ const it=LEX[tpl.parts[i].cat][k]; return {zh:it.zh,en:it.en}; });
+    if(arr && arr.length) f[i]=arr.map((k)=>{ const it=LEX(tpl.parts[i].cat)[k]; return {zh:it.zh,en:it.en}; });
   });
   return f;
 }
@@ -626,16 +854,18 @@ function setActive(i){
 function save(){
   try{
     const mem=Object.assign({}, state.mem); mem[state.tpl.id]=state.fills;
-    localStorage.setItem(KEY, JSON.stringify({mode:state.mode.id, tpl:state.tpl.id, mem}));
+    localStorage.setItem(KEY, JSON.stringify({theme:state.theme.id, mode:state.mode.id, tpl:state.tpl.id, mem}));
   }catch(e){}
 }
 function load(){
   try{
     const d=JSON.parse(localStorage.getItem(KEY)||"null");
     if(!d) return false;
-    const m=MODES.find((x)=>x.id===d.mode); const t=m && m.tpls.find((x)=>x.id===d.tpl);
+    const th=THEMES.find((x)=>x.id===d.theme), m=MODES.find((x)=>x.id===d.mode);
+    const t=th && m && th.modes[m.id].find((x)=>x.id===d.tpl);
     if(!t) return false;
-    state.mode=m; state.tpl=t; state.mem=(d.mem && typeof d.mem==="object") ? d.mem : {};
+    state.theme=th; state.mode=m; state.tpl=t;
+    state.mem=(d.mem && typeof d.mem==="object") ? d.mem : {};
     state.fills = state.mem[t.id]!==undefined ? sanitize(state.mem[t.id],t) : seedFills(t);
     return true;
   }catch(e){ return false; }
@@ -646,7 +876,7 @@ function gen(){
   const tpl=state.tpl, sentence=state.mode.join==="sentence";
   let zh="", filled=0; const en=[];
   tpl.parts.forEach((p,i)=>{
-    const its=items(i), cz=CAT[p.cat].zh;
+    const its=items(i), cz=CAT(p.cat).zh;
     if(!its.length){
       if(p.opt) return;
       zh+=p.pre+"［"+cz+"］"+p.post; en.push("["+cz+"]"); return;
@@ -657,7 +887,7 @@ function gen(){
     if(sentence){
       const sent=SENT_CATS.includes(p.cat);
       if(sent) ens=ens.map(dot);
-      en.push(EN_WRAP[p.cat](ens.join(sent?" ":", ")));
+      en.push((EN_WRAP[p.cat]||((s)=>s))(ens.join(sent?" ":", ")));
     } else en.push(ens.join(", "));
   });
   zh=zh.replace(/[，、：\s]+$/,"");
@@ -667,22 +897,31 @@ function gen(){
 }
 
 /* ---------- render ---------- */
-function renderModes(){
+function renderHeader(){
+  const th=state.theme;
+  $("sub").textContent=th.grade+" · "+th.zh;
+  $("lede").textContent=th.lede;
   $("modes").innerHTML = MODES.map((m)=>
     '<button type="button" data-m="'+m.id+'" aria-pressed="'+(m===state.mode)+'">'+m.zh+'</button>').join("");
+  $("themes").innerHTML = '<span class="eyebrow">主題</span>' + THEMES.map((x)=>
+    '<button type="button" class="theme" data-th="'+x.id+'" aria-pressed="'+(x===th)+'"><span class="grade">'+x.grade+'</span><span class="nm">'+x.zh+'</span></button>').join("");
+  $("lessons-title").textContent=th.lessonsTitle;
+  $("lessons").innerHTML = th.lessons.map((l)=>
+    '<div class="lesson"><span class="eyebrow">'+l[0]+'</span><h3>'+l[1]+'</h3><p>'+l[2]+'</p></div>').join("");
+  document.title="提示詞排版台 · "+th.zh;
 }
 function renderFormula(){
   $("formula").innerHTML = '<span class="eyebrow">句子的骨架</span>' + catsOf(state.tpl).map((c,i)=>
-    (i?'<span class="plus">+</span>':'')+'<span class="fchip" style="background:'+color(c)+'">'+CAT[c].zh+'</span>').join("");
+    (i?'<span class="plus">+</span>':'')+'<span class="fchip" style="background:'+color(c)+'">'+CAT(c).zh+'</span>').join("");
 }
 function renderTpl(){
-  $("tpl").innerHTML = state.mode.tpls.map((t)=>
+  $("tpl").innerHTML = tplsNow().map((t)=>
     '<button type="button" class="pill" data-t="'+t.id+'" aria-pressed="'+(t===state.tpl)+'">'+t.zh+'</button>').join("");
 }
 function renderBoard(){
   let h="";
   state.tpl.parts.forEach((p,i)=>{
-    const its=items(i), c=CAT[p.cat];
+    const its=items(i), c=CAT(p.cat);
     if(p.pre) h+='<span class="lead">'+esc(p.pre)+'</span>';
     let inner, label;
     if(its.length){
@@ -707,7 +946,7 @@ function renderInsp(){
     el.innerHTML='<p class="insp-empty">想改字嗎？點排版盤上的任何一格，就能在這裡修改中文和英文，或寫進自己想到的詞。</p>';
     return;
   }
-  const p=state.tpl.parts[i], c=CAT[p.cat], ex=LEX[p.cat][0];
+  const p=state.tpl.parts[i], c=CAT(p.cat), ex=LEX(p.cat)[0];
   if(!state.fills[i]) state.fills[i]=[];
   const arr=state.fills[i];
   if(!arr.length) arr.push({zh:"",en:""});
@@ -731,21 +970,21 @@ function renderCats(){
   const cs=catsOf(state.tpl);
   if(!cs.includes(state.cat)) state.cat=cs[0];
   $("cats").innerHTML = cs.map((c)=>
-    '<button type="button" data-c="'+c+'" aria-pressed="'+(c===state.cat)+'" style="color:'+color(c)+'"><span class="dot"></span><span class="nm">'+CAT[c].zh+'</span></button>').join("");
+    '<button type="button" data-c="'+c+'" aria-pressed="'+(c===state.cat)+'" style="color:'+color(c)+'"><span class="dot"></span><span class="nm">'+CAT(c).zh+'</span></button>').join("");
 }
 function renderTray(){
   const c=state.cat, used=[];
   state.tpl.parts.forEach((p,i)=>{ if(p.cat===c) items(i).forEach((it)=>used.push(trim(it.zh)+"|"+trim(it.en))); });
-  $("tray").innerHTML = LEX[c].map((it,idx)=>{
+  $("tray").innerHTML = LEX(c).map((it,idx)=>{
     const u=used.includes(it.zh+"|"+it.en);
     return '<button type="button" class="chip'+(u?' used':'')+'" draggable="true" data-i="'+idx+'" style="color:'+color(c)+'" aria-pressed="'+u+'">'+
       '<span class="zh">'+esc(it.zh)+'</span><span class="en">'+esc(it.en)+'</span></button>';
   }).join("");
-  $("trayHint").textContent = LEX[c].length+" 個「"+CAT[c].zh+"」，"+(CAT[c].multi?"可以選好幾個":"選一個");
+  $("trayHint").textContent = LEX(c).length+" 個「"+CAT(c).zh+"」，"+(CAT(c).multi?"可以選好幾個":"選一個");
   showTip(null);
 }
 function showTip(it){
-  $("tip").innerHTML = it ? '<b>'+esc(it.zh)+'</b>　'+esc(it.tip) : '<b>'+CAT[state.cat].zh+'</b>　'+CAT[state.cat].tip;
+  $("tip").innerHTML = it ? '<b>'+esc(it.zh)+'</b>　'+esc(it.tip) : '<b>'+CAT(state.cat).zh+'</b>　'+CAT(state.cat).tip;
 }
 function renderOutput(){
   const g=gen();
@@ -758,7 +997,7 @@ function renderOutput(){
   $("for-zh").textContent=state.mode.forZh;
   $("for-en").textContent=state.mode.forEn;
 }
-function renderAll(){ renderModes(); renderFormula(); renderTpl(); renderBoard(); renderInsp(); renderCats(); renderTray(); renderOutput(); }
+function renderAll(){ renderHeader(); renderFormula(); renderTpl(); renderBoard(); renderInsp(); renderCats(); renderTray(); renderOutput(); }
 function refresh(){ renderBoard(); renderInsp(); renderCats(); renderTray(); renderOutput(); save(); }
 
 /* ---------- actions ---------- */
@@ -769,7 +1008,7 @@ function toast(msg){
 function fill(cat,it,target){
   const parts=state.tpl.parts;
   const cands=parts.map((p,i)=>i).filter((i)=>parts[i].cat===cat);
-  if(!cands.length){ toast("這個句型沒有「"+CAT[cat].zh+"」這一格"); return; }
+  if(!cands.length){ toast("這個句型沒有「"+CAT(cat).zh+"」這一格"); return; }
   if(target==null){
     if(state.active!=null && parts[state.active].cat===cat) target=state.active;
     else { const e=cands.find((i)=>!items(i).length); target = e!==undefined ? e : cands[0]; }
@@ -777,7 +1016,7 @@ function fill(cat,it,target){
   setActive(target);
   let arr=items(target);
   const k=arr.findIndex((x)=>trim(x.zh)===it.zh && trim(x.en)===it.en);
-  if(CAT[cat].multi){
+  if(CAT(cat).multi){
     if(k>=0) arr.splice(k,1);
     else if(arr.length>=MAX) toast("這一格最多放 "+MAX+" 個詞，先刪掉一個再加");
     else arr.push({zh:it.zh,en:it.en});
@@ -787,13 +1026,13 @@ function fill(cat,it,target){
   state.fills[target]=arr;
   refresh();
 }
+/* switch to another template; theme and mode must already be set */
 function loadTpl(tpl){
-  prune();
-  state.mem[state.tpl.id]=clone(state.fills);
   state.tpl=tpl; state.active=null; state.manual={zh:null,en:null};
   state.fills = state.mem[tpl.id]!==undefined ? sanitize(state.mem[tpl.id],tpl) : seedFills(tpl);
   renderAll(); save();
 }
+function stash(){ prune(); state.mem[state.tpl.id]=clone(state.fills); }
 function copyText(txt,name){
   if(!trim(txt)){ toast("這一欄是空的，還沒有東西可以複製"); return; }
   const gap = /［[^］]*］|\[[一-鿿]+\]/.test(txt);
@@ -813,11 +1052,16 @@ function copyText(txt,name){
 $("modes").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-m]"); if(!b) return;
   const m=MODES.find((x)=>x.id===b.dataset.m); if(m===state.mode) return;
-  state.mode=m; loadTpl(m.tpls[0]);
+  stash(); state.mode=m; loadTpl(tplsNow()[0]);
+});
+$("themes").addEventListener("click",(e)=>{
+  const b=e.target.closest("button[data-th]"); if(!b) return;
+  const th=THEMES.find((x)=>x.id===b.dataset.th); if(th===state.theme) return;
+  stash(); state.theme=th; state.cat=null; loadTpl(tplsNow()[0]);
 });
 $("tpl").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-t]"); if(!b) return;
-  const t=state.mode.tpls.find((x)=>x.id===b.dataset.t); if(t!==state.tpl) loadTpl(t);
+  const t=tplsNow().find((x)=>x.id===b.dataset.t); if(t!==state.tpl){ stash(); loadTpl(t); }
 });
 $("cats").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-c]"); if(!b) return;
@@ -829,9 +1073,9 @@ $("board").addEventListener("click",(e)=>{
 });
 $("tray").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-i]"); if(!b) return;
-  fill(state.cat, LEX[state.cat][+b.dataset.i]);
+  fill(state.cat, LEX(state.cat)[+b.dataset.i]);
 });
-const tipFrom=(e)=>{ const b=e.target.closest("button[data-i]"); if(b) showTip(LEX[state.cat][+b.dataset.i]); };
+const tipFrom=(e)=>{ const b=e.target.closest("button[data-i]"); if(b) showTip(LEX(state.cat)[+b.dataset.i]); };
 $("tray").addEventListener("pointerover",tipFrom);
 $("tray").addEventListener("focusin",tipFrom);
 $("tray").addEventListener("pointerleave",()=>showTip(null));
@@ -872,7 +1116,7 @@ document.querySelector(".outs").addEventListener("click",(e)=>{
 /* drag and drop */
 $("tray").addEventListener("dragstart",(e)=>{
   const b=e.target.closest("button[data-i]"); if(!b) return;
-  e.dataTransfer.setData("text/plain", state.cat+"|"+b.dataset.i);
+  e.dataTransfer.setData("text/plain", state.theme.id+"|"+state.cat+"|"+b.dataset.i);
   e.dataTransfer.effectAllowed="copy";
   document.querySelectorAll("#board .slot").forEach((s)=>{ if(s.dataset.cat!==state.cat) s.classList.add("dim"); });
 });
@@ -889,16 +1133,16 @@ $("board").addEventListener("dragleave",(e)=>{
 $("board").addEventListener("drop",(e)=>{
   const s=e.target.closest(".slot"); if(!s) return;
   e.preventDefault();
-  const parts=(e.dataTransfer.getData("text/plain")||"").split("|"), cat=parts[0], idx=+parts[1];
-  if(!LEX[cat] || !LEX[cat][idx] || s.dataset.cat!==cat) return;
-  fill(cat, LEX[cat][idx], +s.dataset.slot);
+  const d=(e.dataTransfer.getData("text/plain")||"").split("|"), cat=d[1], idx=+d[2];
+  if(d[0]!==state.theme.id || !state.theme.lex[cat] || !state.theme.lex[cat][idx] || s.dataset.cat!==cat) return;
+  fill(cat, LEX(cat)[idx], +s.dataset.slot);
 });
 
 $("dice").addEventListener("click",()=>{
   const f={};
   state.tpl.parts.forEach((p,i)=>{
     if(p.opt && Math.random()<0.4) return;
-    const pool=LEX[p.cat].slice(), n=CAT[p.cat].multi ? 1+Math.floor(Math.random()*2) : 1;
+    const pool=LEX(p.cat).slice(), n=CAT(p.cat).multi ? 1+Math.floor(Math.random()*2) : 1;
     f[i]=[];
     for(let k=0;k<n && pool.length;k++){ const it=pool.splice(Math.floor(Math.random()*pool.length),1)[0]; f[i].push({zh:it.zh,en:it.en}); }
   });
