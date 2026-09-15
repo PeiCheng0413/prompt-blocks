@@ -1,31 +1,41 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="國中生版 AI 大頭貼指令產生器：把關鍵字字塊拖進句子，一次得到中文與英文兩種提示詞。">
 <title>提示詞排版台</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <style>
 :root{
+  color-scheme:light;
   --paper:#E7E8EC;
   --card:#FFFFFF;
   --card-2:#F3F4F7;
   --ink:#191C22;
   --ink-2:#464C58;
-  --ink-3:#767D8B;
+  --ink-3:#6F7684;
   --rule:#CDD0D8;
   --rule-2:#DFE1E7;
-  --slot-empty:#DADCE3;
-  --indigo:#34549C;
-  --vermilion:#B93E29;
+  --slot-empty:#C9CCD5;
+  --focus:#34549C;
+  --alert:#B03A26;
   --c-subject:#2B303B;
-  --c-action:#8A5320;
-  --c-setting:#2A6152;
+  --c-look:#8A5320;
+  --c-outfit:#5A6A1C;
+  --c-expression:#A23B55;
   --c-style:#34549C;
-  --c-light:#9A6A12;
-  --c-camera:#256B60;
-  --c-mood:#7A3E6C;
+  --c-background:#2A6152;
+  --c-framing:#1D6A76;
+  --c-light:#946510;
+  --c-palette:#7A3E6C;
   --c-quality:#4E5866;
+  --c-avoid:#B03A26;
   --c-motion:#1F5F86;
   --c-role:#34549C;
   --c-task:#2B303B;
-  --c-audience:#2A6152;
+  --c-about:#2A6152;
   --c-tone:#7A3E6C;
   --c-format:#8A5320;
   --c-limit:#4E5866;
@@ -36,241 +46,205 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#131519;
-    --card:#1C1F26;
-    --card-2:#23272F;
-    --ink:#E9EAEE;
-    --ink-2:#B2B8C4;
-    --ink-3:#828A99;
-    --rule:#333944;
-    --rule-2:#2A2F38;
-    --slot-empty:#2E343E;
-    --indigo:#8FAAE8;
-    --vermilion:#E97B63;
-    --c-subject:#C3CAD8;
-    --c-action:#D7A466;
-    --c-setting:#6EC0A8;
-    --c-style:#8FAAE8;
-    --c-light:#E0B95F;
-    --c-camera:#63C0B0;
-    --c-mood:#D28CC2;
-    --c-quality:#A3AEBE;
-    --c-motion:#6FB6E2;
-    --c-role:#8FAAE8;
-    --c-task:#C3CAD8;
-    --c-audience:#6EC0A8;
-    --c-tone:#D28CC2;
-    --c-format:#D7A466;
-    --c-limit:#A3AEBE;
+    color-scheme:dark;
+    --paper:#131519;--card:#1C1F26;--card-2:#23272F;
+    --ink:#E9EAEE;--ink-2:#B2B8C4;--ink-3:#8A91A0;
+    --rule:#343A45;--rule-2:#2A2F38;--slot-empty:#3A414C;
+    --focus:#8FAAE8;--alert:#E97B63;
+    --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
+    --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
+    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-avoid:#E97B63;--c-motion:#6FB6E2;
+    --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
     --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
   }
 }
 :root[data-theme="dark"]{
-  --paper:#131519;
-  --card:#1C1F26;
-  --card-2:#23272F;
-  --ink:#E9EAEE;
-  --ink-2:#B2B8C4;
-  --ink-3:#828A99;
-  --rule:#333944;
-  --rule-2:#2A2F38;
-  --slot-empty:#2E343E;
-  --indigo:#8FAAE8;
-  --vermilion:#E97B63;
-  --c-subject:#C3CAD8;
-  --c-action:#D7A466;
-  --c-setting:#6EC0A8;
-  --c-style:#8FAAE8;
-  --c-light:#E0B95F;
-  --c-camera:#63C0B0;
-  --c-mood:#D28CC2;
-  --c-quality:#A3AEBE;
-  --c-motion:#6FB6E2;
-  --c-role:#8FAAE8;
-  --c-task:#C3CAD8;
-  --c-audience:#6EC0A8;
-  --c-tone:#D28CC2;
-  --c-format:#D7A466;
-  --c-limit:#A3AEBE;
+  color-scheme:dark;
+  --paper:#131519;--card:#1C1F26;--card-2:#23272F;
+  --ink:#E9EAEE;--ink-2:#B2B8C4;--ink-3:#8A91A0;
+  --rule:#343A45;--rule-2:#2A2F38;--slot-empty:#3A414C;
+  --focus:#8FAAE8;--alert:#E97B63;
+  --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
+  --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
+  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-avoid:#E97B63;--c-motion:#6FB6E2;
+  --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--f-body);
-  font-size:15px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px 72px}
 
-/* ---- header ---- */
-.masthead{
-  display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 28px;
-  padding:26px 0 16px;border-bottom:2px solid var(--ink);
-}
-.brand{display:flex;align-items:baseline;gap:12px}
-.brand h1{
-  font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:.01em;
-  margin:0;line-height:1.1;
-}
-.brand .sub{
-  font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink-3);
-}
-.masthead p{margin:0;color:var(--ink-2);font-size:14px;max-width:52ch}
-
-/* ---- mode switch ---- */
-.modes{display:flex;gap:0;margin-left:auto;border:1px solid var(--rule);border-radius:2px;overflow:hidden;background:var(--card)}
-.modes button{
-  font-family:var(--f-body);font-size:13.5px;font-weight:500;
-  padding:9px 15px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;
-  border-right:1px solid var(--rule);
-}
+/* header */
+.masthead{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 28px;padding:26px 0 16px;border-bottom:2px solid var(--ink)}
+.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:.01em;margin:0;line-height:1.1}
+.brand .sub{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.masthead p{margin:0;color:var(--ink-2);font-size:14px;max-width:46ch}
+.modes{display:flex;margin-left:auto;border:1px solid var(--rule);border-radius:2px;overflow:hidden;background:var(--card)}
+.modes button{font-size:13.5px;font-weight:500;padding:9px 15px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;border-right:1px solid var(--rule)}
 .modes button:last-child{border-right:0}
 .modes button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .modes button:hover:not([aria-pressed="true"]){background:var(--card-2)}
 
-/* ---- formula strip ---- */
-.formula{
-  display:flex;flex-wrap:wrap;align-items:center;gap:7px;
-  padding:16px 0 18px;border-bottom:1px solid var(--rule);
-}
-.formula .eyebrow{
-  font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-3);margin-right:6px;
-}
-.fchip{
-  font-family:var(--f-mono);font-size:12px;font-weight:500;
-  padding:3px 9px;border-radius:2px;color:#fff;white-space:nowrap;
-}
+/* formula */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:16px 0 18px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.formula .eyebrow{margin-right:6px}
+.fchip{font-family:var(--f-body);font-size:12.5px;font-weight:500;padding:2px 9px;border-radius:2px;color:var(--card);white-space:nowrap}
 .plus{color:var(--ink-3);font-family:var(--f-mono);font-size:13px}
 
-/* ---- layout ---- */
-.cols{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:26px;padding-top:26px;align-items:start}
-@media (max-width:940px){.cols{grid-template-columns:1fr}}
+/* layout */
+.cols{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:26px;padding-top:26px;align-items:start}
 .panel{background:var(--card);border:1px solid var(--rule);border-radius:3px;box-shadow:var(--shadow)}
-.panel-hd{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:12px 16px;border-bottom:1px solid var(--rule-2);
-}
-.panel-hd h2{
-  font-family:var(--f-display);font-size:14px;font-weight:600;margin:0;letter-spacing:.02em;
-}
-.panel-hd .hint{font-size:12px;color:var(--ink-3)}
+@media (min-width:941px){.cols>.panel.lex{position:sticky;top:16px}}
+@media (max-width:940px){.cols{grid-template-columns:1fr}}
+.panel-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule-2)}
+.panel-hd h2{font-family:var(--f-display);font-size:14px;font-weight:600;margin:0;letter-spacing:.02em;white-space:nowrap}
+.panel-hd .hint{font-size:12px;color:var(--ink-3);text-align:right}
 
-/* ---- template picker ---- */
-.tpl{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--rule-2)}
-.tpl button{
-  font-family:var(--f-body);font-size:12.5px;padding:5px 11px;cursor:pointer;
-  background:var(--card-2);border:1px solid var(--rule-2);border-radius:2px;color:var(--ink-2);
-}
-.tpl button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.tpl button:hover:not([aria-pressed="true"]){border-color:var(--ink-3);color:var(--ink)}
+/* template bar */
+.tplbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:12px 16px;border-bottom:1px solid var(--rule-2)}
+.tplbar .tools{display:flex;gap:6px;margin-left:auto}
+.pill{font-size:12.5px;padding:5px 11px;cursor:pointer;background:var(--card-2);border:1px solid var(--rule-2);border-radius:2px;color:var(--ink-2)}
+.pill[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.pill:hover:not([aria-pressed="true"]){border-color:var(--ink-3);color:var(--ink)}
 
-/* ---- sentence board ---- */
-.board{padding:22px 18px 20px;font-size:19px;line-height:2.35}
+/* board */
+.board{padding:22px 18px 20px;font-size:18px;line-height:2.4}
 .board .lead{color:var(--ink-2)}
 .slot{
-  display:inline-flex;align-items:center;gap:7px;vertical-align:baseline;
-  font-family:var(--f-body);font-size:16px;line-height:1.4;
-  min-width:118px;padding:6px 12px;margin:0 3px;
-  border:1px dashed var(--slot-empty);border-bottom:2px solid var(--slot-empty);
-  border-radius:2px;background:transparent;color:var(--ink-3);cursor:pointer;text-align:left;
+  display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;vertical-align:baseline;
+  font-size:15.5px;line-height:1.45;min-width:104px;padding:5px 11px;margin:0 3px;
+  border:1px dashed var(--slot-empty);border-bottom-width:2px;border-radius:2px;
+  background:transparent;cursor:pointer;text-align:left;
+  transition:background .12s ease,border-color .12s ease;
 }
-.slot .cat{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
-.slot:hover{border-color:var(--ink-3);color:var(--ink-2)}
-.slot:focus-visible,.chip:focus-visible,button:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
-.slot.active{border-color:var(--indigo);border-style:solid;box-shadow:inset 0 0 0 1px var(--indigo)}
-.slot.drop{border-style:solid;background:var(--card-2)}
-.slot.dim{opacity:.35}
-.slot.filled{
-  border-style:solid;border-color:currentColor;background:color-mix(in srgb, currentColor 10%, transparent);
-  cursor:pointer;
-}
-.slot.filled .zh{color:var(--ink);font-weight:500}
-.slot.filled .en{font-family:var(--f-mono);font-size:12.5px;color:currentColor}
-.slot .x{font-family:var(--f-mono);font-size:12px;opacity:.55}
-.optional{font-size:11px;color:var(--ink-3);font-family:var(--f-mono)}
+.slot .cat{font-weight:500}
+.slot .opt{font-family:var(--f-mono);font-size:10.5px;color:var(--ink-3)}
+.slot:hover{border-color:currentColor}
+.slot.filled{border-style:solid;border-color:currentColor;background:color-mix(in srgb, currentColor 9%, transparent)}
+.slot.active{border-style:solid;border-color:currentColor;box-shadow:0 0 0 2px var(--card),0 0 0 4px currentColor}
+.slot.drop{background:color-mix(in srgb, currentColor 18%, transparent)}
+.slot.dim{opacity:.3}
+.tok{display:inline-flex;align-items:baseline;gap:6px}
+.tok+.tok::before{content:"+";font-family:var(--f-mono);font-size:12px;color:var(--ink-3);margin-right:4px}
+.tok .zh{color:var(--ink);font-weight:500}
+.tok .en{font-family:var(--f-mono);font-size:12px;color:currentColor}
+.tok .en.missing{color:var(--alert)}
 
-/* ---- output ---- */
-.out{border-top:1px solid var(--rule-2);padding:16px}
-.out-lbl{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;
+/* inspector */
+.insp{border-top:1px solid var(--rule-2);background:var(--card-2);padding:14px 16px}
+.insp-empty{margin:0;font-size:13px;color:var(--ink-3)}
+.insp-hd{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:10px}
+.insp-hd .t{font-size:13.5px;font-weight:500}
+.insp-hd .m{font-size:12px;color:var(--ink-3)}
+.insp-hd .tools{display:flex;gap:6px;margin-left:auto}
+.rows{display:grid;gap:8px}
+.row,.row-hd{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 34px;gap:8px;align-items:center}
+.row-hd span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.row input{width:100%;min-width:0;font-size:14px;padding:7px 9px;border:1px solid var(--rule);border-radius:2px;background:var(--card);color:var(--ink)}
+.row input.en{font-family:var(--f-mono);font-size:12.5px}
+.row input:focus{border-color:var(--focus);outline:none;box-shadow:0 0 0 1px var(--focus)}
+.rm{height:34px;border:1px solid var(--rule);border-radius:2px;background:var(--card);color:var(--ink-3);cursor:pointer;font-family:var(--f-mono)}
+.rm:hover{color:var(--alert);border-color:var(--alert)}
+.insp-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:10px}
+.insp-foot .note{font-size:12px;color:var(--ink-3)}
+
+/* outputs */
+.outs{border-top:1px solid var(--rule-2);padding:16px;display:grid;gap:16px}
+.outs-hd{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ofield .lbl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:6px}
+.ofield .lbl .name{font-size:13px;font-weight:700}
+.ofield .lbl .for{font-size:12px;color:var(--ink-3)}
+.ofield .lbl .btn{margin-left:auto}
+.ofield textarea{
+  display:block;width:100%;min-height:96px;resize:vertical;font-size:14px;line-height:1.75;
+  background:var(--card-2);border:1px solid var(--rule-2);border-radius:2px;padding:10px 12px;color:var(--ink);
 }
-.out-lbl span{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.out pre{
-  margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.75;color:var(--ink);
-  background:var(--card-2);border:1px solid var(--rule-2);border-radius:2px;
-  padding:12px 14px;white-space:pre-wrap;word-break:break-word;min-height:64px;
-}
-.out pre .ph{color:var(--ink-3)}
-.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.btn{
-  font-family:var(--f-body);font-size:13px;font-weight:500;padding:8px 14px;cursor:pointer;
-  border-radius:2px;border:1px solid var(--rule);background:var(--card-2);color:var(--ink);
-}
+.ofield textarea.en{font-family:var(--f-mono);font-size:13px}
+.ofield textarea:focus{border-color:var(--focus);outline:none;box-shadow:0 0 0 1px var(--focus)}
+.edited{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:6px;font-size:12px;color:var(--alert)}
+.link{border:0;background:none;padding:0;color:var(--focus);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-size:12px}
+.btn{font-size:13px;font-weight:500;padding:7px 13px;cursor:pointer;border-radius:2px;border:1px solid var(--rule);background:var(--card-2);color:var(--ink);white-space:nowrap}
 .btn:hover{border-color:var(--ink-3)}
 .btn.primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 .btn.primary:hover{opacity:.88}
-.btn.ghost{background:transparent}
+.btn.sm{font-size:12.5px;padding:5px 10px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* ---- lexicon ---- */
+/* lexicon */
 .cats{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--rule-2)}
-.cats button{
-  font-family:var(--f-body);font-size:12.5px;padding:5px 10px;cursor:pointer;border-radius:2px;
-  background:transparent;border:1px solid var(--rule-2);color:var(--ink-2);
-  display:inline-flex;align-items:center;gap:6px;
-}
+.cats button{font-size:12.5px;padding:5px 10px;cursor:pointer;border-radius:2px;background:transparent;border:1px solid var(--rule-2);display:inline-flex;align-items:center;gap:6px}
 .cats button .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-.cats button[aria-pressed="true"]{background:var(--card-2);border-color:currentColor;font-weight:500}
+.cats button .nm{color:var(--ink-2)}
+.cats button[aria-pressed="true"]{background:var(--card-2);border-color:currentColor}
+.cats button[aria-pressed="true"] .nm{color:var(--ink);font-weight:500}
 .cats button:hover{border-color:var(--ink-3)}
-.tray{display:flex;flex-wrap:wrap;gap:8px;padding:16px;max-height:430px;overflow-y:auto}
+.tray{display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;padding:16px;max-height:min(460px, calc(100vh - 290px));min-height:180px;overflow-y:auto}
 .chip{
-  display:flex;flex-direction:column;align-items:flex-start;gap:1px;
-  padding:7px 11px;cursor:grab;text-align:left;
-  background:var(--card-2);border:1px solid var(--rule-2);
-  border-left:3px solid currentColor;border-radius:2px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:7px 11px;cursor:grab;text-align:left;
+  background:var(--card-2);border:1px solid var(--rule-2);border-left:3px solid currentColor;border-radius:2px;
+  transition:background .12s ease,border-color .12s ease,transform .12s ease;
 }
-.chip:hover{background:var(--card);border-color:var(--rule);transform:translateY(-1px)}
+.chip:hover{background:var(--card);border-color:var(--rule);border-left-color:currentColor;transform:translateY(-1px)}
 .chip:active{cursor:grabbing}
-.chip.used{opacity:.4}
+.chip.used{background:color-mix(in srgb, currentColor 12%, var(--card));border-color:currentColor}
+.chip.used .zh::after{content:"  ✓";font-family:var(--f-mono);font-size:11px;color:currentColor}
 .chip .zh{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.3}
-.chip .en{font-family:var(--f-mono);font-size:11px;color:currentColor;letter-spacing:.01em}
-.tip{
-  padding:11px 16px;border-top:1px solid var(--rule-2);font-size:12.5px;color:var(--ink-2);
-  background:var(--card-2);min-height:44px;
-}
+.chip .en{font-family:var(--f-mono);font-size:11px;color:currentColor}
+.tip{padding:11px 16px;border-top:1px solid var(--rule-2);font-size:12.5px;color:var(--ink-2);background:var(--card-2);min-height:62px}
 .tip b{color:var(--ink);font-weight:500}
 
-/* ---- lessons ---- */
+/* lessons */
 .lessons{margin-top:34px;border-top:2px solid var(--ink);padding-top:22px}
-.lessons h2{font-family:var(--f-display);font-size:16px;margin:0 0 4px;font-weight:600}
+.lessons h2{font-family:var(--f-display);font-size:16px;margin:0 0 4px;font-weight:600;text-wrap:balance}
 .lessons .note{color:var(--ink-3);font-size:13px;margin:0 0 18px}
-.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px 30px}
-.lesson h3{font-size:14px;margin:0 0 5px;font-weight:700;display:flex;align-items:baseline;gap:8px}
-.lesson h3 em{font-family:var(--f-mono);font-style:normal;font-size:11px;color:var(--ink-3);letter-spacing:.1em}
-.lesson p{margin:0;font-size:13.5px;color:var(--ink-2)}
-.lesson code{font-family:var(--f-mono);font-size:12px;background:var(--card);border:1px solid var(--rule-2);padding:1px 5px;border-radius:2px}
-.foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-.chip,.btn,.slot{transition:background .12s ease,border-color .12s ease,transform .12s ease}
-.toast{
-  position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
-  background:var(--ink);color:var(--paper);font-size:13px;padding:9px 16px;border-radius:2px;
-  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .18s ease;
-}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px 30px}
+.lesson .eyebrow{display:block;margin-bottom:2px}
+.lesson h3{font-size:14px;margin:0 0 5px;font-weight:700;text-wrap:balance}
+.lesson p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:60ch}
+.lesson code{font-family:var(--f-body);font-size:12.5px;background:var(--card);border:1px solid var(--rule-2);padding:1px 5px;border-radius:2px;white-space:nowrap}
+.foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3);max-width:80ch}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-size:13px;padding:9px 16px;border-radius:2px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:10}
 .toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+@media (max-width:620px){
+  .wrap{padding:0 14px 56px}
+  .masthead{padding-top:20px}
+  .brand h1{font-size:22px}
+  .modes{margin-left:0;width:100%}
+  .modes button{flex:1;padding:9px 6px}
+  .panel-hd .hint{display:none}
+  .board{font-size:16px;line-height:2.15;padding:18px 14px}
+  .slot{min-width:84px;padding:4px 9px;font-size:14.5px}
+  .tok{flex-direction:column;gap:0}
+  .tok+.tok::before{display:none}
+  .tok .en{font-size:11px;line-height:1.3}
+  .row,.row-hd{grid-template-columns:1fr 34px}
+  .row input.en{grid-column:1;grid-row:2}
+  .row .rm{grid-row:1 / span 2;grid-column:2;height:100%}
+  .row-hd span:nth-child(2){display:none}
+  .tray{max-height:340px}
+}
 </style>
+</head>
+<body>
 <div class="wrap">
   <header class="masthead">
     <div class="brand">
       <h1>提示詞排版台</h1>
-      <span class="sub">Prompt Blocks</span>
+      <span class="sub">AI 大頭貼 · 國中生版</span>
     </div>
-    <p>把關鍵字拖進句子的凹槽，一句能用的指令就排好了。不用背公式，看著填就會。</p>
-    <div class="modes" id="modes" role="group" aria-label="用途"></div>
+    <p>用 AI 設計你自己的大頭貼。把字塊拖進句子的凹槽，會同時排出中文和英文兩種指令，哪裡不滿意都能自己改。</p>
+    <div class="modes" id="modes" role="group" aria-label="要做什麼"></div>
   </header>
 
   <div class="formula" id="formula"></div>
@@ -279,477 +253,671 @@ body{
     <section class="panel">
       <div class="panel-hd">
         <h2>排版盤</h2>
-        <span class="hint">點凹槽選它，再點右邊的字塊；或直接拖進來</span>
+        <span class="hint">點一格選它，再點右邊的字塊；或直接把字塊拖進來</span>
       </div>
-      <div class="tpl" id="tpl" role="group" aria-label="句型"></div>
-      <div class="board" id="board"></div>
-      <div class="out">
-        <div class="out-lbl">
-          <span>貼給 AI 的完整指令</span>
-          <span class="optional" id="count"></span>
+      <div class="tplbar">
+        <div id="tpl" role="group" aria-label="句型" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        <div class="tools">
+          <button type="button" class="btn sm" id="dice">隨機排一組</button>
+          <button type="button" class="btn sm" id="sample">放回範例</button>
+          <button type="button" class="btn sm" id="clear">全部清空</button>
         </div>
-        <pre id="output"></pre>
-        <div class="acts">
-          <button class="btn primary" id="copy">複製指令</button>
-          <button class="btn" id="dice">隨機排一組</button>
-          <button class="btn ghost" id="clear">全部清空</button>
+      </div>
+      <div class="board" id="board"></div>
+      <div class="insp" id="insp"></div>
+      <div class="outs">
+        <div class="outs-hd">
+          <span class="eyebrow">排好的指令</span>
+          <span class="eyebrow" id="count"></span>
+        </div>
+        <div class="ofield">
+          <div class="lbl">
+            <label class="name" for="out-zh">繁體中文</label>
+            <span class="for" id="for-zh"></span>
+            <button type="button" class="btn primary sm" data-copy="zh">複製中文</button>
+          </div>
+          <textarea id="out-zh" rows="4" spellcheck="false"></textarea>
+          <div class="edited" id="ed-zh" hidden>你手動改過這一欄，排版盤的變更不會蓋掉它。<button type="button" class="link" data-regen="zh">用排版盤重新產生</button></div>
+        </div>
+        <div class="ofield">
+          <div class="lbl">
+            <label class="name" for="out-en">English</label>
+            <span class="for" id="for-en"></span>
+            <button type="button" class="btn primary sm" data-copy="en">複製英文</button>
+          </div>
+          <textarea id="out-en" class="en" rows="4" spellcheck="false"></textarea>
+          <div class="edited" id="ed-en" hidden>你手動改過這一欄，排版盤的變更不會蓋掉它。<button type="button" class="link" data-regen="en">用排版盤重新產生</button></div>
         </div>
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel lex">
       <div class="panel-hd">
         <h2>字盤</h2>
-        <span class="hint" id="trayHint">選一類，挑一個字塊</span>
+        <span class="hint" id="trayHint"></span>
       </div>
       <div class="cats" id="cats" role="group" aria-label="關鍵字分類"></div>
       <div class="tray" id="tray"></div>
-      <div class="tip" id="tip"></div>
+      <div class="tip" id="tip" aria-live="polite"></div>
     </section>
   </div>
 
   <section class="lessons">
-    <h2>三件事學會了，你就不需要這個網站了</h2>
-    <p class="note">下面每一條，都是上面那個句子正在示範的東西。</p>
+    <h2>記住這四件事，你自己就會寫指令</h2>
+    <p class="note">上面排出來的每一句，都用到了這四件事。</p>
     <div class="lgrid">
       <div class="lesson">
-        <h3><em>01</em>先講「是什麼」，再講「長什麼樣」</h3>
-        <p>主體永遠放最前面。AI 讀到越前面的字，權重越高。把「一隻橘貓」放最後，你會得到一張以風格為主、貓只是配角的圖。</p>
+        <span class="eyebrow">順序</span>
+        <h3>先講「是誰」，再講「長什麼樣」</h3>
+        <p>主角放最前面，AI 越前面的字越看重。把「一隻橘貓」丟到最後，可能會得到一張滿滿耳機和星空、貓卻小小一隻的圖。</p>
       </div>
       <div class="lesson">
-        <h3><em>02</em>用逗號分段，不要寫成作文</h3>
-        <p>圖像類的 AI 吃的是<code>關鍵字, 關鍵字, 關鍵字</code>，不是完整句子。一個逗號一個概念，多寫連接詞反而會稀釋掉重點。</p>
+        <span class="eyebrow">尺寸</span>
+        <h3>大頭貼最後會縮成一個小圓圈</h3>
+        <p>在聊天室裡，大頭貼通常只有指甲大小。選<code>頭像特寫</code>和<code>乾淨的純色</code>背景，縮小之後還認得出是你。</p>
       </div>
       <div class="lesson">
-        <h3><em>03</em>形容詞要可以拍得出來</h3>
-        <p>「好看」「有質感」AI 看不懂。<code>黃金時刻的光</code>、<code>淺景深</code>、<code>85mm 人像鏡</code>看得懂，因為那是攝影師真的會下的指令。</p>
+        <span class="eyebrow">用字</span>
+        <h3>形容詞要畫得出來</h3>
+        <p>「很帥」「很可愛」AI 不知道是哪一種。<code>圓框眼鏡</code>、<code>雀斑</code>、<code>帽T</code>畫得出來，也更像你。</p>
       </div>
       <div class="lesson">
-        <h3><em>04</em>文字類的 AI 要反過來</h3>
-        <p>寫信、改稿、整理重點時，用完整句子，並先指定角色：<code>你是一位資深編輯</code>。角色一定下來，用字和判斷標準就跟著定了。</p>
+        <span class="eyebrow">安全</span>
+        <h3>不用上傳真的照片</h3>
+        <p>大頭貼不需要長得跟你一模一樣。用你喜歡的東西代表自己就很有記憶點，也不要寫上全名或學校。很多 AI 工具有年齡規定，第一次用先跟家長或老師確認。</p>
       </div>
     </div>
-    <p class="foot">關鍵字皆為中英對照，複製出來的是英文版本，Midjourney、Stable Diffusion、DALL·E、Sora 都吃得下。文字模式的指令適用於 Claude、ChatGPT、Gemini。</p>
+    <p class="foot">中文欄是完整的句子，適合貼給看得懂中文的 AI。英文欄是逗號分開的關鍵字，幾乎所有 AI 繪圖工具都看得懂。兩欄都可以直接改字再複製。你排的內容會自動存在這台電腦的瀏覽器裡。</p>
   </section>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 const CAT = {
-  subject:{zh:"主體",tip:"畫面的主角。人、動物、物件都算，越具體越好。"},
-  action:{zh:"動作",tip:"主體正在做什麼。有動作的圖比呆站著的圖生動。"},
-  setting:{zh:"場景",tip:"故事發生在哪裡。地點會連帶決定背景細節。"},
-  style:{zh:"風格",tip:"整張圖的美術方向。這一格換掉，整張圖就換了個世界。"},
-  light:{zh:"光線",tip:"光決定情緒。同一個場景，晨光和霓虹是兩張圖。"},
-  camera:{zh:"鏡頭",tip:"距離和角度。攝影師的術語 AI 都聽得懂。"},
-  mood:{zh:"色調",tip:"顏色的整體傾向，用來收尾統一整張圖的感覺。"},
-  quality:{zh:"畫質",tip:"補在最後的加分詞，讓成品更精緻。可有可無。"},
-  motion:{zh:"運鏡",tip:"影片才有的一格：鏡頭自己怎麼動。"},
-  role:{zh:"角色",tip:"先讓 AI 變成某個人，它的用字和判斷標準就跟著變。"},
-  task:{zh:"任務",tip:"你要它做的事。動詞開頭，一次只交辦一件。"},
-  audience:{zh:"對象",tip:"寫給誰看。這一格會決定深淺和例子。"},
-  tone:{zh:"語氣",tip:"同樣的內容，語氣不同就是完全不同的稿。"},
-  format:{zh:"格式",tip:"要條列還是段落、多長。不講，它就自由發揮。"},
-  limit:{zh:"限制",tip:"明講你不要什麼，比重講你要什麼更有效。"}
+  subject:{zh:"主角",tip:"大頭貼上的主角是誰。可以是你自己，也可以是代表你的動物或角色。"},
+  look:{zh:"特徵",multi:true,tip:"髮型和配件。這是讓大頭貼「一看就知道是你」的關鍵，可以選好幾個。"},
+  outfit:{zh:"穿著",tip:"大頭貼通常只拍到肩膀，選領口和帽子附近看得到的衣服最有感。"},
+  expression:{zh:"表情",tip:"表情決定別人第一眼覺得你是什麼個性。"},
+  style:{zh:"風格",tip:"整張圖的畫法。這一格換掉，同一個角色就像到了另一個世界。"},
+  background:{zh:"背景",tip:"大頭貼會縮得很小，背景越簡單，主角越清楚。"},
+  framing:{zh:"構圖",tip:"主角在畫面裡的大小和角度。大頭貼的首選是頭像特寫。"},
+  light:{zh:"光線",tip:"光決定氣氛。同一個角色，夕陽光和霓虹燈是兩種完全不同的感覺。"},
+  palette:{zh:"色調",tip:"整張圖的顏色感覺。挑一個你喜歡的就好。"},
+  quality:{zh:"畫質",multi:true,tip:"放在最後的加分詞，可有可無，可以選好幾個。"},
+  avoid:{zh:"不要",multi:true,tip:"告訴 AI 什麼不要出現。AI 很愛自己在圖上亂加文字，先講清楚。"},
+  motion:{zh:"動態",multi:true,tip:"會動的大頭貼才有這一格：畫面裡什麼在動。記得加上「無縫循環播放」。"},
+  role:{zh:"角色",tip:"先讓 AI 變成某種專家，它給的建議就會比較專業。"},
+  task:{zh:"任務",tip:"你要它幫你做什麼。一次只交代一件事，效果最好。"},
+  about:{zh:"關於我",multi:true,tip:"讓 AI 認識你，點子才會像你。選你真的喜歡的東西，可以選好幾個。"},
+  tone:{zh:"語氣",tip:"要它用什麼口氣跟你說話。"},
+  format:{zh:"格式",tip:"回答要長什麼樣子。不講清楚，它可能會寫一大篇。"},
+  limit:{zh:"限制",multi:true,tip:"明講你不要什麼，AI 比較不會亂來。可以選好幾個。"}
 };
 
 const LEX = {
 subject:[
- ["a young woman","一位年輕女性","人物不用寫名字，寫年齡、性別、外型特徵就夠。"],
- ["an elderly craftsman","一位年長工匠","加上職業，AI 會自動補上工具、圍裙、手上的繭。"],
- ["a teenage boy with round glasses","一位戴圓框眼鏡的少年","一個小配件就能讓臉變得有記憶點。"],
- ["an orange tabby cat","一隻橘貓","動物寫品種或毛色，比只寫「貓」準得多。"],
- ["a shiba inu","一隻柴犬","品種名是最短的精準描述。"],
- ["a vintage film camera","一台復古底片相機","物件加上年代形容詞，質感立刻不同。"],
- ["a cup of pour-over coffee","一杯手沖咖啡","食物飲品要寫做法，不然會很像罐頭圖。"],
- ["a bouquet of dried flowers","一束乾燥花","乾燥、新鮮、枯萎，狀態就是主體的一部分。"],
- ["an old apartment building","一棟老公寓","建築寫年代和類型，避免變成樣品屋。"],
- ["a spaceship","一艘太空船","科幻主體可以很短，交給風格那一格去定調。"]
+ ["a middle school boy","一個國中男生","寫年紀就好，AI 會自己畫出差不多年紀的臉。"],
+ ["a middle school girl","一個國中女生","寫年紀就好，長相交給「特徵」那一格來決定。"],
+ ["a teenager with a gender-neutral look","一個中性打扮的少年","不想被分成男生女生，就用這個。"],
+ ["a shiba inu","一隻柴犬","用動物當大頭貼，不用露臉也很有個性。"],
+ ["an orange tabby cat","一隻橘貓","寫出毛色，比只寫「貓」準很多。"],
+ ["a little fox","一隻小狐狸","「小」這個字會讓 AI 畫得比較可愛。"],
+ ["a panda","一隻熊貓","黑白分明，縮成小圓圈也認得出來。"],
+ ["a baby dinosaur","一隻小恐龍","加上 baby，恐龍就從嚇人變成可愛。"],
+ ["a penguin","一隻企鵝","圓滾滾的身形，很適合做 Q 版。"],
+ ["a small cute robot","一個可愛的小機器人","喜歡科技的人很適合，可以加耳機或天線。"],
+ ["a young wizard apprentice","一位魔法學徒","奇幻角色，配斗篷和發光的效果很好看。"],
+ ["a little astronaut","一個小太空人","頭盔玻璃會反射星空，細節很豐富。"]
 ],
-action:[
- ["looking straight at the camera","正看著鏡頭","要有眼神接觸就一定要寫，不然常常會側臉。"],
- ["smiling softly","淺淺地微笑","表情寫程度副詞，避免笑得太用力。"],
- ["walking through the crowd","走在人群中","動作帶場景，一句抵兩格。"],
- ["reading a book","正在讀書","靜態動作適合安靜的畫面。"],
- ["playing an acoustic guitar","彈著木吉他","樂器要寫種類，不然常常畫錯。"],
- ["running through the rain","在雨中奔跑","天氣＋動作＝現成的戲劇感。"],
- ["sitting quietly by the window","安靜坐在窗邊","窗邊幾乎一定會配上好看的光。"],
- ["looking back over the shoulder","回頭望","回眸是很吃香的構圖，AI 也很會畫。"],
- ["holding a paper lantern","提著一盞紙燈籠","手上有東西，畫面就有了故事。"]
+look:[
+ ["fluffy curly hair","蓬鬆捲髮","頭髮是大頭貼裡面積最大的東西，影響很大。"],
+ ["neat short hair","俐落短髮","看起來清爽有精神。"],
+ ["twin tails","雙馬尾","動漫風格裡很經典的髮型。"],
+ ["a streak of blue in the hair","一撮藍色挑染","一小撮顏色，就能變成你的記號。"],
+ ["round glasses","圓框眼鏡","戴眼鏡的人記得加，才會像你。"],
+ ["big over-ear headphones","大耳罩耳機","喜歡音樂的人必選，輪廓超明顯。"],
+ ["a baseball cap","棒球帽","運動感，帽簷會讓臉有陰影。"],
+ ["a knitted beanie","毛線帽","溫暖又可愛，冬天感。"],
+ ["a small bandage on the cheek","臉頰上的 OK 繃","有點調皮、有點帥的小細節。"],
+ ["freckles","雀斑","讓臉更有個性，不會像量產的角色。"],
+ ["a cute little fang","可愛的小虎牙","笑起來才看得到，很適合配大笑。"],
+ ["a cat ear headband","貓耳髮箍","想可愛一點就加這個。"]
 ],
-setting:[
- ["in a cozy cafe","在溫暖的咖啡廳","室內空間寫氛圍形容詞，會影響家具和顏色。"],
- ["on a Taipei street at night","在夜晚的台北街頭","地名很好用，AI 認得招牌、機車和騎樓。"],
- ["in a misty forest","在起霧的森林裡","霧會自動幫你做出層次和景深。"],
- ["by the ocean at dusk","黃昏的海邊","地點寫上時間，光線那格就更好接。"],
- ["in a quiet library","在安靜的圖書館","書架是很強的背景，構圖自然有線條。"],
- ["at a neon night market","在霓虹夜市","台灣題材首選，色彩最豐富。"],
- ["in a minimalist studio","在極簡攝影棚","背景乾淨，適合產品和人像。"],
- ["on a mountain summit","在山頂上","高處視野會帶出遠景和雲海。"],
- ["in a tatami room","在榻榻米房間","和室的木格窗會投出很漂亮的影子。"]
+outfit:[
+ ["a hoodie","帽T","最百搭，帽子的形狀讓輪廓更好看。"],
+ ["a school tracksuit","學校運動服","很有學生感的日常穿著。"],
+ ["a school uniform shirt with a tie","制服襯衫加領帶","整齊正式，動漫風格常見。"],
+ ["a basketball jersey","籃球背心","愛運動的人首選，可以指定顏色。"],
+ ["denim overalls","吊帶褲","可愛又有點復古。"],
+ ["a cozy knitted scarf","暖暖的圍巾","圍巾會把臉框起來，大頭貼很好用。"],
+ ["a spacesuit","太空衣","配小太空人或星空背景。"],
+ ["a wizard cloak","魔法師斗篷","奇幻風格，帽兜可以蓋住一半的頭。"],
+ ["a band T-shirt","樂團 T 恤","有個性，適合搭配耳機。"]
+],
+expression:[
+ ["a big bright smile","露出大大的笑容","最有親和力的表情。"],
+ ["raising one eyebrow confidently","自信地挑眉","看起來很有自己的想法。"],
+ ["making a peace sign","比 YA","手會入鏡，有時候要加「不要多餘的手指」。"],
+ ["winking","眨一隻眼","俏皮又有活力。"],
+ ["blushing shyly","害羞地臉紅","臉頰會有紅紅的一團，很可愛。"],
+ ["a cool, calm expression","酷酷的表情","不笑也可以很有型。"],
+ ["sticking out tongue playfully","調皮地吐舌頭","搞笑系大頭貼首選。"],
+ ["resting chin on hand","托著下巴","看起來在思考，有點文青。"],
+ ["surprised with mouth open","驚訝地張大嘴","很適合做成貼圖或梗圖。"],
+ ["eyes closed, enjoying the music","閉著眼睛享受音樂","跟耳機是絕配。"]
 ],
 style:[
- ["photorealistic photography","寫實攝影","想要「像真的照片」，就一定要寫這一組。"],
- ["Japanese film photography","日系底片","顆粒感、低對比、偏青的色偏，氣氛派首選。"],
- ["watercolor illustration","水彩插畫","邊緣會有暈染，適合柔軟的題材。"],
- ["Ghibli-style anime","吉卜力動畫風","手繪感的動畫背景與柔和人物線條。"],
- ["Pixar-style 3D render","皮克斯 3D 風","大眼睛、圓潤造型、乾淨的打光。"],
- ["cyberpunk","賽博龐克","霓虹、雨夜、高科技低生活。"],
- ["minimal line art","極簡線稿","只有線條，適合圖示和刺青草稿。"],
- ["oil painting","油畫","看得見筆觸和厚度，適合肖像。"],
- ["pixel art","像素藝術","復古遊戲畫面，記得配低解析度感。"],
- ["steampunk","蒸氣龐克","黃銅、齒輪、維多利亞時代。"],
- ["vintage travel poster","復古旅遊海報","色塊分明、有印刷感，很適合做主視覺。"],
- ["claymation","黏土定格動畫","看得到指紋和材質，可愛又有手感。"],
- ["ukiyo-e woodblock print","浮世繪","平面化的線條與傳統配色。"],
- ["low poly 3D","低多邊形 3D","幾何切面，乾淨現代。"]
+ ["Japanese anime style","日系動漫","大眼睛、線條乾淨，最多人選的風格。"],
+ ["chibi style with a big head","Q版大頭","頭大身體小，縮成小圖也超可愛。"],
+ ["3D animated movie style","3D 動畫電影","像動畫電影裡的角色，立體又圓潤。"],
+ ["pixel art game style","像素遊戲","一格一格的方塊，復古遊戲感。"],
+ ["die-cut sticker style with a white outline","貼紙","角色外面會有一圈白邊，像真的貼紙。"],
+ ["soft watercolor illustration","水彩插畫","顏色會暈開，溫柔安靜的感覺。"],
+ ["American comic book style","美式漫畫","粗黑線條加網點，很有力量。"],
+ ["clay figure style","黏土公仔","看得到黏土的質感，像手捏的。"],
+ ["flat vector illustration","扁平向量插畫","沒有陰影、色塊分明，簡單又現代。"],
+ ["cyberpunk style","賽博龐克","霓虹燈和未來科技感。"],
+ ["simple doodle style","簡筆塗鴉","像在筆記本上隨手畫的。"]
+],
+background:[
+ ["a plain solid color background","乾淨的純色","大頭貼最推薦，縮小以後主角最清楚。"],
+ ["a soft gradient background","柔和的漸層","比純色多一點變化，一樣不會搶戲。"],
+ ["a classroom chalkboard background","教室的黑板","很有學生感，可以請 AI 在黑板上畫小塗鴉。"],
+ ["a basketball court background","籃球場","配運動風格的穿著。"],
+ ["a street at sunset after school","放學後的夕陽街道","有故事感，但縮小後可能看不清楚。"],
+ ["a starry night sky","滿天的星空","配太空人、魔法學徒都很適合。"],
+ ["falling cherry blossoms","飄落的櫻花","粉紅色的花瓣會飄在主角前面。"],
+ ["library bookshelves","圖書館的書架","愛看書的人很適合。"],
+ ["a gaming room with neon lights","電競房的霓虹燈","喜歡打電動的人首選。"],
+ ["floating bubbles","漂浮的泡泡","夢幻、輕盈的感覺。"],
+ ["blue sky with fluffy clouds","藍天和白雲","清新明亮，跟什麼風格都搭。"]
+],
+framing:[
+ ["head and shoulders portrait","頭像特寫","大頭貼的標準構圖，一定要有。"],
+ ["face centered in the frame","臉在正中間","被裁成圓形時，臉才不會被切掉。"],
+ ["circular profile picture frame","圓形頭像框","直接做成圓形的樣子，方便預覽。"],
+ ["looking straight at the viewer","正面看著鏡頭","眼神對到，別人會覺得你在看他。"],
+ ["three-quarter view","微微側身","比正面更有立體感。"],
+ ["slightly low angle","稍微仰角","從下面往上拍，看起來比較有氣勢。"],
+ ["square 1:1 composition","正方形 1:1","大部分的大頭貼都是正方形。"],
+ ["plenty of space around the head","頭的周圍留白","裁切的時候比較不會切到頭髮。"]
 ],
 light:[
- ["golden hour light","黃金時刻的光","日出後、日落前那一小時，最討喜的光。"],
- ["soft natural light","柔和自然光","陰影淡，適合人像和食物。"],
- ["backlit with lens flare","逆光帶光暈","主體會有一圈輪廓光，很出片。"],
- ["neon lighting","霓虹燈光","會在臉上打出藍紫紅的色塊。"],
- ["candlelight","燭光","暖、暗、範圍小，親密感最強。"],
- ["overcast diffused light","陰天散射光","沒有硬陰影，顏色最準，適合產品。"],
- ["dramatic side lighting","強烈側光","一半亮一半暗，戲劇感最強。"],
- ["morning window light","窗邊晨光","有形狀的光影，安靜的日常感。"],
- ["moonlight","月光","冷、藍、暗，夜景的基礎。"],
- ["studio softbox lighting","攝影棚柔光箱","均勻專業，商業攝影的預設值。"]
+ ["soft lighting","柔和的光","最安全的選擇，臉上不會有奇怪的陰影。"],
+ ["natural window light","窗邊的自然光","像在房間裡拍的，很生活感。"],
+ ["rim light from behind","背後的輪廓光","主角周圍會亮一圈，從背景跳出來。"],
+ ["warm sunset glow","夕陽的暖光","整張圖會偏橘黃，很溫暖。"],
+ ["neon glow","霓虹燈光","臉上會有藍色和粉紅色的光。"],
+ ["clean studio lighting","乾淨的攝影棚打光","均勻明亮，像證件照但更好看。"]
 ],
-camera:[
- ["close-up shot","特寫","只拍臉或局部，情緒最直接。"],
- ["medium shot","半身","最通用的距離，人和背景都看得到。"],
- ["full body shot","全身","要拍到服裝和姿勢就選這個。"],
- ["wide angle shot","廣角","容納大場景，邊緣會有點變形。"],
- ["top-down view","俯視","擺拍平面圖的標準視角。"],
- ["low angle shot","低角度仰拍","讓主體看起來高大有氣勢。"],
- ["shallow depth of field","淺景深","背景糊掉，主體跳出來。"],
- ["macro shot","微距","貼很近拍細節，質感全出來。"],
- ["85mm portrait lens","85mm 人像鏡","人像的經典焦段，臉部比例最自然。"],
- ["fisheye lens","魚眼","極度變形，玩效果用。"]
-],
-mood:[
- ["warm nostalgic tones","溫暖懷舊色調","偏黃偏橘，像舊照片。"],
- ["cool blue tones","冷藍色調","理性、疏離、有距離感。"],
- ["high contrast","高對比","黑更黑白更白，力道強。"],
- ["soft pastel palette","柔和粉彩","低飽和的粉色系，甜而不膩。"],
- ["moody and melancholic","陰鬱憂傷","壓低亮度，適合敘事型畫面。"],
- ["bright and airy","明亮通透","高亮度、低對比，清爽乾淨。"],
- ["faded retro colors","復古褪色","像放久了的底片。"],
- ["mysterious atmosphere","神秘氛圍","暗部多、資訊少，留想像空間。"]
+palette:[
+ ["pastel macaron colors","馬卡龍粉彩","淡淡的粉色系，甜甜的。"],
+ ["bright vivid colors","活力鮮豔","顏色飽和，很有精神。"],
+ ["blue and purple night tones","藍紫夜晚","神秘、有點酷。"],
+ ["black and white with one bright accent color","黑白加一個亮色","只留一個顏色，超有記憶點。"],
+ ["warm milk tea tones","奶茶暖咖啡","溫柔的咖啡色系。"],
+ ["fresh mint green palette","清新薄荷綠","清爽乾淨的感覺。"],
+ ["faded retro colors","復古褪色","像放了很久的舊照片。"]
 ],
 quality:[
- ["highly detailed","高細節","通用加分詞，讓紋理更豐富。"],
- ["8k resolution","8K 解析度","要求更高的解析度與清晰度。"],
- ["sharp focus","銳利對焦","避免整張圖糊掉。"],
- ["cinematic","電影感","會自動偏向寬螢幕構圖和電影調色。"],
- ["award-winning photography","得獎攝影作品","一句話把整體水準往上拉。"],
- ["fine texture detail","細膩質感","布料、皮膚、木紋會更明顯。"]
+ ["highly detailed","高細節","讓頭髮、衣服的細節更豐富。"],
+ ["clean line art","線條乾淨","動漫和插畫風格加這個，線條比較不會亂。"],
+ ["sharp focus","清楚銳利","避免整張圖糊糊的。"],
+ ["high resolution","高解析度","要拿來印出來的話可以加。"]
+],
+avoid:[
+ ["no text","文字","AI 很愛在圖上加亂碼文字，幾乎每次都該加。"],
+ ["no watermark","浮水印","避免角落出現奇怪的標記。"],
+ ["no extra fingers","多餘的手指","有手入鏡時很好用，AI 常畫錯手指。"],
+ ["not blurry","模糊","確保主角清楚。"],
+ ["no cluttered background","雜亂的背景","背景太多東西，縮小後會看不清楚。"],
+ ["nothing scary","恐怖的感覺","避免畫出讓人不舒服的東西。"]
 ],
 motion:[
- ["slow push in","緩慢推近","鏡頭慢慢靠近主體，情緒逐漸集中。"],
- ["orbiting camera","環繞鏡頭","繞著主體轉，最適合展示產品。"],
- ["handheld shaky cam","手持晃動","紀錄片感，真實但不穩。"],
- ["drone descending shot","空拍下降","從高空落到主體，開場最好用。"],
- ["slow pan to the right","緩慢向右橫搖","平順地帶出場景全貌。"],
- ["tracking shot following the subject","跟拍","鏡頭跟著主體走，帶著觀眾一起前進。"],
- ["static locked-off shot","定鏡不動","讓畫面裡的東西自己動。"],
- ["time-lapse","縮時","壓縮時間，看雲、人潮、光線流動。"]
+ ["gentle blinking","輕輕眨眼","最簡單也最自然的動態。"],
+ ["hair gently swaying in the breeze","頭髮隨風飄動","畫面會很有空氣感。"],
+ ["nodding and waving hello","點頭揮手打招呼","很適合當作自我介紹的動畫。"],
+ ["stars twinkling in the background","背景星星一閃一閃","只有背景在動，主角保持清楚。"],
+ ["bobbing head to the music","跟著音樂搖頭晃腦","配耳機跟音樂超適合。"],
+ ["slow camera push in","鏡頭慢慢推近","鏡頭慢慢靠近主角，有電影感。"],
+ ["seamless loop","無縫循環播放","動態大頭貼一定要加，不然播完會跳一下。"],
+ ["3-second short animation","3 秒的短動畫","大頭貼動畫很短，講清楚長度比較好。"]
 ],
 role:[
- ["a senior marketing strategist","一位資深行銷企劃","會用市場語言，講賣點和受眾。"],
- ["a professional editor","一位專業編輯","會抓語病、砍贅字、注意節奏。"],
- ["an elementary school teacher","一位國小老師","會用生活比喻，避免抽象名詞。"],
- ["a financial journalist","一位財經記者","重數字、重來源、句子短。"],
- ["a customer support lead","一位客服主管","懂得先同理再解決。"],
- ["a patient programming mentor","一位有耐心的程式導師","會拆步驟，不會跳過基礎。"]
+ ["a character designer who is great at avatars","一位擅長角色設計的插畫家","想要大頭貼點子時，請這種專家最適合。"],
+ ["a teacher who knows AI image tools well","一位懂 AI 繪圖的老師","會用你聽得懂的方式教你。"],
+ ["a video game artist","一位電玩美術設計師","想要遊戲角色風格時很適合。"],
+ ["a copywriter who is great with names","一位很會取名字的文案高手","想取暱稱或帳號名稱時用。"],
+ ["a color palette expert","一位配色專家","不知道選什麼顏色時找他。"]
 ],
 task:[
- ["Write an apology email about a delayed shipment.","寫一封出貨延遲的道歉信","任務用動詞開頭，一次只交辦一件事。"],
- ["Rewrite the following text to sound more conversational.","把下面這段改寫得更口語","改寫類要記得附上原文。"],
- ["Summarize the key points below.","把下面的內容整理成重點","整理類最好同時指定格式。"],
- ["Generate 10 headline options.","產生 10 個標題選項","明講數量，才不會只給三個。"],
- ["Proofread for typos and awkward phrasing.","檢查錯字與不通順的句子","校對類建議加上「只改必要的地方」。"],
- ["Explain this concept to a complete beginner.","把這個概念解釋給完全的新手聽","解釋類一定要搭配「對象」那一格。"]
+ ["Give me 5 different avatar ideas.","幫我想 5 種大頭貼的點子","講清楚數量，才不會只給你一兩個。"],
+ ["Turn my description into an AI image prompt.","把我的描述改寫成 AI 繪圖指令","記得在這段話後面寫上你想要的樣子。"],
+ ["Suggest 3 color palettes that suit me.","推薦三組適合我的配色","搭配「關於我」一起用，配色會比較像你。"],
+ ["Come up with a gamer nickname for me.","幫我取一個遊戲暱稱","搭配「關於我」一起用，名字才會有意義。"],
+ ["Review my prompt below and tell me how to make it better.","看看我下面的指令哪裡可以更好","記得把你的指令貼在這段話的下面。"],
+ ["Explain how these art styles are different.","解釋這幾種畫風有什麼不同","在後面寫上你想比較的風格名稱。"]
 ],
-audience:[
- ["for a non-technical manager","給不懂技術的主管看","會自動避開術語，改用結果導向的說法。"],
- ["for junior high school students","給國中生看","句子變短，例子變日常。"],
- ["for prospective customers","給潛在客戶看","語氣會偏向說服與好處。"],
- ["for teammates who already know the background","給已經知道來龍去脈的同事看","可以省略背景，直接談重點。"]
+about:[
+ ["I love playing basketball.","喜歡打籃球","興趣會變成大頭貼上的小道具。"],
+ ["I love drawing and reading comics.","喜歡畫畫和看漫畫","AI 可能會建議漫畫風格。"],
+ ["I have a pet cat.","養了一隻貓","寵物很適合一起放進大頭貼。"],
+ ["I'm really into music.","很愛聽音樂","耳機、音符都是好用的元素。"],
+ ["I'm into space and science.","對太空和科學很有興趣","星空和太空人的點子就會出現。"],
+ ["I'm a little shy but funny.","有點害羞但很幽默","個性會影響表情的建議。"],
+ ["I love playing video games.","喜歡玩電動","遊戲角色風格的點子會變多。"]
 ],
 tone:[
- ["professional yet friendly","專業但親切","商務溝通最安全的預設值。"],
- ["warm and empathetic","溫暖有同理心","處理客訴、壞消息時用。"],
- ["concise and direct","簡潔直接","不繞路，適合對內溝通。"],
- ["formal","正式","公文、對外聲明用。"],
- ["light-hearted and humorous","輕鬆幽默","社群貼文用，但要看場合。"]
+ ["casual, like talking to a friend","像朋友聊天","回答會比較輕鬆好讀。"],
+ ["fun and energetic","活潑有趣","點子會比較大膽。"],
+ ["simple and easy to understand","簡單好懂","用字會比較簡單。"],
+ ["careful and detailed","認真仔細","解釋會比較完整，但也比較長。"],
+ ["kind and encouraging","溫柔鼓勵","請它幫你改東西時，比較不會被念。"]
 ],
 format:[
- ["as a bulleted list","用條列式","最好讀，也最好改。"],
- ["as a comparison table","用比較表格","有兩個以上選項時最清楚。"],
- ["in three short paragraphs","分成三段短文","有起承轉合，適合完整說明。"],
- ["under 300 words","300 字以內","字數限制是最有效的一種指令。"],
- ["with a heading for each section","每段加上小標","長內容一定要有小標。"]
+ ["as a bulleted list","用條列式","一點一點列出來，最好讀。"],
+ ["one sentence per idea","每個點子一句話說完","逼它講重點。"],
+ ["as a table","整理成表格","要比較好幾個選項時最清楚。"],
+ ["with an English prompt I can copy for each idea","附上可以直接複製的英文指令","拿到點子就能直接貼去畫，超省時間。"],
+ ["under 200 words","200 字以內","限制字數是讓 AI 不囉嗦最有效的方法。"]
 ],
 limit:[
- ["Avoid jargon.","不要用專業術語","避免它躲在術語後面講廢話。"],
- ["Reply in Traditional Chinese.","請用繁體中文回答","不寫的話，它可能回你簡體或英文。"],
- ["Skip the pleasantries and get to the point.","不要客套開場，直接講重點","省掉「當然可以！」那一段。"],
- ["Keep each point under 20 words.","每一點不超過 20 字","逼它把話講清楚。"],
- ["If information is missing, ask me instead of guessing.","資訊不足時反問我，不要自己猜","最能減少幻覺的一句話。"]
+ ["Reply in Traditional Chinese.","用繁體中文回答","不寫的話，它可能會回簡體中文或英文。"],
+ ["Avoid difficult words.","不要用太難的字","看不懂的字就請它換掉。"],
+ ["Keep everything appropriate for middle school students.","內容要適合國中生","讓 AI 知道你的年紀，內容會比較合適。"],
+ ["Don't base it on real celebrities.","不要用真實明星的長相","用真人的臉可能有肖像權的問題。"],
+ ["If you need more information, ask me first.","資訊不夠就先問我","可以減少 AI 自己亂猜。"]
 ]
 };
 
-const T = (zh) => ({t:"t",zh});
-const S = (cat,opt) => ({t:"s",cat,opt:!!opt});
+const S = (cat, o) => Object.assign({cat, pre:"", post:"", opt:false}, o || {});
 
 const MODES = [
- {id:"image",zh:"生成圖片",join:"csv",tpls:[
-   {id:"portrait",zh:"人物寫真",parts:[T("一張"),S("subject"),T("的照片，"),S("action"),T("，"),S("setting"),T("，以"),S("style"),T("呈現，"),S("light"),T("，"),S("camera"),T("，"),S("quality",1)],
-    seed:{0:1,1:0,2:8,3:1,4:0,5:8}},
-   {id:"scene",zh:"風景場景",parts:[T("一幅"),S("setting"),T("的景色，畫面中有"),S("subject"),T("，"),S("style"),T("，"),S("light"),T("，"),S("camera"),T("，"),S("mood"),T("，"),S("quality",1)]},
-   {id:"product",zh:"產品照",parts:[T("一張"),S("subject"),T("的產品照，"),S("setting"),T("，"),S("light"),T("，"),S("camera"),T("，"),S("style"),T("，"),S("quality",1)]},
-   {id:"character",zh:"角色設計",parts:[T("角色設計："),S("subject"),T("，"),S("action"),T("，"),S("style"),T("，"),S("mood"),T("，"),S("light"),T("，"),S("quality",1)]}
- ]},
- {id:"video",zh:"生成影片",join:"csv",tpls:[
-   {id:"shot",zh:"一顆鏡頭",parts:[T("一段影片："),S("subject"),T("，"),S("action"),T("，"),S("setting"),T("，鏡頭"),S("motion"),T("，"),S("style"),T("，"),S("light"),T("，"),S("mood",1)],
-    seed:{0:0,1:8,2:5,3:5,4:1,5:3}},
-   {id:"showcase",zh:"產品短片",parts:[T("一段產品影片："),S("subject"),T("，"),S("setting"),T("，鏡頭"),S("motion"),T("，"),S("light"),T("，"),S("style"),T("，"),S("quality",1)]}
- ]},
- {id:"text",zh:"寫文字",join:"sentence",tpls:[
-   {id:"brief",zh:"交辦任務",parts:[T("你是"),S("role"),T("。請"),S("task"),T("，寫"),S("audience"),T("。語氣"),S("tone"),T("，"),S("format"),T("，"),S("limit",1)],
-    seed:{0:4,1:0,2:2,3:1,4:2,5:1}},
-   {id:"revise",zh:"修改稿件",parts:[T("你是"),S("role"),T("。請"),S("task"),T("，"),S("format"),T("，"),S("limit"),T("，"),S("tone",1)]}
- ]}
+ {id:"image", zh:"靜態大頭貼", join:"csv",
+  forZh:"完整的句子，貼給看得懂中文的 AI，例如 ChatGPT、Gemini",
+  forEn:"逗號分開的關鍵字，幾乎所有 AI 繪圖工具都看得懂",
+  tpls:[
+   {id:"anime", zh:"動漫頭像", head:"profile picture avatar",
+    parts:[S("subject",{pre:"幫我畫一張",post:"的大頭貼"}),S("look",{pre:"，特徵是"}),S("outfit",{pre:"，穿著"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"}),S("framing",{pre:"，"}),S("palette",{pre:"，",post:"的色調",opt:true}),S("avoid",{pre:"，不要",opt:true})],
+    seed:[[0],[0,5],[0],[0],[0],[0],[0],[1],[0]]},
+   {id:"animal", zh:"動物化身", head:"cute animal profile picture avatar",
+    parts:[S("subject",{pre:"把我畫成",post:"當大頭貼"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("light",{pre:"，"}),S("background",{pre:"，背景是"}),S("framing",{pre:"，"}),S("quality",{pre:"，",opt:true}),S("avoid",{pre:"，不要",opt:true})],
+    seed:[[5],[7],[4],[5],[0],[10],[0],[0],[4]]},
+   {id:"game", zh:"遊戲角色", head:"game character profile picture avatar",
+    parts:[S("subject",{pre:"畫一張遊戲角色大頭貼，主角是"}),S("outfit",{pre:"，穿著"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("light",{pre:"，"}),S("palette",{pre:"，",post:"的色調"}),S("framing",{pre:"，"}),S("avoid",{pre:"，不要",opt:true})],
+    seed:[[10],[7],[3],[1],[3],[4],[2],[0],[0]]}
+  ]},
+ {id:"video", zh:"動態大頭貼", join:"csv",
+  forZh:"完整的句子，貼給看得懂中文的 AI 影片工具",
+  forEn:"逗號分開的關鍵字，大部分 AI 影片工具都看得懂",
+  tpls:[
+   {id:"loop", zh:"會動的頭像", head:"animated profile picture avatar",
+    parts:[S("subject",{pre:"做一個會動的大頭貼，主角是"}),S("look",{pre:"，特徵是"}),S("expression",{pre:"，"}),S("motion",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"}),S("palette",{pre:"，",post:"的色調",opt:true})],
+    seed:[[4],[5],[9],[4,6],[1],[8],[2]]},
+   {id:"hello", zh:"打招呼動畫", head:"short animated avatar greeting",
+    parts:[S("subject",{pre:"做一段大頭貼打招呼動畫，主角是"}),S("outfit",{pre:"，穿著"}),S("expression",{pre:"，"}),S("motion",{pre:"，"}),S("style",{pre:"，",post:"風格"}),S("background",{pre:"，背景是"}),S("avoid",{pre:"，不要",opt:true})],
+    seed:[[1],[3],[2],[2,7],[2],[3],[0]]}
+  ]},
+ {id:"text", zh:"請 AI 出點子", join:"sentence",
+  forZh:"直接貼給 ChatGPT、Gemini、Claude 這類聊天型 AI",
+  forEn:"英文版本，AI 回得不理想時可以換這欄試試",
+  tpls:[
+   {id:"ideas", zh:"幫我想點子",
+    parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("about",{pre:"關於我：",post:"。"}),S("tone",{pre:"語氣",post:"，"}),S("format",{post:"。"}),S("limit",{post:"。",opt:true})],
+    seed:[[0],[0],[0,2],[0],[3],[0,2]]},
+   {id:"review", zh:"幫我改指令",
+    parts:[S("role",{pre:"你是",post:"。"}),S("task",{post:"。"}),S("format",{post:"。"}),S("limit",{post:"。"}),S("tone",{pre:"語氣要",post:"。",opt:true})],
+    seed:[[1],[4],[0],[1,4],[4]]}
+  ]}
 ];
 </script>
 <script>
 (function(){
 const $ = (id)=>document.getElementById(id);
+const esc = (s)=>String(s).replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const trim = (s)=>String(s||"").trim();
+const MAX = 4, KEY = "prompt-blocks-avatar-v1";
+Object.keys(LEX).forEach((c)=>{ LEX[c] = LEX[c].map((a)=>({en:a[0],zh:a[1],tip:a[2]})); });
+
+const noDot = (s)=>s.replace(/[.。\s]+$/,"");
+const dot = (s)=>/[.!?。！？]$/.test(s) ? s : s+".";
+const SENT_CATS = ["task","about","limit"];
 const EN_WRAP = {
-  role:(s)=>"You are "+s+".",
+  role:(s)=>"You are "+noDot(s)+".",
   task:(s)=>s,
-  audience:(s)=>"Write it "+s+".",
-  tone:(s)=>"Tone: "+s+".",
-  format:(s)=>"Format: "+s+".",
+  about:(s)=>"About me: "+s,
+  tone:(s)=>"Tone: "+noDot(s)+".",
+  format:(s)=>"Format: "+noDot(s)+".",
   limit:(s)=>s
 };
-const state = {mode:MODES[0], tpl:MODES[0].tpls[0], fills:{}, active:null, cat:null};
 
-function slots(tpl){
-  const out=[];
-  tpl.parts.forEach((p,i)=>{ if(p.t==="s") out.push({i,cat:p.cat,opt:p.opt}); });
+const state = {mode:MODES[0], tpl:MODES[0].tpls[0], fills:{}, active:null, cat:null, manual:{zh:null,en:null}, mem:{}};
+
+/* ---------- helpers ---------- */
+function items(i){ return (state.fills[i]||[]).filter((it)=>trim(it.zh)||trim(it.en)); }
+function color(cat){ return "var(--c-"+cat+")"; }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function catsOf(tpl){ const out=[]; tpl.parts.forEach((p)=>{ if(!out.includes(p.cat)) out.push(p.cat); }); return out; }
+function seedFills(tpl){
+  const f={};
+  (tpl.seed||[]).forEach((arr,i)=>{
+    if(arr && arr.length) f[i]=arr.map((k)=>{ const it=LEX[tpl.parts[i].cat][k]; return {zh:it.zh,en:it.en}; });
+  });
+  return f;
+}
+function sanitize(f,tpl){
+  const out={};
+  if(!f || typeof f!=="object") return out;
+  Object.keys(f).forEach((k)=>{
+    const n=+k;
+    if(Number.isInteger(n) && n>=0 && n<tpl.parts.length && Array.isArray(f[k])){
+      out[n]=f[k].filter((x)=>x && typeof x==="object").slice(0,MAX).map((x)=>({zh:String(x.zh||""),en:String(x.en||"")}));
+    }
+  });
   return out;
 }
-function catsOf(tpl){ const seen=[]; slots(tpl).forEach(s=>{ if(!seen.includes(s.cat)) seen.push(s.cat); }); return seen; }
-function color(cat){ return "var(--c-"+cat+")"; }
-function seedFills(tpl){
-  const f={}; const sl=slots(tpl);
-  if(tpl.seed){ Object.keys(tpl.seed).forEach(k=>{ const s=sl[+k]; if(s) f[s.i]=tpl.seed[k]; }); }
-  return f;
+function prune(){
+  Object.keys(state.fills).forEach((k)=>{ const a=items(k); if(a.length) state.fills[k]=a; else delete state.fills[k]; });
+}
+function setActive(i){
+  if(state.active!==i) prune();
+  state.active=i;
+  if(i!=null) state.cat=state.tpl.parts[i].cat;
+}
+function save(){
+  try{
+    const mem=Object.assign({}, state.mem); mem[state.tpl.id]=state.fills;
+    localStorage.setItem(KEY, JSON.stringify({mode:state.mode.id, tpl:state.tpl.id, mem}));
+  }catch(e){}
+}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(KEY)||"null");
+    if(!d) return false;
+    const m=MODES.find((x)=>x.id===d.mode); const t=m && m.tpls.find((x)=>x.id===d.tpl);
+    if(!t) return false;
+    state.mode=m; state.tpl=t; state.mem=(d.mem && typeof d.mem==="object") ? d.mem : {};
+    state.fills = state.mem[t.id]!==undefined ? sanitize(state.mem[t.id],t) : seedFills(t);
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ---------- prompt text ---------- */
+function gen(){
+  const tpl=state.tpl, sentence=state.mode.join==="sentence";
+  let zh="", filled=0; const en=[];
+  tpl.parts.forEach((p,i)=>{
+    const its=items(i), cz=CAT[p.cat].zh;
+    if(!its.length){
+      if(p.opt) return;
+      zh+=p.pre+"［"+cz+"］"+p.post; en.push("["+cz+"]"); return;
+    }
+    filled++;
+    zh+=p.pre+its.map((it)=>trim(it.zh)||trim(it.en)).join("、")+p.post;
+    let ens=its.map((it)=>trim(it.en)||trim(it.zh));
+    if(sentence){
+      const sent=SENT_CATS.includes(p.cat);
+      if(sent) ens=ens.map(dot);
+      en.push(EN_WRAP[p.cat](ens.join(sent?" ":", ")));
+    } else en.push(ens.join(", "));
+  });
+  zh=zh.replace(/[，、：\s]+$/,"");
+  if(zh && !/[。！？]$/.test(zh)) zh+="。";
+  const enText = sentence ? en.join(" ") : [tpl.head].concat(en).join(", ");
+  return {zh, en:enText, filled, total:tpl.parts.length};
 }
 
 /* ---------- render ---------- */
 function renderModes(){
-  $("modes").innerHTML = MODES.map(m=>
+  $("modes").innerHTML = MODES.map((m)=>
     '<button type="button" data-m="'+m.id+'" aria-pressed="'+(m===state.mode)+'">'+m.zh+'</button>').join("");
 }
 function renderFormula(){
-  const cs = catsOf(state.tpl);
-  $("formula").innerHTML = '<span class="eyebrow">句子的骨架</span>' + cs.map((c,i)=>
-    (i?'<span class="plus">+</span>':'') +
-    '<span class="fchip" style="background:'+color(c)+'">'+CAT[c].zh+'</span>').join("");
+  $("formula").innerHTML = '<span class="eyebrow">句子的骨架</span>' + catsOf(state.tpl).map((c,i)=>
+    (i?'<span class="plus">+</span>':'')+'<span class="fchip" style="background:'+color(c)+'">'+CAT[c].zh+'</span>').join("");
 }
 function renderTpl(){
-  $("tpl").innerHTML = state.mode.tpls.map(t=>
-    '<button type="button" data-t="'+t.id+'" aria-pressed="'+(t===state.tpl)+'">'+t.zh+'</button>').join("");
+  $("tpl").innerHTML = state.mode.tpls.map((t)=>
+    '<button type="button" class="pill" data-t="'+t.id+'" aria-pressed="'+(t===state.tpl)+'">'+t.zh+'</button>').join("");
 }
 function renderBoard(){
-  const html = state.tpl.parts.map((p,i)=>{
-    if(p.t==="t") return '<span class="lead">'+p.zh+'</span>';
-    const item = state.fills[i]!=null ? LEX[p.cat][state.fills[i]] : null;
-    const cls = ["slot", item?"filled":"", state.active===i?"active":""].join(" ");
-    const inner = item
-      ? '<span class="zh">'+item[1]+'</span><span class="en">'+item[0]+'</span><span class="x">×</span>'
-      : '<span class="cat">'+CAT[p.cat].zh+'</span>'+(p.opt?'<span class="optional">可省略</span>':'');
-    return '<button type="button" class="'+cls+'" data-slot="'+i+'" data-cat="'+p.cat+'" style="color:'+color(p.cat)+'"'+
-      ' aria-label="'+CAT[p.cat].zh+(item?'：'+item[1]+'，點一下清除':'，點一下選擇')+'">'+inner+'</button>';
-  }).join("");
-  $("board").innerHTML = html;
+  let h="";
+  state.tpl.parts.forEach((p,i)=>{
+    const its=items(i), c=CAT[p.cat];
+    if(p.pre) h+='<span class="lead">'+esc(p.pre)+'</span>';
+    let inner, label;
+    if(its.length){
+      inner=its.map((it)=>{
+        const e=trim(it.en), z=trim(it.zh);
+        return '<span class="tok"><span class="zh">'+esc(z||e)+'</span><span class="en'+(e?'':' missing')+'">'+esc(e||"還沒有英文")+'</span></span>';
+      }).join("");
+      label=c.zh+"："+its.map((it)=>trim(it.zh)||trim(it.en)).join("、");
+    } else {
+      inner='<span class="cat">'+c.zh+'</span>'+(c.multi?'<span class="opt">可多選</span>':'')+(p.opt?'<span class="opt">可省略</span>':'');
+      label=c.zh+"，還沒填";
+    }
+    const cls="slot"+(its.length?" filled":"")+(state.active===i?" active":"");
+    h+='<button type="button" class="'+cls+'" data-slot="'+i+'" data-cat="'+p.cat+'" style="color:'+color(p.cat)+'" aria-pressed="'+(state.active===i)+'" aria-label="'+esc(label)+'">'+inner+'</button>';
+    if(p.post) h+='<span class="lead">'+esc(p.post)+'</span>';
+  });
+  $("board").innerHTML=h;
+}
+function renderInsp(){
+  const el=$("insp"), i=state.active;
+  if(i==null){
+    el.innerHTML='<p class="insp-empty">想改字嗎？點排版盤上的任何一格，就能在這裡修改中文和英文，或寫進自己想到的詞。</p>';
+    return;
+  }
+  const p=state.tpl.parts[i], c=CAT[p.cat], ex=LEX[p.cat][0];
+  if(!state.fills[i]) state.fills[i]=[];
+  const arr=state.fills[i];
+  if(!arr.length) arr.push({zh:"",en:""});
+  let h='<div class="insp-hd"><span class="fchip" style="background:'+color(p.cat)+'">'+c.zh+'</span>'+
+    '<span class="t">正在改這一格</span><span class="m">'+(c.multi?'可以放 1 到 '+MAX+' 個詞':'只放一個詞')+'</span>'+
+    '<span class="tools"><button type="button" class="btn sm" data-act="empty">清空這格</button>'+
+    '<button type="button" class="btn sm" data-act="done">改好了</button></span></div>';
+  h+='<div class="rows"><div class="row-hd" aria-hidden="true"><span>中文</span><span>English</span><span></span></div>';
+  arr.forEach((it,k)=>{
+    h+='<div class="row" data-r="'+k+'">'+
+      '<input class="zh" data-f="zh" value="'+esc(it.zh)+'" placeholder="例如：'+esc(ex.zh)+'" aria-label="中文，第 '+(k+1)+' 個詞">'+
+      '<input class="en" data-f="en" value="'+esc(it.en)+'" placeholder="e.g. '+esc(ex.en)+'" aria-label="英文，第 '+(k+1)+' 個詞" spellcheck="false">'+
+      '<button type="button" class="rm" data-rm="'+k+'" aria-label="刪掉第 '+(k+1)+' 個詞">×</button></div>';
+  });
+  h+='</div><div class="insp-foot">'+
+    (c.multi?'<button type="button" class="btn sm" data-act="add"'+(arr.length>=MAX?' disabled':'')+'>＋ 自己寫一個</button>':'')+
+    '<span class="note">英文不會寫可以先空著，英文指令會暫時放中文。</span></div>';
+  el.innerHTML=h;
 }
 function renderCats(){
-  const cs = catsOf(state.tpl);
-  if(!cs.includes(state.cat)) state.cat = cs[0];
-  $("cats").innerHTML = cs.map(c=>
-    '<button type="button" data-c="'+c+'" aria-pressed="'+(c===state.cat)+'" style="color:'+color(c)+'">'+
-    '<span class="dot"></span>'+CAT[c].zh+'</button>').join("");
+  const cs=catsOf(state.tpl);
+  if(!cs.includes(state.cat)) state.cat=cs[0];
+  $("cats").innerHTML = cs.map((c)=>
+    '<button type="button" data-c="'+c+'" aria-pressed="'+(c===state.cat)+'" style="color:'+color(c)+'"><span class="dot"></span><span class="nm">'+CAT[c].zh+'</span></button>').join("");
 }
 function renderTray(){
-  const c = state.cat;
-  const used = Object.keys(state.fills).filter(k=>state.tpl.parts[k].cat===c).map(k=>state.fills[k]);
-  $("tray").innerHTML = LEX[c].map((it,idx)=>
-    '<button type="button" class="chip'+(used.includes(idx)?' used':'')+'" draggable="true" data-i="'+idx+'"'+
-    ' style="color:'+color(c)+'"><span class="zh">'+it[1]+'</span><span class="en">'+it[0]+'</span></button>').join("");
-  $("trayHint").textContent = LEX[c].length + " 個「" + CAT[c].zh + "」";
+  const c=state.cat, used=[];
+  state.tpl.parts.forEach((p,i)=>{ if(p.cat===c) items(i).forEach((it)=>used.push(trim(it.zh)+"|"+trim(it.en))); });
+  $("tray").innerHTML = LEX[c].map((it,idx)=>{
+    const u=used.includes(it.zh+"|"+it.en);
+    return '<button type="button" class="chip'+(u?' used':'')+'" draggable="true" data-i="'+idx+'" style="color:'+color(c)+'" aria-pressed="'+u+'">'+
+      '<span class="zh">'+esc(it.zh)+'</span><span class="en">'+esc(it.en)+'</span></button>';
+  }).join("");
+  $("trayHint").textContent = LEX[c].length+" 個「"+CAT[c].zh+"」，"+(CAT[c].multi?"可以選好幾個":"選一個");
   showTip(null);
 }
-function showTip(html){
-  $("tip").innerHTML = html || ('<b>'+CAT[state.cat].zh+'</b>　'+CAT[state.cat].tip);
+function showTip(it){
+  $("tip").innerHTML = it ? '<b>'+esc(it.zh)+'</b>　'+esc(it.tip) : '<b>'+CAT[state.cat].zh+'</b>　'+CAT[state.cat].tip;
 }
 function renderOutput(){
-  const sl = slots(state.tpl);
-  const filled = sl.filter(s=>state.fills[s.i]!=null);
-  let html="";
-  if(state.mode.join==="sentence"){
-    html = sl.map(s=>{
-      const v = state.fills[s.i];
-      if(v==null) return s.opt?"":'<span class="ph">['+CAT[s.cat].zh+']</span>';
-      return EN_WRAP[s.cat](LEX[s.cat][v][0]);
-    }).filter(Boolean).join(" ");
-  }else{
-    html = sl.map(s=>{
-      const v = state.fills[s.i];
-      if(v==null) return s.opt?"":'<span class="ph">['+CAT[s.cat].zh+']</span>';
-      return LEX[s.cat][v][0];
-    }).filter(Boolean).join(", ");
-  }
-  $("output").innerHTML = html || '<span class="ph">從右邊挑一個字塊開始</span>';
-  $("count").textContent = "已填 " + filled.length + " / " + sl.length;
+  const g=gen();
+  ["zh","en"].forEach((k)=>{
+    const ta=$("out-"+k);
+    if(state.manual[k]==null && ta.value!==g[k]) ta.value=g[k];
+    $("ed-"+k).hidden = state.manual[k]==null;
+  });
+  $("count").textContent="已填 "+g.filled+" / "+g.total+" 格";
+  $("for-zh").textContent=state.mode.forZh;
+  $("for-en").textContent=state.mode.forEn;
 }
-function renderAll(){ renderFormula(); renderTpl(); renderBoard(); renderCats(); renderTray(); renderOutput(); }
+function renderAll(){ renderModes(); renderFormula(); renderTpl(); renderBoard(); renderInsp(); renderCats(); renderTray(); renderOutput(); }
+function refresh(){ renderBoard(); renderInsp(); renderCats(); renderTray(); renderOutput(); save(); }
 
 /* ---------- actions ---------- */
-function fill(cat, idx){
-  const sl = slots(state.tpl).filter(s=>s.cat===cat);
-  if(!sl.length){ toast("這個句型沒有「"+CAT[cat].zh+"」這一格"); return; }
-  let target = (state.active!=null && state.tpl.parts[state.active].cat===cat) ? state.active : null;
-  if(target==null){ const empty = sl.find(s=>state.fills[s.i]==null); target = empty ? empty.i : sl[0].i; }
-  state.fills[target]=idx;
-  state.active=null;
-  renderBoard(); renderTray(); renderOutput();
-}
 function toast(msg){
   const t=$("toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1900);
+  clearTimeout(toast.timer); toast.timer=setTimeout(()=>t.classList.remove("show"),2200);
 }
-function switchTpl(tpl){
-  const carry={};
-  Object.keys(state.fills).forEach(k=>{ const c=state.tpl.parts[k].cat; if(carry[c]==null) carry[c]=state.fills[k]; });
-  state.tpl = tpl; state.active=null;
-  const f={};
-  slots(tpl).forEach(s=>{ if(f[s.i]==null && carry[s.cat]!=null){ f[s.i]=carry[s.cat]; carry[s.cat]=null; } });
-  state.fills = Object.keys(f).length ? f : seedFills(tpl);
-  renderAll();
+function fill(cat,it,target){
+  const parts=state.tpl.parts;
+  const cands=parts.map((p,i)=>i).filter((i)=>parts[i].cat===cat);
+  if(!cands.length){ toast("這個句型沒有「"+CAT[cat].zh+"」這一格"); return; }
+  if(target==null){
+    if(state.active!=null && parts[state.active].cat===cat) target=state.active;
+    else { const e=cands.find((i)=>!items(i).length); target = e!==undefined ? e : cands[0]; }
+  }
+  setActive(target);
+  let arr=items(target);
+  const k=arr.findIndex((x)=>trim(x.zh)===it.zh && trim(x.en)===it.en);
+  if(CAT[cat].multi){
+    if(k>=0) arr.splice(k,1);
+    else if(arr.length>=MAX) toast("這一格最多放 "+MAX+" 個詞，先刪掉一個再加");
+    else arr.push({zh:it.zh,en:it.en});
+  } else {
+    arr=[{zh:it.zh,en:it.en}];
+  }
+  state.fills[target]=arr;
+  refresh();
+}
+function loadTpl(tpl){
+  prune();
+  state.mem[state.tpl.id]=clone(state.fills);
+  state.tpl=tpl; state.active=null; state.manual={zh:null,en:null};
+  state.fills = state.mem[tpl.id]!==undefined ? sanitize(state.mem[tpl.id],tpl) : seedFills(tpl);
+  renderAll(); save();
+}
+function copyText(txt,name){
+  if(!trim(txt)){ toast("這一欄是空的，還沒有東西可以複製"); return; }
+  const gap = /［[^］]*］|\[[一-鿿]+\]/.test(txt);
+  const done=()=>toast(gap ? "已複製"+name+"，但還有空格沒填，貼上前記得補完" : "已複製"+name+"，貼到 AI 工具就能用");
+  const fallback=()=>{
+    const ta=document.createElement("textarea");
+    ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(err){ toast("沒辦法自動複製，請在欄位裡全選後手動複製"); }
+    document.body.removeChild(ta);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done,fallback);
+  else fallback();
 }
 
 /* ---------- events ---------- */
-$("modes").addEventListener("click",e=>{
+$("modes").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-m]"); if(!b) return;
-  state.mode = MODES.find(m=>m.id===b.dataset.m);
-  state.tpl = state.mode.tpls[0]; state.fills = seedFills(state.tpl); state.active=null; state.cat=null;
-  renderModes(); renderAll();
+  const m=MODES.find((x)=>x.id===b.dataset.m); if(m===state.mode) return;
+  state.mode=m; loadTpl(m.tpls[0]);
 });
-$("tpl").addEventListener("click",e=>{
+$("tpl").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-t]"); if(!b) return;
-  switchTpl(state.mode.tpls.find(t=>t.id===b.dataset.t));
+  const t=state.mode.tpls.find((x)=>x.id===b.dataset.t); if(t!==state.tpl) loadTpl(t);
 });
-$("cats").addEventListener("click",e=>{
+$("cats").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-c]"); if(!b) return;
   state.cat=b.dataset.c; renderCats(); renderTray();
 });
-$("board").addEventListener("click",e=>{
+$("board").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-slot]"); if(!b) return;
-  const i=+b.dataset.slot;
-  if(state.fills[i]!=null){ delete state.fills[i]; state.active=i; }
-  else { state.active = state.active===i ? null : i; }
-  state.cat = state.tpl.parts[i].cat;
-  renderBoard(); renderCats(); renderTray(); renderOutput();
+  setActive(+b.dataset.slot); refresh();
 });
-$("tray").addEventListener("click",e=>{
+$("tray").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-i]"); if(!b) return;
-  fill(state.cat, +b.dataset.i);
+  fill(state.cat, LEX[state.cat][+b.dataset.i]);
 });
-$("tray").addEventListener("pointerover",e=>{
-  const b=e.target.closest("button[data-i]"); if(!b) return;
-  const it=LEX[state.cat][+b.dataset.i];
-  showTip('<b>'+it[1]+'</b>　'+it[2]);
-});
-$("tray").addEventListener("focusin",e=>{
-  const b=e.target.closest("button[data-i]"); if(!b) return;
-  const it=LEX[state.cat][+b.dataset.i];
-  showTip('<b>'+it[1]+'</b>　'+it[2]);
-});
+const tipFrom=(e)=>{ const b=e.target.closest("button[data-i]"); if(b) showTip(LEX[state.cat][+b.dataset.i]); };
+$("tray").addEventListener("pointerover",tipFrom);
+$("tray").addEventListener("focusin",tipFrom);
 $("tray").addEventListener("pointerleave",()=>showTip(null));
 
+$("insp").addEventListener("input",(e)=>{
+  const inp=e.target.closest("input[data-f]"); if(!inp || state.active==null) return;
+  const arr=state.fills[state.active], k=+inp.closest(".row").dataset.r;
+  if(!arr || !arr[k]) return;
+  arr[k][inp.dataset.f]=inp.value;
+  renderBoard(); renderOutput(); save();
+});
+$("insp").addEventListener("change",()=>renderTray());
+$("insp").addEventListener("click",(e)=>{
+  const b=e.target.closest("button"); if(!b || state.active==null) return;
+  const i=state.active, arr=state.fills[i]||(state.fills[i]=[]);
+  if(b.dataset.rm!=null) arr.splice(+b.dataset.rm,1);
+  else if(b.dataset.act==="add"){ if(arr.length<MAX) arr.push({zh:"",en:""}); }
+  else if(b.dataset.act==="empty") state.fills[i]=[];
+  else if(b.dataset.act==="done") setActive(null);
+  else return;
+  refresh();
+  if(b.dataset.act==="add"){ const ins=$("insp").querySelectorAll("input.zh"); if(ins.length) ins[ins.length-1].focus(); }
+});
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="Escape" && state.active!=null){ setActive(null); refresh(); }
+});
+
+["zh","en"].forEach((k)=>{
+  $("out-"+k).addEventListener("input",(e)=>{ state.manual[k]=e.target.value; $("ed-"+k).hidden=false; });
+});
+document.querySelector(".outs").addEventListener("click",(e)=>{
+  const r=e.target.closest("[data-regen]");
+  if(r){ state.manual[r.dataset.regen]=null; renderOutput(); toast("已經換回排版盤排出來的內容"); return; }
+  const c=e.target.closest("[data-copy]");
+  if(c) copyText($("out-"+c.dataset.copy).value, c.dataset.copy==="zh"?"中文":"英文");
+});
+
 /* drag and drop */
-$("tray").addEventListener("dragstart",e=>{
+$("tray").addEventListener("dragstart",(e)=>{
   const b=e.target.closest("button[data-i]"); if(!b) return;
   e.dataTransfer.setData("text/plain", state.cat+"|"+b.dataset.i);
   e.dataTransfer.effectAllowed="copy";
-  document.querySelectorAll(".slot").forEach(s=>{ if(s.dataset.cat!==state.cat) s.classList.add("dim"); });
+  document.querySelectorAll("#board .slot").forEach((s)=>{ if(s.dataset.cat!==state.cat) s.classList.add("dim"); });
 });
 $("tray").addEventListener("dragend",()=>{
-  document.querySelectorAll(".slot").forEach(s=>s.classList.remove("dim","drop"));
+  document.querySelectorAll("#board .slot").forEach((s)=>s.classList.remove("dim","drop"));
 });
-$("board").addEventListener("dragover",e=>{
-  const s=e.target.closest(".slot"); if(!s) return;
-  if(s.dataset.cat!==state.cat) return;
+$("board").addEventListener("dragover",(e)=>{
+  const s=e.target.closest(".slot"); if(!s || s.dataset.cat!==state.cat) return;
   e.preventDefault(); e.dataTransfer.dropEffect="copy"; s.classList.add("drop");
 });
-$("board").addEventListener("dragleave",e=>{
-  const s=e.target.closest(".slot"); if(s) s.classList.remove("drop");
+$("board").addEventListener("dragleave",(e)=>{
+  const s=e.target.closest(".slot"); if(s && !s.contains(e.relatedTarget)) s.classList.remove("drop");
 });
-$("board").addEventListener("drop",e=>{
+$("board").addEventListener("drop",(e)=>{
   const s=e.target.closest(".slot"); if(!s) return;
   e.preventDefault();
-  const [cat,idx]=(e.dataTransfer.getData("text/plain")||"").split("|");
-  if(!cat || s.dataset.cat!==cat) return;
-  state.fills[+s.dataset.slot]=+idx; state.active=null;
-  renderBoard(); renderTray(); renderOutput();
+  const parts=(e.dataTransfer.getData("text/plain")||"").split("|"), cat=parts[0], idx=+parts[1];
+  if(!LEX[cat] || !LEX[cat][idx] || s.dataset.cat!==cat) return;
+  fill(cat, LEX[cat][idx], +s.dataset.slot);
 });
 
 $("dice").addEventListener("click",()=>{
   const f={};
-  slots(state.tpl).forEach(s=>{ f[s.i]=Math.floor(Math.random()*LEX[s.cat].length); });
-  state.fills=f; state.active=null; renderBoard(); renderTray(); renderOutput();
-  toast("排好了，改掉你不喜歡的那幾格");
+  state.tpl.parts.forEach((p,i)=>{
+    if(p.opt && Math.random()<0.4) return;
+    const pool=LEX[p.cat].slice(), n=CAT[p.cat].multi ? 1+Math.floor(Math.random()*2) : 1;
+    f[i]=[];
+    for(let k=0;k<n && pool.length;k++){ const it=pool.splice(Math.floor(Math.random()*pool.length),1)[0]; f[i].push({zh:it.zh,en:it.en}); }
+  });
+  state.fills=f; state.active=null; refresh();
+  toast("排好了，把不喜歡的那幾格換掉");
+});
+$("sample").addEventListener("click",()=>{
+  state.fills=seedFills(state.tpl); state.active=null; refresh();
+  toast("已經放回這個句型的範例");
 });
 $("clear").addEventListener("click",()=>{
-  state.fills={}; state.active=null; renderBoard(); renderTray(); renderOutput();
+  state.fills={}; state.active=null; refresh();
+  toast("清空了，從右邊挑字塊開始排");
 });
-$("copy").addEventListener("click",()=>{
-  const txt = $("output").textContent.trim();
-  if(!txt || txt.indexOf("從右邊")===0){ toast("還沒有東西可以複製"); return; }
-  const done=()=>toast("已複製，貼到你的 AI 工具就能用");
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(txt).then(done,()=>fallback(txt,done));
-  } else fallback(txt,done);
-});
-function fallback(txt,done){
-  const ta=document.createElement("textarea");
-  ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
-  document.body.appendChild(ta); ta.select();
-  try{ document.execCommand("copy"); done(); }catch(err){ toast("複製失敗，請手動選取"); }
-  document.body.removeChild(ta);
-}
 
-state.fills = seedFills(state.tpl);
-renderModes(); renderAll();
+/* init */
+if(!load()) state.fills=seedFills(state.tpl);
+renderAll();
 })();
 </script>
-<style>
-.panel-hd h2{white-space:nowrap}
-@media (max-width:620px){
-  .wrap{padding:0 14px 56px}
-  .masthead{padding-top:20px}
-  .brand h1{font-size:22px}
-  .modes{margin-left:0;width:100%}
-  .modes button{flex:1}
-  .board{font-size:16px;line-height:2.1;padding:18px 14px}
-  .slot{flex-direction:column;align-items:flex-start;gap:0;min-width:96px;padding:5px 10px;font-size:15px}
-  .slot .en{font-size:11px;line-height:1.35}
-  .slot .x{display:none}
-  .panel-hd .hint{display:none}
-  .tray{max-height:320px}
-}
-</style>
+</body>
+</html>
