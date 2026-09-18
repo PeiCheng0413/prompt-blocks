@@ -38,6 +38,13 @@
   --c-material:#8A5320;
   --c-scene:#2A6152;
   --c-user:#B03A26;
+  --c-page:#2B303B;
+  --c-topic:#2A6152;
+  --c-section:#1D6A76;
+  --c-interaction:#A23B55;
+  --c-visual:#5A6A1C;
+  --c-rules:#4E5866;
+  --c-reply:#8A5320;
   --c-motion:#1F5F86;
   --c-role:#34549C;
   --c-task:#2B303B;
@@ -59,7 +66,7 @@
     --focus:#8FAAE8;--alert:#E97B63;
     --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
     --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-motion:#6FB6E2;
+    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-page:#C3CAD8;--c-topic:#6EC0A8;--c-section:#62BFCB;--c-interaction:#EE8FA6;--c-visual:#B5C46A;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
     --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
     --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
   }
@@ -72,7 +79,7 @@
   --focus:#8FAAE8;--alert:#E97B63;
   --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
   --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-motion:#6FB6E2;
+  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-page:#C3CAD8;--c-topic:#6EC0A8;--c-section:#62BFCB;--c-interaction:#EE8FA6;--c-visual:#B5C46A;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
   --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
 }
@@ -331,7 +338,7 @@ button,input,textarea{font:inherit;color:inherit}
     <h2 id="lessons-title"></h2>
     <p class="note">上面排出來的每一句，都用到了這四件事。</p>
     <div class="lgrid" id="lessons"></div>
-    <p class="foot">中文欄是完整的句子，適合貼給看得懂中文的 AI。英文欄在圖片和影片模式是逗號分開的關鍵字，大部分 AI 繪圖工具都看得懂。兩欄都可以直接改字再複製。你排的內容會自動存在這台電腦的瀏覽器裡。</p>
+    <p class="foot">中文欄是完整的句子，適合貼給看得懂中文的 AI。英文欄在圖片和影片模式是逗號分開的關鍵字，大部分 AI 繪圖工具都看得懂；在文字和網站模式則是完整的英文句子。兩欄都可以直接改字再複製。你排的內容會自動存在這台電腦的瀏覽器裡。</p>
   </section>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -342,12 +349,15 @@ const MODES = [
  {id:"image", zh:"圖片", join:"csv",
   forZh:"完整的句子，貼給看得懂中文的 AI，例如 Gemini、ChatGPT",
   forEn:"逗號分開的關鍵字，大部分 AI 繪圖工具都看得懂"},
- {id:"video", zh:"影片", join:"csv",
+ {id:"video", zh:"影片", join:"csv", theme:"avatar",
   forZh:"完整的句子，貼給看得懂中文的 AI 影片工具",
   forEn:"逗號分開的關鍵字，大部分 AI 影片工具都看得懂"},
- {id:"text", zh:"文字", join:"sentence",
+ {id:"text", zh:"文字", join:"sentence", theme:"avatar",
   forZh:"直接貼給 Gemini、ChatGPT、Claude 這類聊天型 AI",
-  forEn:"英文版本，AI 回得不理想時可以換這欄試試"}
+  forEn:"英文版本，AI 回得不理想時可以換這欄試試"},
+ {id:"web", zh:"網站", join:"sentence", theme:"web",
+  forZh:"貼給 Gemini，它會回你一整份 HTML 程式碼",
+  forEn:"英文版本，Gemini 回得不理想時可以換這欄試試"}
 ];
 
 const THEMES = [
@@ -719,6 +729,113 @@ const THEMES = [
     seed:[[4],[5],[1,0],[7],[2],[2],[5]]}
   ]
  }
+},
+/* ================= 單頁網站（只用在網站模式） ================= */
+{id:"web", zh:"單頁網站",
+ lede:"請 Gemini 幫你做一個網頁。把字塊拖進句子的凹槽，排出一段完整的指令，它會回你一份 CSS 和 JavaScript 都寫在裡面的 HTML 檔案。",
+ lessonsTitle:"記住這四件事，你就能用 AI 做出自己的網頁",
+ lessons:[
+  ["存檔","程式碼要存成 .html 才打得開","把 Gemini 給的程式碼全部複製，貼到記事本，存成<code>index.html</code>，再用瀏覽器打開。存檔類型要選「所有檔案」，不然會變成 .txt。"],
+  ["修改","一次只改一件事","網頁不滿意不用整個重來。跟 Gemini 說「把標題改成藍色」「按鈕放大一點」，一次改一件事，比較不會把其他地方改壞。"],
+  ["看懂","看不懂的程式碼直接問","加上<code>程式碼加上中文註解</code>，每一段在做什麼一看就懂。還是不懂，就把那幾行貼回去問 Gemini「這在做什麼」。"],
+  ["安全","網頁可能會被別人看到","做好的網頁可能會分享出去。不要放真實姓名、電話、地址和學校，照片也先用 emoji 或色塊代替。"]
+ ],
+ cats:{
+  role:{zh:"角色",tip:"先讓 AI 變成某種專家。做網頁找設計師，想學程式找老師。"},
+  page:{zh:"網頁類型",tip:"要做哪一種網頁。一次只做一頁，比較容易成功。"},
+  topic:{zh:"內容",tip:"網頁在介紹什麼。可以接你之前做的大頭貼或空氣過濾家電。"},
+  section:{zh:"區塊",multi:true,tip:"網頁由上到下要有哪些區塊。區塊講清楚，版面才不會亂。"},
+  interaction:{zh:"互動效果",multi:true,tip:"這些效果是用 JavaScript 做的。一開始選一兩個就好，太多容易出錯。"},
+  visual:{zh:"畫面風格",tip:"整個網頁看起來的感覺。"},
+  palette:{zh:"配色",tip:"網頁的顏色搭配。一個底色加一個重點色最不會出錯。"},
+  rules:{zh:"細節要求",multi:true,tip:"額外的規定，可以選好幾個。"},
+  reply:{zh:"回答方式",tip:"要 Gemini 怎麼回你。第一次做網頁，建議請它教你怎麼存檔。"}
+ },
+ lex:{
+  role:[
+   ["a web designer","一位網頁設計師","會注意版面、顏色和好不好用。"],
+   ["a front-end developer","一位前端工程師","程式會寫得比較完整、比較穩。"],
+   ["a patient coding teacher who explains things simply","一位會用簡單方式解釋的程式老師","想順便學會程式時選這個。"],
+   ["a game designer","一位遊戲設計師","做小遊戲或小測驗時最適合。"]
+  ],
+  page:[
+   ["a one-page personal introduction website","一個自我介紹的個人網頁","可以把你做的大頭貼放上去。"],
+   ["a one-page product website for my invention","一個介紹我發明的產品網頁","可以介紹你設計的空氣過濾家電。"],
+   ["an interactive quiz page","一個互動小測驗網頁","出幾題選擇題，按下去就知道對不對。"],
+   ["a simple click game","一個點擊小遊戲","規則越簡單，AI 做出來越不容易壞。"],
+   ["a promotion page for a class event","一個班級活動的宣傳網頁","園遊會、校外教學都可以用。"],
+   ["a portfolio page showing my artwork","一個作品集展示網頁","把你的作品排成一頁。"]
+  ],
+  topic:[
+   ["my avatar and my hobbies","我的大頭貼和興趣","接上你做的大頭貼，變成一頁自我介紹。"],
+   ["an air-purifying desk lamp I designed","我設計的會過濾空氣的檯燈","換成你自己設計的產品名稱。"],
+   ["air pollution and PM2.5 facts","空氣汙染和 PM2.5 的小知識","很適合做成小測驗。"],
+   ["my favorite animal","我最喜歡的動物","簡單又好發揮的題目。"],
+   ["our class field trip","我們班的校外教學","記得不要放同學的真實照片和名字。"],
+   ["a game character I designed","我設計的遊戲角色","可以接你做的遊戲角色大頭貼。"]
+  ],
+  section:[
+   ["a large hero banner with a title","大標題橫幅","網頁最上面的大標題，第一眼看到的地方。"],
+   ["an about-me section","自我介紹段落","用幾句話介紹自己或產品。"],
+   ["three feature cards","三張特色卡片","產品網頁最常見的區塊，一張卡片講一個特色。"],
+   ["an image gallery section","圖片展示區","圖片可以先用色塊或 emoji 代替，之後再換。"],
+   ["a before-and-after comparison section","使用前後對比","很適合展示空氣變乾淨的效果。"],
+   ["a FAQ section","常見問題","一問一答，可以做成點一下才展開。"],
+   ["a navigation bar at the top","上方導覽列","點一下就跳到網頁的某個區塊。"],
+   ["a footer with a contact button","頁尾的聯絡按鈕","按鈕放著就好，不要放真的電話或信箱。"]
+  ],
+  interaction:[
+   ["a button that switches between light and dark mode","點按鈕切換深色模式","最簡單也最有感的互動。"],
+   ["click an image to enlarge it","點圖片可以放大","圖片展示區很適合加。"],
+   ["content that fades in when scrolling down","往下捲動時內容淡入","讓網頁看起來比較專業。"],
+   ["a quiz that calculates the score automatically","小測驗會自動算分數","做小測驗一定要選這個。"],
+   ["a button that shows a random fun fact","點按鈕隨機顯示一句小知識","準備好幾句話，每按一次換一句。"],
+   ["cards that lift up when the mouse hovers over them","滑鼠移上去卡片會浮起來","這個其實用 CSS 就做得到。"],
+   ["a countdown timer","倒數計時器","活動宣傳頁很好用。"],
+   ["a click counter game with a score","點擊計分小遊戲","點越多分數越高，最簡單的小遊戲。"]
+  ],
+  visual:[
+   ["clean and minimal","簡約乾淨","留白多、字清楚，最不容易出錯。"],
+   ["cute with rounded shapes","可愛圓潤","圓角按鈕和卡片，很親切。"],
+   ["dark and futuristic","科技感深色","深色背景加發光效果。"],
+   ["retro pixel game style","復古像素遊戲","像老遊戲機的畫面，很適合小遊戲。"],
+   ["magazine-style layout","雜誌排版","大標題、大圖片，很有質感。"],
+   ["hand-drawn notebook style","手繪筆記本","像畫在筆記本上的感覺。"]
+  ],
+  palette:[
+   ["white with one bright accent color","白色加一個亮色","最安全的配色。"],
+   ["mint green and white","薄荷綠和白色","清新乾淨，很適合空氣主題。"],
+   ["dark navy with neon accents","深藍加霓虹色","科技感和遊戲感。"],
+   ["soft pastel colors","馬卡龍粉彩","可愛的淡色系。"],
+   ["black, white, and gray","黑白灰","簡單有質感。"]
+  ],
+  rules:[
+   ["Make it look good on both phones and computers.","手機和電腦都要好看","不寫的話，用手機看可能會跑版。"],
+   ["Add comments in Traditional Chinese to explain the code.","程式碼加上中文註解","看得懂每一段在做什麼，之後才改得動。"],
+   ["Use colored boxes or emoji as image placeholders.","圖片先用色塊或 emoji 代替","單一 HTML 檔放不進你的圖片，先用代替品排好版面。"],
+   ["Use large text and easy-to-tap buttons.","字要大、按鈕要好按","用手機看的時候比較方便。"],
+   ["Do not include any real names, phone numbers, or addresses.","不要放真實姓名、電話和地址","保護自己的個人資料。"]
+  ],
+  reply:[
+   ["Give me only the complete code.","只給我完整的程式碼","已經會存檔時用這個，回答最短。"],
+   ["After the code, tell me how to save and open the file.","程式碼後面教我怎麼存檔和打開","第一次做網頁一定要選。"],
+   ["Explain your plan first, then give the code.","先說明你的規劃，再給程式碼","先看它打算怎麼做，比較容易發現問題。"],
+   ["Show it in Canvas so I can preview it.","用 Canvas 直接顯示網頁給我看","Gemini 的 Canvas 可以直接預覽網頁。沒出現的話，在輸入框選 Canvas 再問一次。"]
+  ]
+ },
+ modes:{
+  web:[
+   {id:"web-profile", zh:"個人介紹頁",
+    parts:[S("role",{pre:"你是",post:"。"}),S("page",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("topic",{pre:"內容是",post:"。"}),S("section",{pre:"網頁要有",post:"。"}),S("interaction",{pre:"互動效果要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("palette",{pre:"配色：",post:"。",opt:true}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
+    seed:[[0],[0],[0],[0,1,3],[0,2],[1],[1],[0,4],[1]]},
+   {id:"web-product", zh:"產品介紹頁",
+    parts:[S("role",{pre:"你是",post:"。"}),S("page",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("topic",{pre:"內容是",post:"。"}),S("section",{pre:"網頁要有",post:"。"}),S("interaction",{pre:"互動效果要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("palette",{pre:"配色：",post:"。",opt:true}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
+    seed:[[1],[1],[1],[0,2,4,5],[1,5],[0],[0],[0,2],[1]]},
+   {id:"web-quiz", zh:"互動小測驗",
+    parts:[S("role",{pre:"你是",post:"。"}),S("page",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("topic",{pre:"內容是",post:"。"}),S("interaction",{pre:"互動效果要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("palette",{pre:"配色：",post:"。",opt:true}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
+    seed:[[2],[2],[2],[3],[3],[2],[1,3],[2]]}
+  ]
+ }
 }
 ];
 </script>
@@ -732,7 +849,7 @@ THEMES.forEach((th)=>{ Object.keys(th.lex).forEach((c)=>{ th.lex[c]=th.lex[c].ma
 
 const noDot = (s)=>s.replace(/[.。\s]+$/,"");
 const dot = (s)=>/[.!?。！？]$/.test(s) ? s : s+".";
-const SENT_CATS = ["task","about","limit"];
+const SENT_CATS = ["task","about","limit","rules","reply"];
 const EN_WRAP = {
   role:(s)=>"You are "+noDot(s)+".",
   task:(s)=>s,
@@ -740,7 +857,15 @@ const EN_WRAP = {
   user:(s)=>"It is designed for "+noDot(s)+".",
   tone:(s)=>"Tone: "+noDot(s)+".",
   format:(s)=>"Format: "+noDot(s)+".",
-  limit:(s)=>s
+  limit:(s)=>s,
+  page:(s)=>"Please build "+noDot(s)+" as one single HTML file, with CSS inside a <style> tag and JavaScript inside a <script> tag.",
+  topic:(s)=>"The content is about "+noDot(s)+".",
+  section:(s)=>"Include "+noDot(s)+".",
+  interaction:(s)=>"Add these interactive features with JavaScript: "+noDot(s)+".",
+  visual:(s)=>"Visual style: "+noDot(s)+".",
+  palette:(s)=>"Color scheme: "+noDot(s)+".",
+  rules:(s)=>s,
+  reply:(s)=>s
 };
 
 const state = {theme:THEMES[0], imageTheme:THEMES[0], mode:MODES[0], tpl:THEMES[0].modes.image[0], fills:{}, active:null, cat:null, manual:{zh:null,en:null}, mem:{}};
@@ -753,6 +878,7 @@ function color(cat){ return "var(--c-"+cat+")"; }
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function catsOf(tpl){ const out=[]; tpl.parts.forEach((p)=>{ if(!out.includes(p.cat)) out.push(p.cat); }); return out; }
 function tplsNow(){ return state.theme.modes[state.mode.id]; }
+function themeFor(m, imageTheme){ return m.id==="image" ? imageTheme : THEMES.find((x)=>x.id===m.theme); }
 function seedFills(tpl){
   const f={};
   (tpl.seed||[]).forEach((arr,i)=>{
@@ -790,7 +916,7 @@ function load(){
     const d=JSON.parse(localStorage.getItem(KEY)||"null");
     if(!d) return false;
     const it=THEMES.find((x)=>x.id===d.theme)||THEMES[0], m=MODES.find((x)=>x.id===d.mode);
-    const th=m && (m.id==="image" ? it : THEMES[0]);
+    const th=m && themeFor(m, it);
     const t=th && (th.modes[m.id]||[]).find((x)=>x.id===d.tpl);
     if(!t) return false;
     state.imageTheme=it; state.theme=th; state.mode=m; state.tpl=t;
@@ -832,7 +958,7 @@ function renderHeader(){
   $("lede").textContent=th.lede;
   $("modes").innerHTML = MODES.map((m)=>
     '<button type="button" data-m="'+m.id+'" aria-pressed="'+(m===state.mode)+'">'+m.zh+'</button>').join("");
-  $("themes").innerHTML = '<span class="eyebrow">主題</span>' + THEMES.map((x)=>
+  $("themes").innerHTML = '<span class="eyebrow">主題</span>' + THEMES.filter((x)=>x.modes.image).map((x)=>
     '<button type="button" class="theme" data-th="'+x.id+'" aria-pressed="'+(x===th)+'"><span class="nm">'+x.zh+'</span></button>').join("");
   $("themes").hidden = state.mode.id!=="image";
   $("lessons-title").textContent=th.lessonsTitle;
@@ -982,7 +1108,7 @@ function copyText(txt,name){
 $("modes").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-m]"); if(!b) return;
   const m=MODES.find((x)=>x.id===b.dataset.m); if(m===state.mode) return;
-  stash(); state.mode=m; state.theme = m.id==="image" ? state.imageTheme : THEMES[0]; state.cat=null; loadTpl(tplsNow()[0]);
+  stash(); state.mode=m; state.theme = themeFor(m, state.imageTheme); state.cat=null; loadTpl(tplsNow()[0]);
 });
 $("themes").addEventListener("click",(e)=>{
   const b=e.target.closest("button[data-th]"); if(!b) return;
