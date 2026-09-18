@@ -39,12 +39,14 @@
   --c-scene:#2A6152;
   --c-user:#B03A26;
   --c-genre:#2B303B;
-  --c-player:#2A6152;
-  --c-goal:#A23B55;
-  --c-controls:#1D6A76;
-  --c-mechanic:#946510;
+  --c-hero:#A23B55;
+  --c-world:#2A6152;
+  --c-good:#946510;
+  --c-bad:#B03A26;
+  --c-powerup:#1F5F86;
+  --c-mechanic:#1D6A76;
   --c-feedback:#7A3E6C;
-  --c-content:#1F5F86;
+  --c-motive:#1D6A76;
   --c-visual:#5A6A1C;
   --c-rules:#4E5866;
   --c-reply:#8A5320;
@@ -69,7 +71,7 @@
     --focus:#8FAAE8;--alert:#E97B63;
     --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
     --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-player:#6EC0A8;--c-goal:#EE8FA6;--c-controls:#62BFCB;--c-mechanic:#E0B95F;--c-feedback:#D28CC2;--c-content:#6FB6E2;--c-visual:#B5C46A;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
+    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-visual:#B5C46A;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
     --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
     --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
   }
@@ -82,7 +84,7 @@
   --focus:#8FAAE8;--alert:#E97B63;
   --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
   --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-player:#6EC0A8;--c-goal:#EE8FA6;--c-controls:#62BFCB;--c-mechanic:#E0B95F;--c-feedback:#D28CC2;--c-content:#6FB6E2;--c-visual:#B5C46A;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
+  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-visual:#B5C46A;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
   --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
 }
@@ -735,22 +737,24 @@ const THEMES = [
 },
 /* ================= 網頁小遊戲（只用在小遊戲模式） ================= */
 {id:"game", zh:"網頁小遊戲",
- lede:"請 Gemini 幫你做一個網頁小遊戲。把字塊拖進句子的凹槽，排出一段完整的指令，它會回你一份 CSS 和 JavaScript 都寫在裡面的 HTML 檔案，存起來就能玩。",
+ lede:"請 Gemini 幫你做一個網頁小遊戲。字塊可以隨便混搭，按「隨機排一組」看看會組出什麼好笑的遊戲，再把喜歡的指令貼給 Gemini。",
  lessonsTitle:"記住這四件事，你就能用 AI 做出自己的小遊戲",
  lessons:[
   ["存檔","程式碼要存成 .html 才能玩","把 Gemini 給的程式碼全部複製，貼到記事本，存成<code>game.html</code>，再用瀏覽器打開。存檔類型要選「所有檔案」，不然會變成 .txt。"],
-  ["一步步","先求能玩，再加功能","第一次先做最簡單的版本，確定能玩，再一次加一個功能，例如「加上音效」「加上最高分」。一次要求太多，程式容易壞掉。"],
+  ["一步步","先求能玩，再加功能","第一次先用「基本款」做出能玩的版本，再一次加一個功能，例如「加上音效」「加上最高分」。一次要求太多，程式容易壞掉。"],
   ["調難度","好不好玩常常只差幾個數字","選<code>告訴我哪些數字可以調整難度</code>，Gemini 會告訴你哪些數字控制速度、時間和分數。自己改改看，這就是遊戲設計師在做的「平衡」。"],
   ["測試","故意把它玩壞","做好後故意亂按、一直輸、拿手機玩。把問題具體描述給 Gemini：「分數會變成負的」比「遊戲壞了」好修很多。"]
  ],
  cats:{
   role:{zh:"角色",tip:"先讓 AI 變成某種專家。想要好玩找遊戲設計師，想學程式找老師。"},
-  genre:{zh:"遊戲類型",tip:"要做哪一種遊戲。規則越簡單的類型，AI 做出來越不容易壞。"},
-  player:{zh:"主角",tip:"玩家控制的角色。可以用你做過的大頭貼角色，或空氣過濾的產品。"},
-  content:{zh:"題目內容",tip:"卡片或題目在講什麼。可以拿課堂上學過的東西來出題。"},
-  goal:{zh:"遊戲目標",tip:"玩家要做到什麼才算贏。目標講清楚，遊戲才有方向。"},
-  controls:{zh:"操作方式",multi:true,tip:"玩家怎麼控制遊戲。想讓手機也能玩，就要加上手機的操作。"},
-  mechanic:{zh:"遊戲規則",multi:true,tip:"命、時間、速度這些規則，決定遊戲的難度。一開始選一兩個就好。"},
+  genre:{zh:"遊戲類型",tip:"要做哪一種遊戲，怎麼操作也一起寫在裡面了。每一種都能搭配任何主角和場景。"},
+  hero:{zh:"主角",tip:"玩家控制的角色。越奇怪越好玩，AI 會想辦法把它畫出來。"},
+  motive:{zh:"動機",tip:"主角為什麼要冒險。有了故事，同一個遊戲就變得更有趣。"},
+  world:{zh:"場景",tip:"遊戲發生在哪裡。場景會決定背景和整體氣氛。"},
+  good:{zh:"要收集的",multi:true,tip:"碰到會加分的東西。可以選好幾種。"},
+  bad:{zh:"要躲開的",multi:true,tip:"碰到會扣分或扣命的東西。可以選好幾種。"},
+  powerup:{zh:"特殊道具",multi:true,tip:"偶爾出現的神奇道具，讓遊戲多一點驚喜。一開始選一兩個就好。"},
+  mechanic:{zh:"遊戲規則",multi:true,tip:"命、時間、速度這些規則，決定遊戲的難度。"},
   feedback:{zh:"畫面回饋",multi:true,tip:"玩家做了動作之後，畫面怎麼回應。回饋越清楚，遊戲越好玩。"},
   visual:{zh:"畫面風格",tip:"整個遊戲看起來的感覺。"},
   rules:{zh:"細節要求",multi:true,tip:"額外的規定，可以選好幾個。"},
@@ -763,71 +767,102 @@ const THEMES = [
    ["a developer who has made many browser games","一位做過很多網頁小遊戲的工程師","程式會寫得比較完整、比較不容易壞。"]
   ],
   genre:[
-   ["a catching game where things fall from the top of the screen","一個接東西遊戲","東西從上面掉下來，左右移動去接。規則簡單，最適合第一次做。"],
-   ["a whack-a-mole style clicking game","一個像打地鼠的點擊遊戲","東西隨機冒出來，快點下去。用滑鼠和手機都好玩。"],
-   ["a memory card matching game","一個記憶翻牌遊戲","翻開兩張一樣的就配對成功。很適合拿來出題複習。"],
-   ["an endless runner game where you jump over obstacles","一個跳躍閃避的跑酷遊戲","按鍵跳過障礙物，撐越久分數越高。"],
-   ["a quiz adventure game","一個問答闖關遊戲","答對才能前進，答錯扣命。"],
-   ["a snake game","一個貪食蛇遊戲","經典遊戲，AI 很熟悉，成功率很高。"]
+   ["a catching game where you move left and right to catch things falling from the sky","一個左右移動去接東西的遊戲","規則最簡單，第一次做最推薦。"],
+   ["an endless runner where you keep running and jump to dodge obstacles","一個一直往前跑、跳起來閃避的跑酷遊戲","按一個鍵就能玩，手機也很好操作。"],
+   ["a flying game where you tap to fly up and dodge things","一個點一下就往上飛的飛行遊戲","很容易上手，但要玩得好很難。"],
+   ["a maze game where you move with the arrow keys","一個用方向鍵走迷宮的遊戲","在迷宮裡收集東西、躲開敵人。"],
+   ["a snake-style game where you grow longer every time you collect something","一個吃到東西就會變長的貪食蛇遊戲","經典遊戲，AI 很熟悉，成功率很高。"],
+   ["a downhill game where you slide left and right to avoid obstacles","一個從山上一路往下滑的閃避遊戲","速度感很強，越滑越快。"],
+   ["a shooter game where you shoot bubbles to pop the bad things","一個發射泡泡打掉壞東西的遊戲","用泡泡打，不會太暴力。"]
   ],
-  player:[
-   ["a small air-purifying robot","一台會過濾空氣的小機器人","接上你的空氣過濾家電設計。"],
-   ["my own avatar character","我設計的大頭貼角色","接上你做的大頭貼。記得描述它長什麼樣子。"],
-   ["a little fox","一隻小狐狸","動物角色用 emoji 就能畫出來。"],
-   ["a little astronaut","一個小太空人","配太空背景很好看。"],
-   ["a flying leaf","一片會飛的樹葉","輕飄飄的，很適合空氣主題。"],
-   ["a tiny vacuum cleaner","一台小小的吸塵器","吸走灰塵的角色，很好懂。"]
+  hero:[
+   ["a shiba inu wearing sunglasses","一隻戴墨鏡的柴犬","一個小配件就讓角色很有個性。"],
+   ["a bouncy pudding","一顆會彈跳的布丁","軟軟的角色，跳起來很好笑。"],
+   ["a ninja cat","一隻忍者貓","動作很快的角色，適合跑酷和閃避。"],
+   ["a little wizard riding a broom","一個騎掃把的小巫師","很適合飛行遊戲。"],
+   ["a penguin in a spacesuit","一隻穿太空衣的企鵝","不會飛的企鵝上太空，本身就很好笑。"],
+   ["a hungry baby dinosaur","一隻很餓的小恐龍","配收集食物的遊戲剛剛好。"],
+   ["a flying tapioca pearl","一顆會飛的珍珠","珍奶裡的珍珠逃出來了。"],
+   ["a delivery rider on a scooter","一個騎機車的外送員","很有台灣味，適合跑酷和閃避。"],
+   ["a hamster wearing a crown","一隻戴皇冠的倉鼠","小小的國王，很可愛。"],
+   ["a paper airplane","一架紙飛機","飛行遊戲的經典主角。"]
   ],
-  content:[
-   ["sources of air pollution","各種空氣汙染的來源","例如汽機車廢氣、工廠、燒香，很適合複習。"],
-   ["facts about air purifiers","空氣清淨機的小知識","例如 HEPA 濾網、活性碳的用途。"],
-   ["animals I like","我喜歡的動物","最簡單的題目，用 emoji 就能做成卡片。"],
-   ["Taiwanese night market snacks","台灣的夜市小吃","雞排、珍奶、臭豆腐，大家都認得。"],
-   ["English vocabulary words","英文單字","翻牌配對中文和英文，順便背單字。"],
-   ["fun science facts","自然科學小知識","拿課本裡的內容來出題。"]
+  motive:[
+   ["to get home before sunrise","為了在天亮前趕回家","有時間壓力的故事，很適合配倒數計時。"],
+   ["to rescue a best friend who was captured","為了救出被抓走的好朋友","最經典的冒險故事。"],
+   ["to bake the biggest cake in the world","為了做出全世界最大的蛋糕","收集食材的理由。"],
+   ["to win the galaxy singing contest","為了參加宇宙歌唱比賽","完全沒道理，但很好笑。"],
+   ["to become the king of the night market","為了成為夜市之王","很有台灣味的目標。"],
+   ["to find the lost TV remote","為了找回不見的電視遙控器","每個家庭都懂的大冒險。"]
   ],
-  goal:[
-   ["collect clean air bubbles","收集乾淨的空氣泡泡","收集類的目標最直覺。"],
-   ["zap the PM2.5 dust particles that float in","消滅飄過來的 PM2.5 灰塵","把空氣汙染變成敵人，很有主題感。"],
-   ["score as many points as possible before time runs out","在時間內拿到最高分","搭配倒數計時一起用。"],
-   ["find all the matching pairs of cards","翻出所有配對的卡片","記憶翻牌遊戲的目標。"],
-   ["survive as long as possible","撐得越久越好","跑酷和躲避遊戲的目標。"],
-   ["answer 10 questions correctly to win","答對 10 題就過關","問答遊戲的目標，題數講清楚。"]
+  world:[
+   ["a candy kingdom","糖果王國","顏色繽紛，什麼都是甜的。"],
+   ["outer space","外太空","黑色背景加星星，很好畫。"],
+   ["an underwater world","海底世界","魚、珊瑚、泡泡都能當道具。"],
+   ["a rainy city at night","下雨的夜晚城市","霓虹燈和雨滴，很有氣氛。"],
+   ["a giant's kitchen","巨人的廚房","主角變得超小，湯匙和盤子都是障礙物。"],
+   ["a dinosaur jungle","恐龍時代的叢林","大樹、火山、恐龍蛋。"],
+   ["a busy night market","熱鬧的夜市","攤販、燈籠、人潮，很有台灣味。"],
+   ["a haunted library","鬧鬼的圖書館","會飛的書和幽靈，有點恐怖但很可愛。"]
   ],
-  controls:[
-   ["move left and right with the arrow keys","用左右方向鍵移動","電腦上最直覺的操作。"],
-   ["press the space bar to jump","按空白鍵跳躍","跑酷遊戲必備。"],
-   ["click with the mouse","用滑鼠點擊","點擊遊戲和翻牌遊戲用這個。"],
-   ["tap the screen on phones","手機可以用手指點","手機沒有滑鼠，要另外講。"],
-   ["on-screen left and right buttons for phones","手機上有左右按鈕","手機沒有鍵盤，想讓手機也能玩就要加這個。"]
+  good:[
+   ["shiny gold coins","金幣","最經典的收集品。"],
+   ["donuts","甜甜圈","圓圓的，很好認。"],
+   ["sparkling stars","閃亮的星星","閃閃發光，很適合當加分道具。"],
+   ["bubble tea","珍珠奶茶","台灣人都懂的獎勵。"],
+   ["hearts","愛心","收集愛心也可以設計成補血。"],
+   ["fried chicken cutlets","雞排","夜市的最強獎勵。"],
+   ["magic potions","魔法藥水","可以設計成不同顏色、不同分數。"],
+   ["birthday cakes","生日蛋糕","分數最高的稀有道具。"]
+  ],
+  bad:[
+   ["exploding bombs","會爆炸的炸彈","最經典的壞東西，一看就知道要躲。"],
+   ["banana peels","香蕉皮","踩到會滑倒，很好笑。"],
+   ["smelly socks","臭襪子","沒有人想碰到。"],
+   ["thunderclouds","打雷的烏雲","會劈下閃電的障礙。"],
+   ["broccoli","綠色花椰菜","對某些人來說比炸彈還可怕。"],
+   ["falling meteors","掉下來的隕石","很適合從天上掉下來的遊戲。"],
+   ["angry bees","生氣的蜜蜂","會追著你跑的敵人。"],
+   ["endless homework notebooks","寫不完的作業本","學生最想躲開的東西。"]
+  ],
+  powerup:[
+   ["a mushroom that makes you giant","吃了會變巨大的蘑菇","變大之後可以撞開壞東西。"],
+   ["an hourglass that slows down time","讓時間變慢的沙漏","東西掉得比較慢，比較好接。"],
+   ["a magnet that pulls in all the good items","把好東西都吸過來的磁鐵","短時間內自動收集。"],
+   ["an invincibility shield","無敵護盾","幾秒內碰到壞東西也不會扣分。"],
+   ["a rainbow that doubles your points","分數加倍的彩虹","拿到之後的分數都變兩倍。"],
+   ["a weird button that flips the screen upside down","讓畫面上下顛倒的怪按鈕","很惡搞的道具，玩起來超混亂。"]
   ],
   mechanic:[
    ["the player has three lives","有三條命","玩家可以失誤幾次，遊戲比較不會太難。"],
    ["a 60-second countdown timer","60 秒倒數計時","有時間壓力，玩起來比較刺激。"],
    ["the game gets faster over time","越玩越快","讓遊戲慢慢變難，才不會很快就膩。"],
-   ["touching dust costs one life","碰到灰塵會扣一條命","有要接的東西，也有要躲的東西。"],
+   ["a combo bonus for collecting things in a row","連續收集有連擊加分","鼓勵玩家不要失誤。"],
    ["save the high score in the browser","記住最高分","分數存在自己的瀏覽器裡，下次打開還在。"],
-   ["three levels that get harder","分成三個關卡","每過一關就變難一點。"]
+   ["level up every 100 points","每 100 分升一級","每升一級就變難一點。"]
   ],
   feedback:[
-   ["numbers that pop up when you score","得分時跳出數字","玩家馬上知道自己得了幾分。"],
-   ["a game-over screen with a restart button","遊戲結束畫面和重新開始按鈕","沒有這個，輸了就只能重新整理網頁。"],
+   ["numbers that pop up when you score","得分時跳出的數字","玩家馬上知道自己得了幾分。"],
    ["a start screen with the title and a start button","開始畫面","先看到遊戲名稱，按下開始才開始玩。"],
+   ["a game-over screen with a restart button","遊戲結束畫面和重新開始按鈕","沒有這個，輸了就只能重新整理網頁。"],
    ["simple sound effects made with JavaScript","簡單的音效","用程式產生聲音，不需要音樂檔。瀏覽器要點過畫面才會有聲音。"],
-   ["a screen shake when something hits the player","碰撞時畫面震動","撞到東西的感覺會更明顯。"],
-   ["the score and lives shown at the top","分數和生命顯示在上方","玩的時候隨時看得到狀態。"]
+   ["a screen shake when the player gets hit","被撞到時的畫面震動","撞到東西的感覺會更明顯。"],
+   ["confetti when you beat the high score","破紀錄時的彩色紙花","讓破紀錄更有成就感。"],
+   ["fireworks when you win","過關時的煙火","贏了要有慶祝。"],
+   ["a silly game-over message","搞笑的失敗畫面","輸了也會笑出來。"]
   ],
   visual:[
    ["retro pixel art","復古像素","像老遊戲機的畫面。"],
    ["cute and colorful","可愛繽紛","圓圓的、顏色很多，很親切。"],
-   ["neon sci-fi","科技感霓虹","深色背景加發光效果。"],
-   ["fresh and natural with green and sky blue","清新自然","綠色和天空藍，很適合空氣主題。"],
-   ["simple geometric shapes","簡單幾何","用圓形和方塊畫，最不容易出錯。"]
+   ["neon sci-fi","霓虹科技","深色背景加發光效果。"],
+   ["hand-drawn crayon style","手繪蠟筆","像小朋友用蠟筆畫的，很有味道。"],
+   ["black-and-white comic style","黑白漫畫","像漫畫書裡的畫面。"],
+   ["dreamy candy colors","夢幻糖果色","粉紅、粉藍、粉紫，甜甜的。"]
   ],
   rules:[
    ["Use emoji for the characters and items.","用 emoji 當角色和道具","單一 HTML 檔放不進圖片，emoji 是最簡單的角色。"],
    ["Add comments in Traditional Chinese to explain the code.","程式碼加上中文註解","看得懂每一段在做什麼，之後才改得動。"],
-   ["Make it playable on both phones and computers.","手機和電腦都能玩","記得搭配手機的操作方式。"],
+   ["Make it playable on both phones and computers.","手機和電腦都能玩","手機沒有鍵盤，Gemini 會幫你加上觸控操作。"],
    ["Show short how-to-play instructions on the screen.","畫面上寫出遊戲說明","別人玩的時候才知道怎麼玩。"],
    ["Start with the simplest playable version.","先做最簡單能玩的版本","先確定能玩，再慢慢加功能。"]
   ],
@@ -841,15 +876,15 @@ const THEMES = [
  },
  modes:{
   web:[
-   {id:"game-action", zh:"動作遊戲",
-    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("player",{pre:"玩家控制的角色是",post:"。"}),S("goal",{pre:"遊戲目標是",post:"。"}),S("controls",{pre:"操作方式：",post:"。"}),S("mechanic",{pre:"遊戲規則：",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
-    seed:[[0],[0],[0],[0],[0,4],[0,3],[2,1],[3],[0,1],[4]]},
-   {id:"game-click", zh:"點擊遊戲",
-    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("goal",{pre:"遊戲目標是",post:"。"}),S("controls",{pre:"操作方式：",post:"。"}),S("mechanic",{pre:"遊戲規則：",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
-    seed:[[2],[1],[1],[2,3],[1,2],[2,0,1],[1],[0,2],[1]]},
-   {id:"game-puzzle", zh:"益智遊戲",
-    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("content",{pre:"題目和卡片的內容是",post:"。"}),S("goal",{pre:"遊戲目標是",post:"。"}),S("mechanic",{pre:"遊戲規則：",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
-    seed:[[1],[2],[0],[3],[4,1],[2,1],[3],[0,1],[2]]}
+   {id:"game-basic", zh:"基本款",
+    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"玩家是",post:"，"}),S("world",{pre:"場景在",post:"。"}),S("good",{pre:"要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("reply",{post:"。"})],
+    seed:[[0],[0],[0],[4],[3],[2],[1],[1]]},
+   {id:"game-loaded", zh:"加料版",
+    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"玩家是",post:"，"}),S("world",{pre:"場景在",post:"。"}),S("good",{pre:"要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("powerup",{pre:"特殊道具：",post:"。"}),S("mechanic",{pre:"遊戲規則：",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
+    seed:[[2],[2],[6],[6],[5],[6],[2,4],[0,2],[1,2],[0],[0,1],[4]]},
+   {id:"game-story", zh:"故事版",
+    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"故事是這樣的："}),S("motive",{post:"，"}),S("world",{pre:"一路穿過",post:"。"}),S("good",{pre:"路上要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("visual",{pre:"畫面風格：",post:"。"}),S("reply",{post:"。"})],
+    seed:[[0],[1],[1],[0],[5],[2],[5],[1,6,7],[3],[2]]}
   ]
  }
 }
@@ -875,10 +910,12 @@ const EN_WRAP = {
   format:(s)=>"Format: "+noDot(s)+".",
   limit:(s)=>s,
   genre:(s)=>"Please build "+noDot(s)+" as one single HTML file, with CSS inside a <style> tag and JavaScript inside a <script> tag.",
-  player:(s)=>"The player controls "+noDot(s)+".",
-  content:(s)=>"The cards and questions are about "+noDot(s)+".",
-  goal:(s)=>"The goal is to "+noDot(s)+".",
-  controls:(s)=>"Controls: "+noDot(s)+".",
+  hero:(s)=>"The player is "+noDot(s)+".",
+  motive:(s)=>"Story: the player is trying "+noDot(s)+".",
+  world:(s)=>"The game takes place in "+noDot(s)+".",
+  good:(s)=>"Collect "+noDot(s)+".",
+  bad:(s)=>"Avoid "+noDot(s)+".",
+  powerup:(s)=>"Power-ups: "+noDot(s)+".",
   mechanic:(s)=>"Game rules: "+noDot(s)+".",
   feedback:(s)=>"Also include "+noDot(s)+".",
   visual:(s)=>"Visual style: "+noDot(s)+".",
