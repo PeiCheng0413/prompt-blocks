@@ -48,7 +48,6 @@
   --c-feedback:#7A3E6C;
   --c-motive:#1D6A76;
   --c-rules:#4E5866;
-  --c-reply:#8A5320;
   --c-motion:#1F5F86;
   --c-role:#34549C;
   --c-task:#2B303B;
@@ -70,7 +69,7 @@
     --focus:#8FAAE8;--alert:#E97B63;
     --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
     --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
+    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-rules:#A3AEBE;--c-motion:#6FB6E2;
     --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
     --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
   }
@@ -83,7 +82,7 @@
   --focus:#8FAAE8;--alert:#E97B63;
   --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
   --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-rules:#A3AEBE;--c-reply:#D7A466;--c-motion:#6FB6E2;
+  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-rules:#A3AEBE;--c-motion:#6FB6E2;
   --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
 }
@@ -741,7 +740,7 @@ const THEMES = [
  lessons:[
   ["存檔","程式碼要存成 .html 才能玩","把 Gemini 給的程式碼全部複製，貼到記事本，存成<code>game.html</code>，再用瀏覽器打開。存檔類型要選「所有檔案」，不然會變成 .txt。"],
   ["一步步","先求能玩，再加功能","第一次先用「基本款」做出能玩的版本，再一次加一個功能，例如「加上音效」「加上最高分」。一次要求太多，程式容易壞掉。"],
-  ["調難度","好不好玩常常只差幾個數字","選<code>告訴我哪些數字可以調整難度</code>，Gemini 會告訴你哪些數字控制速度、時間和分數。自己改改看，這就是遊戲設計師在做的「平衡」。"],
+  ["調難度","好不好玩常常只差幾個數字","遊戲做好後問 Gemini<code>哪些數字可以調整難度</code>，它會告訴你哪些數字控制速度、時間和分數。自己改改看，這就是遊戲設計師在做的「平衡」。"],
   ["測試","故意把它玩壞","做好後故意亂按、一直輸、拿手機玩。把問題具體描述給 Gemini：「分數會變成負的」比「遊戲壞了」好修很多。"]
  ],
  cats:{
@@ -755,8 +754,7 @@ const THEMES = [
   powerup:{zh:"特殊道具",multi:true,tip:"偶爾出現的神奇道具，讓遊戲多一點驚喜。一開始選一兩個就好。"},
   mechanic:{zh:"遊戲規則",multi:true,tip:"命、時間、速度這些規則，決定遊戲的難度。"},
   feedback:{zh:"畫面回饋",multi:true,tip:"玩家做了動作之後，畫面怎麼回應。回饋越清楚，遊戲越好玩。"},
-  rules:{zh:"細節要求",multi:true,tip:"額外的規定，可以選好幾個。"},
-  reply:{zh:"回答方式",tip:"要 Gemini 怎麼回你。第一次做遊戲，建議請它教你怎麼存檔。"}
+  rules:{zh:"細節要求",multi:true,tip:"額外的規定，可以選好幾個。"}
  },
  lex:{
   role:[
@@ -855,25 +853,19 @@ const THEMES = [
    ["Make it playable on both phones and computers.","手機和電腦都能玩","手機沒有鍵盤，Gemini 會幫你加上觸控操作。"],
    ["Show short how-to-play instructions on the screen.","畫面上寫出遊戲說明","別人玩的時候才知道怎麼玩。"],
    ["Start with the simplest playable version.","先做最簡單能玩的版本","先確定能玩，再慢慢加功能。"]
-  ],
-  reply:[
-   ["After the code, tell me how to save and open the file.","程式碼後面教我怎麼存檔和打開","第一次做遊戲一定要選。"],
-   ["Explain your game plan first, then give the code.","先說明遊戲規劃，再給程式碼","先看它打算怎麼做，比較容易發現問題。"],
-   ["Show it in Canvas so I can play it right away.","用 Canvas 直接顯示讓我試玩","Gemini 的 Canvas 可以直接預覽。沒出現的話，在輸入框選 Canvas 再問一次。"],
-   ["After the code, tell me which numbers I can change to adjust the difficulty.","告訴我哪些數字可以調整難度","自己調速度和時間，最能學到遊戲設計。"]
   ]
  },
  modes:{
   web:[
    {id:"arcade-basic", zh:"基本款",
-    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"玩家是",post:"，"}),S("world",{pre:"場景在",post:"。"}),S("good",{pre:"要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("reply",{post:"。"})],
-    seed:[[0],[0],[0],[4],[3],[2],[0]]},
+    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"玩家是",post:"，"}),S("world",{pre:"場景在",post:"。"}),S("good",{pre:"要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"})],
+    seed:[[0],[0],[0],[4],[3],[2]]},
    {id:"arcade-loaded", zh:"加料版",
-    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"玩家是",post:"，"}),S("world",{pre:"場景在",post:"。"}),S("good",{pre:"要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("powerup",{pre:"特殊道具：",post:"。"}),S("mechanic",{pre:"遊戲規則：",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("rules",{post:"。",opt:true}),S("reply",{post:"。"})],
-    seed:[[2],[2],[6],[6],[5],[6],[2,4],[0,2],[1,2],[0,1],[3]]},
+    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"玩家是",post:"，"}),S("world",{pre:"場景在",post:"。"}),S("good",{pre:"要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("powerup",{pre:"特殊道具：",post:"。"}),S("mechanic",{pre:"遊戲規則：",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("rules",{post:"。",opt:true})],
+    seed:[[2],[2],[6],[6],[5],[6],[2,4],[0,2],[1,2],[0,1]]},
    {id:"arcade-story", zh:"故事版",
-    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"故事是這樣的："}),S("motive",{post:"，"}),S("world",{pre:"一路穿過",post:"。"}),S("good",{pre:"路上要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("feedback",{pre:"還要有",post:"。"}),S("reply",{post:"。"})],
-    seed:[[0],[1],[1],[0],[5],[2],[5],[1,6,7],[1]]}
+    parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"故事是這樣的："}),S("motive",{post:"，"}),S("world",{pre:"一路穿過",post:"。"}),S("good",{pre:"路上要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("feedback",{pre:"還要有",post:"。"})],
+    seed:[[0],[1],[1],[0],[5],[2],[5],[1,6,7]]}
   ]
  }
 }
@@ -889,7 +881,7 @@ THEMES.forEach((th)=>{ Object.keys(th.lex).forEach((c)=>{ th.lex[c]=th.lex[c].ma
 
 const noDot = (s)=>s.replace(/[.。\s]+$/,"");
 const dot = (s)=>/[.!?。！？]$/.test(s) ? s : s+".";
-const SENT_CATS = ["task","about","limit","rules","reply"];
+const SENT_CATS = ["task","about","limit","rules"];
 const EN_WRAP = {
   role:(s)=>"You are "+noDot(s)+".",
   task:(s)=>s,
@@ -907,8 +899,7 @@ const EN_WRAP = {
   powerup:(s)=>"Power-ups: "+noDot(s)+".",
   mechanic:(s)=>"Game rules: "+noDot(s)+".",
   feedback:(s)=>"Also include "+noDot(s)+".",
-  rules:(s)=>s,
-  reply:(s)=>s
+  rules:(s)=>s
 };
 
 const state = {theme:THEMES[0], imageTheme:THEMES[0], mode:MODES[0], tpl:THEMES[0].modes.image[0], fills:{}, active:null, cat:null, manual:{zh:null,en:null}, mem:{}};
