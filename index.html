@@ -47,6 +47,16 @@
   --c-mechanic:#1D6A76;
   --c-feedback:#7A3E6C;
   --c-motive:#1D6A76;
+  --c-number:#4E5866;
+  --c-title:#B03A26;
+  --c-figure:#2B303B;
+  --c-pose:#A23B55;
+  --c-objects:#946510;
+  --c-setting:#2A6152;
+  --c-symbols:#1F5F86;
+  --c-meaning:#1D6A76;
+  --c-frame:#8A5320;
+  --c-motif:#5A6A1C;
   --c-rules:#4E5866;
   --c-motion:#1F5F86;
   --c-role:#34549C;
@@ -69,7 +79,7 @@
     --focus:#8FAAE8;--alert:#E97B63;
     --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
     --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-rules:#A3AEBE;--c-motion:#6FB6E2;
+    --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-number:#A3AEBE;--c-title:#E97B63;--c-figure:#C3CAD8;--c-pose:#EE8FA6;--c-objects:#E0B95F;--c-setting:#6EC0A8;--c-symbols:#6FB6E2;--c-meaning:#62BFCB;--c-frame:#D7A466;--c-motif:#B5C46A;--c-rules:#A3AEBE;--c-motion:#6FB6E2;
     --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
     --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
   }
@@ -82,7 +92,7 @@
   --focus:#8FAAE8;--alert:#E97B63;
   --c-subject:#C3CAD8;--c-look:#D7A466;--c-outfit:#B5C46A;--c-expression:#EE8FA6;
   --c-style:#8FAAE8;--c-background:#6EC0A8;--c-framing:#62BFCB;--c-light:#E0B95F;
-  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-rules:#A3AEBE;--c-motion:#6FB6E2;
+  --c-palette:#D28CC2;--c-quality:#A3AEBE;--c-product:#C3CAD8;--c-filter:#6FB6E2;--c-feature:#EE8FA6;--c-shape:#B5C46A;--c-material:#D7A466;--c-scene:#6EC0A8;--c-user:#E97B63;--c-genre:#C3CAD8;--c-hero:#EE8FA6;--c-world:#6EC0A8;--c-good:#E0B95F;--c-bad:#E97B63;--c-powerup:#6FB6E2;--c-mechanic:#62BFCB;--c-feedback:#D28CC2;--c-motive:#62BFCB;--c-number:#A3AEBE;--c-title:#E97B63;--c-figure:#C3CAD8;--c-pose:#EE8FA6;--c-objects:#E0B95F;--c-setting:#6EC0A8;--c-symbols:#6FB6E2;--c-meaning:#62BFCB;--c-frame:#D7A466;--c-motif:#B5C46A;--c-rules:#A3AEBE;--c-motion:#6FB6E2;
   --c-role:#8FAAE8;--c-task:#C3CAD8;--c-about:#6EC0A8;--c-tone:#D28CC2;--c-format:#D7A466;--c-limit:#A3AEBE;
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -16px rgba(0,0,0,.9);
 }
@@ -347,6 +357,10 @@ button,input,textarea{font:inherit;color:inherit}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 const S = (cat, o) => Object.assign({cat, pre:"", post:"", opt:false}, o || {});
+/* 卡牌一律是 PTCG 標準尺寸 63 × 88 mm */
+const CARD = "畫一張直式的塔羅風卡牌，比例 63:88（標準卡牌尺寸 63 × 88 公釐）。";
+const CARD_BACK = "畫一張直式的塔羅風卡牌背面，比例 63:88（標準卡牌尺寸 63 × 88 公釐），整張圖要上下對稱，倒過來看也一模一樣。";
+const CARD_EN = "tarot-style card illustration, vertical card, 63:88 aspect ratio, standard trading card size 63 x 88 mm";
 
 const MODES = [
  {id:"image", zh:"圖片", join:"csv",
@@ -866,6 +880,167 @@ const THEMES = [
    {id:"arcade-story", zh:"故事版",
     parts:[S("role",{pre:"你是",post:"。"}),S("genre",{pre:"請幫我做",post:"，全部寫在同一個 HTML 檔案裡，CSS 放在 <style>，JavaScript 放在 <script>。"}),S("hero",{pre:"故事是這樣的："}),S("motive",{post:"，"}),S("world",{pre:"一路穿過",post:"。"}),S("good",{pre:"路上要收集",post:"，"}),S("bad",{pre:"還要小心避開",post:"。"}),S("feedback",{pre:"還要有",post:"。"})],
     seed:[[0],[1],[1],[0],[5],[2],[5],[1,6,7]]}
+  ]
+ }
+},
+/* ================= 塔羅風卡牌（只用在圖片） ================= */
+{id:"tarot", zh:"塔羅風卡牌",
+ lede:"設計一張屬於你的塔羅風卡牌。把字塊拖進句子的凹槽，排出中文和英文兩種指令。卡牌一律是直式 63:88，和 PTCG 卡牌一樣的標準尺寸。",
+ lessonsTitle:"記住這四件事，你就能設計出自己的卡牌",
+ lessons:[
+  ["比例","卡牌一律是 63 × 88 公釐","這是和 PTCG 寶可夢卡牌一樣的標準尺寸，印出來可以直接放進一般的卡套。如果 Gemini 給你方形的圖，就跟它說<code>改成直式 63:88 的比例</code>再試一次。"],
+  ["文字","卡面上的字要加引號","牌名寫成<code>「THE DREAMER」</code>這樣加上引號，AI 才知道這幾個字要印在卡上。英文字母比中文字更不容易被畫錯。"],
+  ["象徵","畫面裡每個東西都有意思","塔羅牌的圖不是隨便畫的：沙漏代表時間、鑰匙代表秘密、燈籠代表指引。先想好這張牌的「牌義」，再挑能代表它的東西。"],
+  ["卡背","卡背要上下對稱","塔羅牌倒過來放有另一種意思，叫做「逆位」。卡背做成倒過來看也一樣，別人才看不出哪一張是正的、哪一張是倒的。"]
+ ],
+ cats:{
+  number:{zh:"編號",tip:"塔羅牌最上方的羅馬數字。0 是第一張，XXI（21）是最後一張。"},
+  title:{zh:"牌名",tip:"印在卡牌底部的名字。用英文加引號，AI 比較不會寫錯字。可以在下方改成你自己想的名字。"},
+  figure:{zh:"主角",tip:"卡面上的人物或動物。塔羅牌的主角通常站在畫面正中間。"},
+  pose:{zh:"動作",tip:"主角的姿勢。姿勢本身就在說故事，例如站在懸崖邊代表準備踏出新的一步。"},
+  objects:{zh:"象徵物",multi:true,tip:"主角手上或身邊的東西。塔羅牌裡每個東西都有意思，可以選好幾個。"},
+  setting:{zh:"背景",tip:"卡牌主角後面的場景。"},
+  symbols:{zh:"符號",multi:true,tip:"藏在畫面裡的小符號，讓卡牌更神秘。可以選好幾個。"},
+  meaning:{zh:"牌義",tip:"這張牌代表什麼。先想好意義，再挑能代表它的東西。"},
+  frame:{zh:"卡框",tip:"卡牌外圍的邊框。同一套卡用同一種卡框，看起來才像一整副牌。"},
+  motif:{zh:"卡背圖案",tip:"卡背正中間的圖案。要能上下對稱，倒過來看也一樣。"},
+  style:{zh:"畫風",tip:"整張卡的畫法。復古木刻版畫最像傳統的塔羅牌。"},
+  palette:{zh:"配色",tip:"整張卡的顏色。深色底配金色最有塔羅牌的感覺。"}
+ },
+ lex:{
+  number:[
+   ["the Roman numeral “0” at the top","0","塔羅牌的第一張是 0 號，代表一切的開始。"],
+   ["the Roman numeral “I” at the top","I","羅馬數字的 1。"],
+   ["the Roman numeral “III” at the top","III","羅馬數字的 3。"],
+   ["the Roman numeral “VII” at the top","VII","羅馬數字的 7。V 是 5，後面加兩個 I 就是 7。"],
+   ["the Roman numeral “IX” at the top","IX","羅馬數字的 9。I 放在 X 前面，代表 10 減 1。"],
+   ["the Roman numeral “XIII” at the top","XIII","羅馬數字的 13。"],
+   ["the Roman numeral “XVII” at the top","XVII","羅馬數字的 17。"],
+   ["the Roman numeral “XXI” at the top","XXI","羅馬數字的 21，傳統塔羅大牌的最後一張。"]
+  ],
+  title:[
+   ["the title “THE DREAMER” written at the bottom","「THE DREAMER」","夢想家。"],
+   ["the title “THE WANDERER” written at the bottom","「THE WANDERER」","流浪者。"],
+   ["the title “THE GUARDIAN” written at the bottom","「THE GUARDIAN」","守護者。"],
+   ["the title “THE TIME KEEPER” written at the bottom","「THE TIME KEEPER」","時間的守護者。"],
+   ["the title “THE MOON CHILD” written at the bottom","「THE MOON CHILD」","月亮的孩子。"],
+   ["the title “THE BRAVE” written at the bottom","「THE BRAVE」","勇者。"],
+   ["the title “THE TRICKSTER” written at the bottom","「THE TRICKSTER」","搗蛋鬼。"],
+   ["the title “THE WISH” written at the bottom","「THE WISH」","願望。"]
+  ],
+  figure:[
+   ["a cloaked traveler","一位披著斗篷的旅人","看不清楚臉，很有神秘感。"],
+   ["a black cat wearing a crown","一隻戴王冠的黑貓","黑貓在很多故事裡都和魔法有關。"],
+   ["a girl with hair like ocean waves","一位頭髮像海浪的少女","頭髮可以和背景融在一起，很好看。"],
+   ["a robot fortune teller","一個機器人占卜師","古老的塔羅配上未來的機器人，很有反差。"],
+   ["a nine-tailed fox","一隻九條尾巴的狐狸","東方傳說裡的神獸。"],
+   ["a masked magician","一位戴面具的魔術師","魔術師本來就是塔羅牌裡的經典角色。"],
+   ["an owl scholar wearing glasses","一隻戴眼鏡的貓頭鷹學者","貓頭鷹常常代表智慧。"],
+   ["a gentle giant","一位溫柔的巨人","畫面會很有份量。"],
+   ["a little astronaut","一個小太空人","配星空背景特別適合。"],
+   ["a walking tree spirit","一棵會走路的樹精靈","代表大自然和成長。"]
+  ],
+  pose:[
+   ["raising both arms to the sky","高舉雙手","充滿力量的姿勢。"],
+   ["meditating with legs crossed and eyes closed","盤腿閉眼冥想","安靜、專注的感覺。"],
+   ["standing at the edge of a cliff looking ahead","站在懸崖邊往前看","準備踏出新的一步。"],
+   ["sitting on a throne","坐在王座上","看起來很有權威。"],
+   ["looking back over the shoulder","回頭張望","好像在想念過去的事。"],
+   ["floating in mid-air","飄浮在半空中","很有魔法的感覺。"],
+   ["reaching out to touch a star","伸手去碰星星","代表追求夢想。"],
+   ["sleeping peacefully","安穩地睡著","代表休息，或是正在做夢。"]
+  ],
+  objects:[
+   ["an old key","一把古老的鑰匙","代表秘密，或是打開新的門。"],
+   ["an hourglass","一個沙漏","代表時間。"],
+   ["a glowing lantern","一盞發光的燈籠","代表指引方向。"],
+   ["a golden chalice","一只聖杯","塔羅四種花色之一，代表感情。"],
+   ["a silver sword","一把劍","塔羅四種花色之一，代表思考和做決定。"],
+   ["a wooden wand","一根權杖","塔羅四種花色之一，代表行動和熱情。"],
+   ["a gold coin engraved with a star","一枚刻著星星的金幣","塔羅四種花色之一，代表錢和現實生活。"],
+   ["a hand mirror","一面手鏡","代表看見真正的自己。"],
+   ["a red rose","一朵紅玫瑰","代表愛和熱情。"],
+   ["a crystal ball","一顆水晶球","代表預知未來。"],
+   ["an open book","一本打開的書","代表知識。"]
+  ],
+  setting:[
+   ["a starry night sky with a crescent moon","滿天星空和一輪新月","最有塔羅牌氣氛的背景。"],
+   ["a castle above the clouds","雲端上的城堡","像夢裡才會出現的地方。"],
+   ["an underwater temple","深海裡的神殿","藍色的光和泡泡，很神秘。"],
+   ["a stone altar in a misty forest","起霧森林裡的石頭祭壇","古老又安靜。"],
+   ["an endless desert with pyramids","無邊的沙漠和金字塔","很有古文明的感覺。"],
+   ["a cliff covered in flowers","開滿花的懸崖","美麗又有點危險。"],
+   ["floating islands in the sky","飄在天空的島嶼","奇幻感很強。"],
+   ["the inside of a giant clock","巨大時鐘的裡面","齒輪和指針，和時間有關的牌很適合。"]
+  ],
+  symbols:[
+   ["a radiant sun","太陽","代表光明和成功。"],
+   ["a crescent moon","新月","代表直覺和夢境。"],
+   ["constellation lines","星座連線","把星星連成圖案。"],
+   ["an infinity symbol","無限符號 ∞","代表永遠不會結束。"],
+   ["an all-seeing eye","一隻眼睛","代表看穿一切。"],
+   ["an ouroboros snake biting its own tail","咬著自己尾巴的蛇","代表循環，結束也是開始。"],
+   ["lightning bolts","閃電","代表突然的改變。"],
+   ["a rainbow","彩虹","代表希望。"],
+   ["butterflies","蝴蝶","代表蛻變和成長。"]
+  ],
+  meaning:[
+   ["symbolizing new beginnings","新的開始","塔羅牌的 0 號牌就是這個意思。"],
+   ["symbolizing courage","勇氣","適合配高舉雙手或拿著劍的主角。"],
+   ["symbolizing hope","希望","適合配星星和彩虹。"],
+   ["symbolizing change","改變","適合配閃電和蝴蝶。"],
+   ["symbolizing balance","平衡","畫面可以設計成左右對稱。"],
+   ["symbolizing hidden secrets","秘密","適合配鑰匙和面具。"],
+   ["symbolizing friendship","友情","畫面裡可以有兩個角色。"],
+   ["symbolizing good luck","好運","適合配金幣和彩虹。"]
+  ],
+  frame:[
+   ["an ornate gold border","金色的華麗邊框","最經典的卡框。"],
+   ["an Art Nouveau border with curling vines and flowers","新藝術風格的藤蔓花邊","彎彎的藤蔓和花，很優雅。"],
+   ["a simple thin line border","簡單的細線邊框","乾淨，讓圖片更突出。"],
+   ["a Gothic arch frame","哥德式拱門邊框","上方是尖尖的拱門，像教堂的窗戶。"],
+   ["a border of tiny stars","星星點點的邊框","很適合夜空主題的牌。"],
+   ["a stained glass border","彩繪玻璃邊框","色彩鮮豔，像教堂的玻璃窗。"]
+  ],
+  motif:[
+   ["a sun and a moon facing each other in the center","面對面的太陽和月亮","一上一下，倒過來看剛好對稱。"],
+   ["a single mystical eye in the center","一隻神秘的大眼睛","很有魔法的感覺。"],
+   ["a circular star map in the center","圓形的星座圖","圓形的圖案最容易做到對稱。"],
+   ["a lotus flower mandala in the center","蓮花曼陀羅","一層一層的花瓣，很適合對稱。"],
+   ["two cats facing each other in the center","兩隻面對面的貓","一隻正的、一隻倒的，很可愛。"],
+   ["a compass rose in the center","羅盤","東南西北的指標，四個方向都對稱。"],
+   ["a tree of life with mirrored roots and branches","根和枝葉一樣的生命之樹","樹根和樹枝長得一樣，倒過來也成立。"]
+  ],
+  style:[
+   ["vintage woodcut print style like classic tarot cards","復古木刻版畫","最像傳統的塔羅牌。"],
+   ["Art Nouveau poster style","新藝術海報","優雅的線條和花紋。"],
+   ["Japanese anime style","日系動漫","角色可以很可愛。"],
+   ["soft watercolor illustration","水彩插畫","顏色會暈開，很溫柔。"],
+   ["stained glass art","彩繪玻璃","黑色粗線條加上鮮豔的色塊。"],
+   ["layered paper cut art","剪紙藝術","一層一層的紙，很有立體感。"],
+   ["pixel art","像素藝術","像遊戲裡的道具卡。"],
+   ["gold foil illustration on dark paper","深色紙上的燙金插畫","閃閃發亮，很高級。"]
+  ],
+  palette:[
+   ["deep navy and gold","深藍和金色","最有塔羅牌感覺的配色。"],
+   ["black, white, and gold","黑白加金色","簡單又高級。"],
+   ["purple and silver","紫色和銀色","神秘的月光感。"],
+   ["aged parchment tones","復古羊皮紙色","像放了很久的古老卡牌。"],
+   ["dreamy pastel colors","夢幻粉彩","可愛、溫柔的感覺。"],
+   ["deep crimson and black","暗紅和黑色","強烈、有一點危險的感覺。"]
+  ]
+ },
+ modes:{
+  image:[
+   {id:"tarot-basic", zh:"基本款", head:CARD_EN,
+    parts:[S("figure",{pre:CARD+"主角是"}),S("objects",{pre:"，手上拿著"}),S("setting",{pre:"，背景是"}),S("title",{pre:"，底部牌名寫著"}),S("style",{pre:"，",post:"風格"})],
+    seed:[[1],[1],[0],[3],[3]]},
+   {id:"tarot-full", zh:"完整版", head:CARD_EN,
+    parts:[S("number",{pre:CARD+"上方編號是 "}),S("title",{pre:"，底部牌名寫著"}),S("figure",{pre:"。主角是"}),S("pose",{pre:"，"}),S("objects",{pre:"，手上拿著"}),S("setting",{pre:"，背景是"}),S("symbols",{pre:"，畫面中還有",opt:true}),S("meaning",{pre:"，這張牌代表"}),S("frame",{pre:"。卡框是"}),S("style",{pre:"，",post:"風格"}),S("palette",{pre:"，",post:"的配色",opt:true})],
+    seed:[[3],[1],[0],[2],[2],[6],[2,1],[0],[1],[1],[0]]},
+   {id:"tarot-back", zh:"卡背", head:"tarot-style card back design, vertical card, 63:88 aspect ratio, standard trading card size 63 x 88 mm, perfectly symmetrical so it looks the same upside down",
+    parts:[S("motif",{pre:CARD_BACK+"中間的圖案是"}),S("symbols",{pre:"，周圍有"}),S("frame",{pre:"，卡框是"}),S("style",{pre:"，",post:"風格"}),S("palette",{pre:"，",post:"的配色"})],
+    seed:[[0],[2],[0],[7],[0]]}
   ]
  }
 }
